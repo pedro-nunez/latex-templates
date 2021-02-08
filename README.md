@@ -7,7 +7,7 @@ To quickly create new latex documents.
 - **Notes**: to take notes during a talk or lecture.
 - **Script**: to write scripts for talks, lectures, etc.
 - **Beamer**: for beamer presentations.
-- **Blurb**: for short expository notes about a very specific topic. Both the name and the idea are inspired by [Keith Conrad's expository papers](https://kconrad.math.uconn.edu/blurbs/). Many thanks to him for these nice writings, I've used them many times!
+- **Blurb**: for short expository notes about a specific topic. Both the name and the idea are inspired by [Keith Conrad's expository papers](https://kconrad.math.uconn.edu/blurbs/). Many thanks to him for these nice writings, I've used them many times!
 
 ## About the preamble
 
