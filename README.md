@@ -84,3 +84,40 @@ Improves the \newtheorem command that LaTeX includes by default.
 More math symbols, e.g. \Cap and \Cup.
 Provides the \mathbb command as well.
 It also loads the amsfonts package: fraktur letters, bold greek letters, etc.
+
+```latex
+\usepackage{enumitem}
+```
+
+To better control the layout of enumerate, itemize and description using \begin{enumerate}[label=...].
+It supersedes the enumerate package.
+
+```latex
+\usepackage{tikz-cd}
+\usetikzlibrary{decorations.markings}
+```
+
+To draw (hopefully) commutative diagrams.
+The tikzlibrary is added to draw open and closed immersions.
+
+```latex
+\usepackage{float}
+```
+
+Improved interface for floating objects such as figures and tables, introducing for example the H modifier to force the position of a float in the page or the boxed float.
+Should be loaded before hyperref.
+
+```latex
+\usepackage{hyperref}
+```
+
+To handle cross-referencing and produce hypertext links in the document.
+It should be loaded last (with few exceptions), because it redefines many LaTeX commands.
+
+```latex
+\usepackage[backend=biber,style=alphabetic]{biblatex}
+\addbibresource{main.bib}
+```
+
+To manage the bibliography.
+Alphabetic is the style in which Hartshorne's *Algebraic Geometry* book would usually appear as [Har77].
