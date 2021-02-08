@@ -11,13 +11,11 @@ To quickly create new latex documents.
 
 ## About the preamble
 
-- Trying to minimize packages included by default, but still including a "bare minimum" that allows to do the stuff that I consider essential. What each of them does is explained as a comment in the tex file. They include
-  - fontenc and inputenc,
-  - the AMS packages,
-  - tikz-cd,
-  - enumitem,
-  - float,
-  - hyperref,
-  - cleverref.
+- Tries to minimize packages included by default, but still including a "bare minimum" that allows one to do the (arguably) essential stuff. They are listed and explained below. In the case of **Script** and **Beamer**, the preamble contains a few extra appearance-related packages as well.
 - Doesn't contain personal macros by default.
 - Does contain author and title information by default.
+
+### \usepackage[T1]{fontenc}
+
+This uses 8-bit font encoding (with 256 glyphs) instead of the default 7-bit font encoding (with 128 glyphs).
+For example...
