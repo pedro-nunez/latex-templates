@@ -9,6 +9,26 @@ To quickly create new latex documents.
 - **Beamer**: for beamer presentations.
 - **Blurb**: for short expository notes about a specific topic. Both the name and the idea are inspired by [Keith Conrad's expository papers](https://kconrad.math.uconn.edu/blurbs/). Many thanks to him for these nice writings, I've used them many times!
 
+## Predefined theorems
+
+Taken from the amsthm package documentation, but following all the same numbering:
+
+```latex
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{lm}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{cor}[thm]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{exmp}[thm]{Example}
+\newtheorem{xca}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Remark}
+```
+
 ## About the preamble
 
 - Tries to minimize packages included by default, but still including a "bare minimum" that allows one to do the (arguably) essential stuff. They are listed and explained below. In the case of **Script** and **Beamer**, the preamble contains a few extra appearance-related packages as well.
