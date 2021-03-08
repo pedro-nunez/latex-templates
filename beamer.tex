@@ -1,0 +1,39 @@
+\documentclass[12pt]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[british]{babel}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{tikz-cd}
+\usetikzlibrary{decorations.markings}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[backend=biber,style=alphabetic]{biblatex}
+\addbibresource{main.bib}
+
+\usefonttheme{serif}
+\usetheme{Singapore}
+\usecolortheme{rose}
+
+\title[Beamer Template]{Beamer Template}
+\author{Pedro N\'{u}\~{n}ez}
+\institute{Albert-Ludwigs-Universit\"{a}t Freiburg}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section{First section}
+\begin{frame}
+    \frametitle{First slide}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Thanks for your attention!}
+    \printbibliography
+\end{frame}
+
+\end{document}

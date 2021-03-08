@@ -1,0 +1,96 @@
+\documentclass[12pt,a4paper]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[british]{babel}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{tikz-cd}
+\usetikzlibrary{decorations.markings}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[noabbrev]{cleveref}
+\usepackage[backend=biber,style=alphabetic]{biblatex}
+\addbibresource{main.bib}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{lm}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{cor}[thm]{Corollary}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{exmp}[thm]{Example}
+\newtheorem{xca}[thm]{Exercise}
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Remark}
+\Crefname{thm}{Theorem}{Theorems}
+\Crefname{lm}{Lemma}{Lemmas}
+\Crefname{prop}{Proposition}{Propositions}
+\Crefname{cor}{Corollary}{Corollaries}
+\Crefname{defn}{Definition}{Definitions}
+\Crefname{exmp}{Example}{Examples}
+\Crefname{xca}{Exercise}{Exercises}
+\Crefname{rem}{Remark}{Remarks}
+
+\title[Talk on...]{Talk on...}
+\author[Pedro N\'{u}\~{n}ez]{Pedro N\'{u}\~{n}ez}
+\address{Pedro N\'{u}\~{n}ez \newline
+\indent Albert-Ludwigs-Universit\"{a}t Freiburg, Mathematisches Institut \newline
+\indent Ernst-Zermelo-Straße 1, 79104 Freiburg im Breisgau (Germany)}
+\email{\href{mailto:pedro.nunez@math.uni-freiburg.de}{pedro.nunez@math.uni-freiburg.de}}
+\renewcommand*{\urladdrname}{\itshape Homepage}
+\urladdr{\href{https://home.mathematik.uni-freiburg.de/nunez/}{https://home.mathematik.uni-freiburg.de/nunez}}
+\thanks{The author gratefully acknowledges support by the DFG-Graduiertenkolleg GK1821 ``Cohomological Methods in Geometry'' at the University of Freiburg.}
+\date{\today}
+
+\setcounter{tocdepth}{1}
+\sloppy
+\makeatletter
+\hypersetup{
+  pdfauthor={\authors},
+  pdftitle={\@title},
+  colorlinks,
+  linkcolor=[rgb]{0,0.2,0.6},
+  citecolor=[rgb]{0.2,0.6,0.2},
+  urlcolor=[rgb]{0.6,0.2,0.2}}
+\makeatother
+\makeatletter
+\tikzcdset{
+open/.code={\tikzcdset{hook, circled};},
+closed/.code={\tikzcdset{hook, slashed};},
+circled/.code={\tikzcdset{markwith={\draw (0,0) circle (.375ex);}};},
+slashed/.code={\tikzcdset{markwith={\draw[-] (-.4ex,-.4ex) -- (.4ex,.4ex);}};},
+markwith/.code={
+\pgfutil@ifundefined{tikz@library@decorations.markings@loaded}%
+{\pgfutil@packageerror{tikz-cd}{You need to say %
+\string\usetikzlibrary{decorations.markings} to use arrow with markings}{}}{}%
+\pgfkeysalso{/tikz/postaction={/tikz/decorate,
+/tikz/decoration={
+markings,
+mark = at position 0.5 with
+{#1}}}}},
+}
+\makeatother
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	Script for a talk on...
+\end{abstract}
+
+\tableofcontents
+
+\begin{center}
+	\textcolor{gray}{---parts in gray will be omitted during the talk---}
+\end{center}
+
+\section{First section}
+
+\printbibliography
+\vfill
+
+\end{document}

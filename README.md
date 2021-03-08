@@ -31,11 +31,12 @@ Taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/amsthdo
 
 ## About the preamble
 
-- Tries to minimize packages included by default, but still including a "bare-minimum" that allows one to do the (arguably) essential stuff.
-In the case of **Script** and **Beamer**, the preamble contains a few extra "appearance-related" packages as well.
+- Tries to minimize packages included by default, but still including a "bare-minimum" amount of packages for functionality and appearance reasons.
 All those packages are listed and explained below.
 - Doesn't contain personal macros by default.
 - Does contain author and title information by default.
+- Besides the packages, there are also a few "appearance-related" commands.
+These are also listed and explained below.
 
 ### "Bare-minimum" packages
 
@@ -76,6 +77,7 @@ It improves the appearance as well.
 ```
 
 Improves the \newtheorem command that LaTeX includes by default.
+Already included if using amsart article or amsbook class.
 
 ```latex
 \usepackage{amssymb}
@@ -113,6 +115,28 @@ Should be loaded before hyperref.
 
 To handle cross-referencing and produce hypertext links in the document.
 It should be loaded last (with few exceptions), because it redefines many LaTeX commands.
+A
+
+```latex
+\usepackage[noabbrev]{cleveref}
+```
+
+Enhances cross-referencing features, e.g. to reference to a theorem and automatically include the word theorem.
+No abbreviature option to write figure instead of fig. etc.
+It requires some extra lines in the preamble:
+
+```latex
+\Crefname{thm}{Theorem}{Theorems}
+\Crefname{lm}{Lemma}{Lemmas}
+\Crefname{prop}{Proposition}{Propositions}
+\Crefname{cor}{Corollary}{Corollaries}
+\Crefname{defn}{Definition}{Definitions}
+\Crefname{exmp}{Example}{Examples}
+\Crefname{xca}{Exercise}{Exercises}
+\Crefname{rem}{Remark}{Remarks}
+```
+
+That way, writing \Cref{label} will reference the corresponding theorem including the word Theorem in the reference.
 
 ```latex
 \usepackage[backend=biber,style=alphabetic]{biblatex}
@@ -121,3 +145,54 @@ It should be loaded last (with few exceptions), because it redefines many LaTeX 
 
 To manage the bibliography.
 Alphabetic is the style in which Hartshorne's *Algebraic Geometry* book would usually appear as [Har77].
+
+### "Appearance-related" commands
+
+```latex
+\setcounter{tocdepth}{1}
+```
+
+To limit table of contents to section titles.
+
+```latex
+\sloppy
+```
+
+Often looks better.
+
+```latex
+\makeatletter
+\hypersetup{
+  pdfauthor={\authors},
+  pdftitle={\@title},
+  colorlinks,
+  linkcolor=[rgb]{0,0.2,0.6},
+  citecolor=[rgb]{0,0.2,0.6},
+  urlcolor=[rgb]{0,0.2,0.6}}
+\makeatother
+```
+
+Options for links and pdf output.
+Links, URLs and citations are defined to be blue by default.
+
+```latex
+\makeatletter
+\tikzcdset{
+open/.code={\tikzcdset{hook, circled};},
+closed/.code={\tikzcdset{hook, slashed};},
+circled/.code={\tikzcdset{markwith={\draw (0,0) circle (.375ex);}};},
+slashed/.code={\tikzcdset{markwith={\draw[-] (-.4ex,-.4ex) -- (.4ex,.4ex);}};},
+markwith/.code={
+\pgfutil@ifundefined{tikz@library@decorations.markings@loaded}%
+{\pgfutil@packageerror{tikz-cd}{You need to say %
+\string\usetikzlibrary{decorations.markings} to use arrow with markings}{}}{}%
+\pgfkeysalso{/tikz/postaction={/tikz/decorate,
+/tikz/decoration={
+markings,
+mark = at position 0.5 with
+{#1}}}}},
+}
+\makeatother
+```
+
+To draw open and closed immersions.
