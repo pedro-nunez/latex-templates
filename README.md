@@ -1,4 +1,4 @@
-# Latex_templates
+# Latex templates
 
 To quickly create new latex documents.
 
