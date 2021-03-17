@@ -29,6 +29,14 @@ Taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/amsthdo
 \newtheorem{rem}[thm]{Remark}
 ```
 
+## Edit templates and produce new examples
+
+For example, to modify the template for notes:
+
+1. Modify notes.tex with the desired changes
+2. Modify examples/example.tex if a different example text is desirable
+3. Run ./examples/generate.sh notes.tex
+
 ## About the preamble
 
 - Tries to minimize packages included by default, but still including a "bare-minimum" amount of packages for functionality and appearance reasons.
@@ -39,6 +47,13 @@ All those packages are listed and explained below.
 These are also listed and explained below.
 
 ### "Bare-minimum" packages
+
+```latex
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath}
+```
+
+Local font definition; before fontenct, cf. [this stackexchange answer](https://tex.stackexchange.com/a/2867).
 
 ```latex
 \usepackage[T1]{fontenc}
@@ -195,4 +210,4 @@ mark = at position 0.5 with
 \makeatother
 ```
 
-To draw open and closed immersions.
+To draw open and closed immersions. 
