@@ -35,7 +35,7 @@ For example, to modify the template for notes:
 
 1. Modify notes.tex with the desired changes
 2. Modify examples/example.tex if a different example text is desirable
-3. Run ./examples/generate.sh notes.tex
+3. Run ./auxiliary/generate.sh notes.tex
 
 ## About the preamble
 
