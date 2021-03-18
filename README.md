@@ -9,7 +9,53 @@ To quickly create new latex documents.
 - **Beamer**: for beamer presentations.
 - **Blurb**: for short expository notes about a specific topic. Both the name and the idea are inspired by [Keith Conrad's expository papers](https://kconrad.math.uconn.edu/blurbs/). Many thanks to him for these nice writings, I've used them many times!
 
-## Predefined theorems
+## Bash function to create new documents from the templates
+
+```bash
+new() {
+    # Create a new latex document with the corresponding git repository
+    # First argument is the type of template (beamer/blurb/notes/script)
+    # Second argument is the name of the new document (blank spaces will be replaced by hyphens)
+    cd "${HOME}/git"
+    if [ "${1}" = "beamer" ] || [ "${1}" = "blurb" ] || [ "${1}" = "notes" ] || [ "${1}" = "script" ]
+    then
+	mkdir "$(echo "${@}" | tr ' ' '-')"
+	cd "$(echo "${@}" | tr ' ' '-')"
+	cp "${HOME}/git/latex-templates/${1}.tex" "main.tex"
+	touch "main.bib"
+	echo "# ${@:2}" >> "README.md"
+	echo "" >> "README.md"
+	echo "Document created from a the ${1} template [here](https://github.com/pedro-nlb/latex-templates)." >> "README.md"
+	cp "${HOME}/git/latex-templates/auxiliary/gitignore" ".gitignore"
+	git init
+	git add .
+	git commit -m "First commit"
+	hub create -p "${GITHUBUSERNAME}/$(echo "${@}" | tr ' ' '-')"
+	git push origin master
+	cd
+	read -p "Alias to edit main.tex [press enter if none]: "
+	if [ -n "${REPLY}" ]
+	then
+	    echo "alias ${REPLY}=\"cd ~/git/$(echo "${@}" | tr ' ' '-'); vim main.tex\";" >> ".bash_aliases"
+	fi
+    else
+	echo "Please enter as a first argument the type of template to use (beamer/blurb/notes/script) and use the remaining arguments for the name of the document and repository (blank spaces will be replaced by hyphens)."
+    fi
+    source .bash_aliases;
+}
+```
+
+## Edit templates and produce new examples
+
+For example, to modify the template for notes:
+
+1. Modify notes.tex with the desired changes
+2. Modify examples/example.tex if a different example text is desirable
+3. Run ./auxiliary/generate.sh notes.tex
+
+## About the templates
+
+### Predefined theorems
 
 Taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/amsthdoc.pdf), but sharing all the same numbering sequence instead:
 
@@ -29,15 +75,7 @@ Taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/amsthdo
 \newtheorem{rem}[thm]{Remark}
 ```
 
-## Edit templates and produce new examples
-
-For example, to modify the template for notes:
-
-1. Modify notes.tex with the desired changes
-2. Modify examples/example.tex if a different example text is desirable
-3. Run ./auxiliary/generate.sh notes.tex
-
-## About the preamble
+### General remarks about the preamble
 
 - Tries to minimize packages included by default, but still including a "bare-minimum" amount of packages for functionality and appearance reasons.
 All those packages are listed and explained below.
