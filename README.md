@@ -141,6 +141,12 @@ Provides the \mathbb command as well.
 It also loads the amsfonts package: fraktur letters, bold greek letters, etc.
 
 ```latex
+\usepackage{mathrsfs}
+```
+
+Math font for sheaves with \mathscr{F}.
+
+```latex
 \usepackage{enumitem}
 ```
 
@@ -164,11 +170,12 @@ Should be loaded before hyperref.
 
 ```latex
 \usepackage{hyperref}
+\urlstyle{same}
 ```
 
 To handle cross-referencing and produce hypertext links in the document.
 It should be loaded last (with few exceptions), because it redefines many LaTeX commands.
-A
+The command \urlstyle{same} makes sure that the font produced by an \url{...} command is the same as the current one, instead of the default monospace.
 
 ```latex
 \usepackage[noabbrev]{cleveref}
