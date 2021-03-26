@@ -57,11 +57,12 @@ For example, to modify the template for notes:
 
 ### Predefined theorems
 
-Taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/amsthdoc.pdf), but sharing all the same numbering sequence instead:
+Mostly taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/amsthdoc.pdf), but sharing all the same numbering sequence instead:
 
 ```latex
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}
+\newtheroem*{thm*}{Theorem}
 \newtheorem{lm}[thm]{Lemma}
 \newtheorem{prop}[thm]{Proposition}
 \newtheorem{cor}[thm]{Corollary}
@@ -85,13 +86,6 @@ All those packages are listed and explained below.
 These are also listed and explained below.
 
 ### "Bare-minimum" packages
-
-```latex
-\usepackage{libertine}
-\usepackage[libertine]{newtxmath}
-```
-
-Local font definition; before fontenct, cf. [this stackexchange answer](https://tex.stackexchange.com/a/2867).
 
 ```latex
 \usepackage[T1]{fontenc}
