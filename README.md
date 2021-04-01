@@ -82,8 +82,7 @@ Mostly taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/
 All those packages are listed and explained below.
 - Doesn't contain personal macros by default.
 - Does contain author and title information by default.
-- Besides the packages, there are also a few "appearance-related" commands.
-These are also listed and explained below.
+- Besides the packages, there are a couple appearance-related commands, which are also listed and explained below.
 
 ### "Bare-minimum" packages
 
