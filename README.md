@@ -30,7 +30,7 @@ new() {
 	git init
 	git add .
 	git commit -m "First commit"
-	hub create -p "${GITHUBUSERNAME}/$(echo "${@}" | tr ' ' '-')"
+	hub create -p
 	git push origin master
 	cd
 	read -p "Alias to edit main.tex [press enter if none]: "
