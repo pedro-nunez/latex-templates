@@ -12,8 +12,6 @@
 \usepackage{float}
 \usepackage{hyperref}
 \urlstyle{same}
-\usepackage[backend=biber,style=alphabetic]{biblatex}
-\addbibresource{main.bib}
 
 \usefonttheme{serif}
 \usetheme{Singapore}
@@ -39,7 +37,8 @@
 
 \begin{frame}
     \frametitle{Thanks for your attention!}
-    \printbibliography
+		\bibliographystyle{alpha}
+		\bibliography{main}
 \end{frame}
 
 \end{document}

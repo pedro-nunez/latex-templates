@@ -192,15 +192,7 @@ It requires some extra lines in the preamble:
 
 That way, writing \Cref{label} will reference the corresponding theorem including the word Theorem in the reference.
 
-```latex
-\usepackage[backend=biber,style=alphabetic]{biblatex}
-\addbibresource{main.bib}
-```
-
-To manage the bibliography.
-Alphabetic is the style in which Hartshorne's *Algebraic Geometry* book would usually appear as [Har77].
-
-### "Appearance-related" commands
+### Other appearance-related stuff
 
 ```latex
 \setcounter{tocdepth}{1}
@@ -249,4 +241,8 @@ mark = at position 0.5 with
 \makeatother
 ```
 
-To draw open and closed immersions. 
+To draw open and closed immersions.
+
+### About the bibliography
+
+The templates use bibtex instead of the modern alternative biblatex. The reason is that biblatex does not work out of the box on [Termux](https://termux.com).

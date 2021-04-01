@@ -14,8 +14,6 @@
 \usepackage{hyperref}
 \urlstyle{same}
 \usepackage[noabbrev]{cleveref}
-\usepackage[backend=biber,style=alphabetic]{biblatex}
-\addbibresource{main.bib}
 
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}
@@ -92,7 +90,8 @@ mark = at position 0.5 with
 	\textcolor{gray}{---parts in gray will be omitted during the talk---}
 \end{center}
 
-\printbibliography
+\bibliographystyle{alpha}
+\bibliography{main}
 \vfill
 
 \end{document}
