@@ -63,19 +63,19 @@ I would like to thank the DFG-Graduiertenkolleg GK1821 ``Cohomological Methods i
 \makeatother
 \makeatletter
 \tikzcdset{
-open/.code={\tikzcdset{hook, circled};},
-closed/.code={\tikzcdset{hook, slashed};},
-circled/.code={\tikzcdset{markwith={\draw (0,0) circle (.375ex);}};},
-slashed/.code={\tikzcdset{markwith={\draw[-] (-.4ex,-.4ex) -- (.4ex,.4ex);}};},
-markwith/.code={
-\pgfutil@ifundefined{tikz@library@decorations.markings@loaded}%
-{\pgfutil@packageerror{tikz-cd}{You need to say %
-\string\usetikzlibrary{decorations.markings} to use arrow with markings}{}}{}%
-\pgfkeysalso{/tikz/postaction={/tikz/decorate,
-/tikz/decoration={
-markings,
-mark = at position 0.5 with
-{#1}}}}},
+  open/.code={\tikzcdset{hook, circled};},
+  closed/.code={\tikzcdset{hook, slashed};},
+  circled/.code={\tikzcdset{markwith={\draw (0,0) circle (.375ex);}};},
+  slashed/.code={\tikzcdset{markwith={\draw[-] (-.4ex,-.4ex) -- (.4ex,.4ex);}};},
+  markwith/.code={
+    \pgfutil@ifundefined{tikz@library@decorations.markings@loaded}%
+    {\pgfutil@packageerror{tikz-cd}{You need to say %
+    \string\usetikzlibrary{decorations.markings} to use arrow with markings}{}}{}%
+    \pgfkeysalso{/tikz/postaction={/tikz/decorate,
+    /tikz/decoration={
+      markings,
+      mark = at position 0.5 with
+      {#1}}}}},
 }
 \makeatother
 
@@ -84,8 +84,8 @@ mark = at position 0.5 with
 \maketitle
 
 \begin{abstract}
-	Notes on... typesetted by Pedro N\'{u}\~{n}ez.
-	Any errors or typos were likely introduced by myself; corrections and any other suggestions are very much appreciated!
+  Notes on... typesetted by Pedro N\'{u}\~{n}ez.
+  Any errors or typos were likely introduced by myself; corrections and any other suggestions are very much appreciated!
 \end{abstract}
 
 \tableofcontents

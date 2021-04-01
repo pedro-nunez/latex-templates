@@ -60,19 +60,19 @@
 \makeatother
 \makeatletter
 \tikzcdset{
-open/.code={\tikzcdset{hook, circled};},
-closed/.code={\tikzcdset{hook, slashed};},
-circled/.code={\tikzcdset{markwith={\draw (0,0) circle (.375ex);}};},
-slashed/.code={\tikzcdset{markwith={\draw[-] (-.4ex,-.4ex) -- (.4ex,.4ex);}};},
-markwith/.code={
-\pgfutil@ifundefined{tikz@library@decorations.markings@loaded}%
-{\pgfutil@packageerror{tikz-cd}{You need to say %
-\string\usetikzlibrary{decorations.markings} to use arrow with markings}{}}{}%
-\pgfkeysalso{/tikz/postaction={/tikz/decorate,
-/tikz/decoration={
-markings,
-mark = at position 0.5 with
-{#1}}}}},
+  open/.code={\tikzcdset{hook, circled};},
+  closed/.code={\tikzcdset{hook, slashed};},
+  circled/.code={\tikzcdset{markwith={\draw (0,0) circle (.375ex);}};},
+  slashed/.code={\tikzcdset{markwith={\draw[-] (-.4ex,-.4ex) -- (.4ex,.4ex);}};},
+  markwith/.code={
+    \pgfutil@ifundefined{tikz@library@decorations.markings@loaded}%
+    {\pgfutil@packageerror{tikz-cd}{You need to say %
+    \string\usetikzlibrary{decorations.markings} to use arrow with markings}{}}{}%
+    \pgfkeysalso{/tikz/postaction={/tikz/decorate,
+    /tikz/decoration={
+      markings,
+      mark = at position 0.5 with
+      {#1}}}}},
 }
 \makeatother
 
@@ -81,13 +81,13 @@ mark = at position 0.5 with
 \maketitle
 
 \begin{abstract}
-	Script for a talk on...
+  Script for a talk on...
 \end{abstract}
 
 \tableofcontents
 
 \begin{center}
-	\textcolor{gray}{---parts in gray will be omitted during the talk---}
+  \textcolor{gray}{---parts in gray will be omitted during the talk---}
 \end{center}
 
 \bibliographystyle{alpha}
