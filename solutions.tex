@@ -1,0 +1,66 @@
+\documentclass[12pt,a4paper]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[british]{babel}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{enumitem}
+\usepackage{tikz-cd}
+\usepackage{float}
+\usepackage{hyperref}
+\urlstyle{same}
+\usepackage[noabbrev]{cleveref}
+
+\theoremstyle{plain}
+\newtheorem*{lm}{Lemma}
+\theoremstyle{definition}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exmp}{Example}
+\theoremstyle{remark}
+\newtheorem*{rem}{Remark}
+\newtheorem{innercustomthm}{Exercise}
+\newenvironment{xca}[1]
+  {\renewcommand\theinnercustomthm{#1}\innercustomthm}
+  {\endinnercustomthm}
+\newenvironment{solution}
+  {\renewcommand\qedsymbol{$\blacksquare$}\begin{proof}[Solution]}
+  {\end{proof}}
+
+\title[Solutions to exercises]{Solutions to exercises}
+\author[Pedro N\'{u}\~{n}ez]{}
+\address{Pedro N\'{u}\~{n}ez \newline
+\indent Albert-Ludwigs-Universit\"{a}t Freiburg, Mathematisches Institut \newline
+\indent Ernst-Zermelo-Straße 1, 79104 Freiburg im Breisgau (Germany)}
+\email{\normalfont\href{mailto:pedro.nunez@math.uni-freiburg.de}{pedro.nunez@math.uni-freiburg.de}}
+\renewcommand*{\urladdrname}{\itshape Homepage}
+\urladdr{\normalfont\href{https://home.mathematik.uni-freiburg.de/nunez/}{https://home.mathematik.uni-freiburg.de/nunez} \newline
+\mbox{ }\newline 
+\indent {\fontfamily{libertine}\selectfont
+I would like to thank the DFG-Graduiertenkolleg GK1821 ``Cohomological Methods in Geometry'' for their support!%
+}}
+\date{\today}
+
+\setcounter{tocdepth}{1}
+\sloppy
+\makeatletter
+\hypersetup{
+  pdfauthor={\authors},
+  pdftitle={\@title},
+  colorlinks,
+  linkcolor=[rgb]{0.2,0.2,0.6},
+  citecolor=[rgb]{0.2,0.2,0.6},
+  urlcolor=[rgb]{0.2,0.2,0.6}}
+\makeatother
+
+\begin{document}
+
+\maketitle
+
+\bibliographystyle{alpha}
+\bibliography{main}
+\vfill
+
+\end{document}

@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 
 if [ "$1" = "beamer"* ]
 then
@@ -23,7 +23,7 @@ then
     sed -i '/\\tableofcontents/a\\n\\section{Example section}\n\\input{example}' main.tex
     latexmk -pdf -silent main.tex
     mv main.pdf blurb.pdf
-    #rm main*
+    rm main*
     xdg-open 2>/dev/null blurb.pdf
     cd ..
 elif [ "$1" = "notes"* ]
@@ -51,6 +51,19 @@ then
     mv main.pdf script.pdf
     rm main*
     xdg-open 2>/dev/null script.pdf
+    cd ..
+elif [ "$1" = "solutions"* ]
+then
+    cd examples
+    cp ../solutions.tex main.tex
+    cp ../auxiliary/books.bib main.bib
+    # Appned \input{example-solution} after line
+    # \tableofcontents
+    sed -i '/\\maketitle/a\\n\\input{example-solution}' main.tex
+    latexmk -pdf -silent main.tex
+    mv main.pdf solutions.pdf
+    rm main*
+    xdg-open 2>/dev/null solutions.pdf
     cd ..
 else
     echo "Please enter a valid argument."
