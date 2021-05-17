@@ -17,7 +17,7 @@ new() {
 # First argument is the type of template (beamer/blurb/notes/script)
 # Second argument is the name of the new document (blank spaces will be replaced by hyphens)
   cd "${HOME}/git"
-  if [ "${1}" = "beamer" ] || [ "${1}" = "blurb" ] || [ "${1}" = "notes" ] || [ "${1}" = "script" ]
+  if [ "${1}" = "beamer" ] || [ "${1}" = "blurb" ] || [ "${1}" = "notes" ] || [ "${1}" = "script" ] || [ "${1}" = "solutions" ]
   then
     mkdir "$(echo "${@}" | tr ' ' '-')"
     cd "$(echo "${@}" | tr ' ' '-')"
@@ -39,7 +39,7 @@ new() {
       echo "alias ${REPLY}=\"cd ~/git/$(echo "${@}" | tr ' ' '-'); vim main.tex\";" >> ".bash_aliases"
     fi
   else
-    echo "Please enter as a first argument the type of template to use (beamer/blurb/notes/script) and use the remaining arguments for the name of the document and repository (blank spaces will be replaced by hyphens)."
+    echo "Please enter as a first argument the type of template to use (beamer/blurb/notes/script/solutions) and use the remaining arguments for the name of the document and repository (blank spaces will be replaced by hyphens)."
   fi
   source .bash_aliases;
 }
