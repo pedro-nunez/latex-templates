@@ -1,16 +1,25 @@
-\documentclass[12pt,a4paper]{amsart}
+\documentclass[12pt,a4paper,reqno]{amsart}
+
+% Usual preamble
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[british]{babel}
 \usepackage{mathtools}
 \usepackage{amsthm}
-\usepackage{amssymb}
-\usepackage{mathrsfs}
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath}
+\usepackage[mathscr]{euscript}
 \usepackage{enumitem}
 \usepackage{tikz-cd}
 \usetikzlibrary{decorations.markings}
 \usepackage{float}
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  maxnames=10,
+  maxalphanames=10]{biblatex}
+\addbibresource{main.bib}
 \usepackage{hyperref}
 \urlstyle{same}
 \usepackage[noabbrev]{cleveref}
@@ -21,6 +30,8 @@
 \newtheorem{lm}[thm]{Lemma}
 \newtheorem{prop}[thm]{Proposition}
 \newtheorem{cor}[thm]{Corollary}
+\newtheorem{fact}[thm]{Fact}
+\newtheorem{q}[thm]{Question}
 \theoremstyle{definition}
 \newtheorem{defn}[thm]{Definition}
 \newtheorem{exmp}[thm]{Example}
@@ -31,10 +42,14 @@
 \Crefname{lm}{Lemma}{Lemmas}
 \Crefname{prop}{Proposition}{Propositions}
 \Crefname{cor}{Corollary}{Corollaries}
+\Crefname{fact}{Fact}{Facts}
+\Crefname{q}{Question}{Questions}
 \Crefname{defn}{Definition}{Definitions}
 \Crefname{exmp}{Example}{Examples}
 \Crefname{xca}{Exercise}{Exercises}
 \Crefname{rem}{Remark}{Remarks}
+
+% Specific preamble
 
 \title[Talk on...]{Talk on...}
 \author[Pedro N\'{u}\~{n}ez]{Pedro N\'{u}\~{n}ez}
@@ -73,8 +88,7 @@
   \textcolor{gray}{---parts in gray will be omitted during the talk---}
 \end{center}
 
-\bibliographystyle{alpha}
-\bibliography{main}
+\printbibliography
 \vfill
 
 \end{document}

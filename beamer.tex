@@ -5,11 +5,18 @@
 \usepackage[british]{babel}
 \usepackage{mathtools}
 \usepackage{amsthm}
-\usepackage{amssymb}
-\usepackage{mathrsfs}
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath}
+\usepackage[mathscr]{euscript}
 \usepackage{tikz-cd}
 \usetikzlibrary{decorations.markings}
 \usepackage{float}
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  maxnames=10,
+  maxalphanames=10]{biblatex}
+\addbibresource{main.bib}
 \usepackage{hyperref}
 \urlstyle{same}
 
@@ -37,8 +44,7 @@
 
 \begin{frame}
   \frametitle{Thanks for your attention!}
-  \bibliographystyle{alpha}
-  \bibliography{main}
+  \printbibliography
 \end{frame}
 
 \end{document}

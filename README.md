@@ -66,6 +66,8 @@ Mostly taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/
 \newtheorem{lm}[thm]{Lemma}
 \newtheorem{prop}[thm]{Proposition}
 \newtheorem{cor}[thm]{Corollary}
+\newtheorem{fact}[thm]{Fact}
+\newtheorem{q}[thm]{Question}
 
 \theoremstyle{definition}
 \newtheorem{defn}[thm]{Definition}

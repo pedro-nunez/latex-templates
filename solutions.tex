@@ -1,15 +1,23 @@
-\documentclass[12pt,a4paper]{amsart}
+\documentclass[12pt,a4paper,reqno]{amsart}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[british]{babel}
 \usepackage{mathtools}
 \usepackage{amsthm}
-\usepackage{amssymb}
-\usepackage{mathrsfs}
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath}
+\usepackage[mathscr]{euscript}
 \usepackage{enumitem}
 \usepackage{tikz-cd}
+\usetikzlibrary{decorations.markings}
 \usepackage{float}
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  maxnames=10,
+  maxalphanames=10]{biblatex}
+\addbibresource{main.bib}
 \usepackage{hyperref}
 \urlstyle{same}
 \usepackage[noabbrev]{cleveref}
@@ -49,8 +57,7 @@
 
 \maketitle
 
-\bibliographystyle{alpha}
-\bibliography{main}
+\printbibliography
 \vfill
 
 \end{document}
