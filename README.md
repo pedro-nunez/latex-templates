@@ -230,9 +230,9 @@ Often looks better.
   pdfauthor={\authors},
   pdftitle={\@title},
   colorlinks,
-  linkcolor=[rgb]{0,0.2,0.6},
-  citecolor=[rgb]{0,0.2,0.6},
-  urlcolor=[rgb]{0,0.2,0.6}}
+  linkcolor=[rgb]{0.2,0.2,0.6},
+  citecolor=[rgb]{0.2,0.6,0.2},
+  urlcolor=[rgb]{0.6,0.2,0.2}}
 \makeatother
 ```
 
