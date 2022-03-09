@@ -8,14 +8,15 @@ To quickly create new latex documents.
 - **Script**: to write scripts for talks, lectures, etc.
 - **Beamer**: for beamer presentations.
 - **Blurb**: for short expository notes about a specific topic. Both the name and the idea are inspired by [Keith Conrad's expository papers](https://kconrad.math.uconn.edu/blurbs/). Many thanks to him for these nice writings, I've used them many times!
+- **Solutions**: to write down solutions to exercises.
 
 ## Bash function to create new documents from the templates
 
 ```bash
 new() {
-# Create a new latex document with the corresponding git repository
-# First argument is the type of template (beamer/blurb/notes/script)
-# Second argument is the name of the new document (blank spaces will be replaced by hyphens)
+  # Create a new latex document with the corresponding git repository
+  # First argument is the type of template (beamer/blurb/notes/script)
+  # Second argument is the name of the new document (blank spaces will be replaced by hyphens)
   cd "${HOME}/git"
   if [ "${1}" = "beamer" ] || [ "${1}" = "blurb" ] || [ "${1}" = "notes" ] || [ "${1}" = "script" ] || [ "${1}" = "solutions" ]
   then
@@ -25,7 +26,7 @@ new() {
     touch "main.bib"
     echo "# ${@:2}" >> "README.md"
     echo "" >> "README.md"
-    echo "Document created from a the ${1} template [here](https://github.com/pedro-nlb/latex-templates)." >> "README.md"
+    echo "Document created from the ${1} template [here](https://github.com/pedro-nlb/latex-templates)." >> "README.md"
     cp "${HOME}/git/latex-templates/auxiliary/gitignore" ".gitignore"
     git init
     git add .
@@ -57,12 +58,12 @@ For example, to modify the template for notes:
 
 ### Predefined theorems
 
-Mostly taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/amsthdoc.pdf), but sharing all the same numbering sequence instead:
+Mostly taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/amsthdoc.pdf). They all share the same numbering sequence:
 
 ```latex
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}
-\newtheroem*{thm*}{Theorem}
+\newtheorem*{thm*}{Theorem}
 \newtheorem{lm}[thm]{Lemma}
 \newtheorem{prop}[thm]{Proposition}
 \newtheorem{cor}[thm]{Corollary}
@@ -71,6 +72,7 @@ Mostly taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/
 
 \theoremstyle{definition}
 \newtheorem{defn}[thm]{Definition}
+\newtheorem{nota}[thm]{Notation}
 \newtheorem{exmp}[thm]{Example}
 \newtheorem{xca}[thm]{Exercise}
 
@@ -81,7 +83,7 @@ Mostly taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/
 ### General remarks about the preamble
 
 - Tries to minimize packages included by default, but still including a "bare-minimum" amount of packages for functionality and appearance reasons.
-All those packages are listed and explained below.
+Since the "bare-minimum" is a bit subjective, especially when it comes to appearance, all those packages are listed and explained below.
 - Doesn't contain personal macros by default.
 - Does contain author and title information by default.
 - Besides the packages, there are a couple appearance-related commands, which are also listed and explained below.
@@ -128,15 +130,14 @@ Improves the \newtheorem command that LaTeX includes by default.
 Already included if using amsart article or amsbook class.
 
 ```latex
-\usepackage{amssymb}
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath}
 ```
 
-More math symbols, e.g. \Cap and \Cup.
-Provides the \mathbb command as well.
-It also loads the amsfonts package: fraktur letters, bold greek letters, etc.
+Font packages.
 
 ```latex
-\usepackage{mathrsfs}
+\usepackage[mathrsfs]{euscript}
 ```
 
 Math font for sheaves with \mathscr{F}.
@@ -164,6 +165,19 @@ Improved interface for floating objects such as figures and tables, introducing 
 Should be loaded before hyperref.
 
 ```latex
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  maxnames=10,
+  maxalphanames=10]{biblatex}
+\addbibresource{refs.bib}
+```
+
+Bibliography management with biblatex, see [Overleaf's documentation](https://www.overleaf.com/learn/latex/Bibliography_management_with_biblatex).
+The alphabetic style would display \[Har77\] for Hartshorne's *Algebraic Geometry* and \[KM98\] for Kollár and Mori's *Birational Geometry of Algebraic Varieties*.
+The maxnames and maxalphanames arguments ensure that enough initials of names are displayed when dealing with references with many authors.
+
+```latex
 \usepackage{hyperref}
 \urlstyle{same}
 ```
@@ -185,7 +199,10 @@ It requires some extra lines in the preamble:
 \Crefname{lm}{Lemma}{Lemmas}
 \Crefname{prop}{Proposition}{Propositions}
 \Crefname{cor}{Corollary}{Corollaries}
+\Crefname{fact}{Fact}{Facts}
+\Crefname{q}{Question}{Questions}
 \Crefname{defn}{Definition}{Definitions}
+\Crefname{nota}{Notation}{Notations}
 \Crefname{exmp}{Example}{Examples}
 \Crefname{xca}{Exercise}{Exercises}
 \Crefname{rem}{Remark}{Remarks}
@@ -221,29 +238,3 @@ Often looks better.
 
 Options for links and pdf output.
 Links, URLs and citations are defined to be blue by default.
-
-```latex
-\makeatletter
-\tikzcdset{
-open/.code={\tikzcdset{hook, circled};},
-closed/.code={\tikzcdset{hook, slashed};},
-circled/.code={\tikzcdset{markwith={\draw (0,0) circle (.375ex);}};},
-slashed/.code={\tikzcdset{markwith={\draw[-] (-.4ex,-.4ex) -- (.4ex,.4ex);}};},
-markwith/.code={
-\pgfutil@ifundefined{tikz@library@decorations.markings@loaded}%
-{\pgfutil@packageerror{tikz-cd}{You need to say %
-\string\usetikzlibrary{decorations.markings} to use arrow with markings}{}}{}%
-\pgfkeysalso{/tikz/postaction={/tikz/decorate,
-/tikz/decoration={
-markings,
-mark = at position 0.5 with
-{#1}}}}},
-}
-\makeatother
-```
-
-To draw open and closed immersions.
-
-### About the bibliography
-
-The templates use bibtex instead of the modern alternative biblatex. The reason is that biblatex does not work out of the box on [Termux](https://termux.com).
