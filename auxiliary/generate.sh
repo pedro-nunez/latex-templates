@@ -4,7 +4,7 @@ if [ "$1" = "beamer"* ]
 then
     cd examples
     cp ../beamer.tex main.tex
-    cp ../auxiliary/books.bib main.bib
+    cp ../auxiliary/books.bib refs.bib
     # Append \input{sample} after line
     # \frame{\titlepage}
     sed -i '/\\frame{\\titlepage}/a\\n\\begin{frame}\n\t\\frametitle{Example frame}\n\t\\input{example}\n\\end{frame}' main.tex
@@ -17,7 +17,7 @@ elif [ "$1" = "blurb"* ]
 then
     cd examples
     cp ../blurb.tex main.tex
-    cp ../auxiliary/books.bib main.bib
+    cp ../auxiliary/books.bib refs.bib
     # Appned \input{example} after line
     # \tableofcontents
     sed -i '/\\tableofcontents/a\\n\\section{Example section}\n\\input{example}' main.tex
@@ -30,7 +30,7 @@ elif [ "$1" = "notes"* ]
 then
     cd examples
     cp ../notes.tex main.tex
-    cp ../auxiliary/books.bib main.bib
+    cp ../auxiliary/books.bib refs.bib
     # Appned \input{example} after line
     # \tableofcontents
     sed -i '/\\tableofcontents/a\\n\\section{Example section}\n\\input{example}' main.tex
@@ -43,7 +43,7 @@ elif [ "$1" = "script"* ]
 then
     cd examples
     cp ../script.tex main.tex
-    cp ../auxiliary/books.bib main.bib
+    cp ../auxiliary/books.bib refs.bib
     # Appned \input{example} after line
     # \end{center}
     sed -i '/\\end{center}/a\\n\\section{Example section}\n\\input{example}' main.tex
@@ -56,7 +56,7 @@ elif [ "$1" = "solutions"* ]
 then
     cd examples
     cp ../solutions.tex main.tex
-    cp ../auxiliary/books.bib main.bib
+    cp ../auxiliary/books.bib refs.bib
     # Appned \input{example-solution} after line
     # \tableofcontents
     sed -i '/\\maketitle/a\\n\\input{example-solution}' main.tex
