@@ -23,7 +23,7 @@ new() {
     mkdir "$(echo "${@}" | tr ' ' '-')"
     cd "$(echo "${@}" | tr ' ' '-')"
     cp "${HOME}/git/latex-templates/${1}.tex" "main.tex"
-    touch "main.bib"
+    touch "refs.bib"
     echo "# ${@:2}" >> "README.md"
     echo "" >> "README.md"
     echo "Document created from the ${1} template [here](https://github.com/pedro-nlb/latex-templates)." >> "README.md"
