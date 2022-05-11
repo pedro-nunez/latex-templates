@@ -213,6 +213,18 @@ That way, writing \Cref{label} will reference the corresponding theorem includin
 ### Other appearance-related stuff
 
 ```latex
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+```
+
+To widen the margins in the solutions template.
+
+```latex
 \setcounter{tocdepth}{1}
 ```
 
