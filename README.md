@@ -14,8 +14,8 @@ To quickly create new latex documents.
 
 ```bash
 new() {
-  # Create a new latex document with the corresponding git repository
-  # First argument is the type of template (beamer/blurb/notes/script)
+  # Create a new LaTeX document with corresponding private GitHub repository
+  # First argument is the type of template (beamer/blurb/notes/script/solutions)
   # Second argument is the name of the new document (blank spaces will be replaced by hyphens)
   cd "${HOME}/git"
   if [ "${1}" = "beamer" ] || [ "${1}" = "blurb" ] || [ "${1}" = "notes" ] || [ "${1}" = "script" ] || [ "${1}" = "solutions" ]
@@ -26,7 +26,7 @@ new() {
     touch "refs.bib"
     echo "# ${@:2}" >> "README.md"
     echo "" >> "README.md"
-    echo "Document created from the ${1} template [here](https://github.com/pedro-nlb/latex-templates)." >> "README.md"
+    echo "Document created from the ${1} template [here](https://github.com/pedro-nunez/latex-templates)." >> "README.md"
     cp "${HOME}/git/latex-templates/auxiliary/gitignore" ".gitignore"
     git init
     git add .
@@ -249,4 +249,3 @@ Often looks better.
 ```
 
 Options for links and pdf output.
-Links, URLs and citations are defined to be blue by default.
