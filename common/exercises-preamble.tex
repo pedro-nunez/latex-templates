@@ -7,6 +7,7 @@
 
 \usepackage{mathtools}
 \usepackage{amsthm}
+\usepackage{comment}
 
 \usepackage{libertine}
 \usepackage[libertine]{newtxmath}
@@ -42,6 +43,10 @@
   {\renewcommand\theinnerexercise{#1}\innerexercise}
   {\endinnerexercise}
 
-\newenvironment{solution}
-  {\renewcommand\qedsymbol{$\blacksquare$}\begin{proof}[Solution]}
-  {\end{proof}}
+\ifshowsolutions
+  \newenvironment{solution}
+    {\renewcommand\qedsymbol{$\blacksquare$}\begin{proof}[Solution]}
+    {\end{proof}}
+\else
+  \excludecomment{solution}
+\fi
