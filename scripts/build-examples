@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  build-examples [TEMPLATE] [--clean]
+
+Templates:
+  note
+  exercises
+  beamer
+  longform
+
+Options:
+  --clean       Remove generated example build products.
+  -h, --help    Show this help message.
+
+With no TEMPLATE, all examples are selected.
+USAGE
+}
+
+die() {
+  printf 'build-examples: error: %s\n' "$*" >&2
+  exit 1
+}
+
+script_path="${BASH_SOURCE[0]}"
+
+while [[ -L "${script_path}" ]]; do
+  script_dir=$(
+    cd -- "$(dirname -- "${script_path}")" >/dev/null 2>&1
+    pwd
+  )
+
+  link_target=$(readlink -- "${script_path}")
+
+  if [[ "${link_target}" == /* ]]; then
+    script_path="${link_target}"
+  else
+    script_path="${script_dir}/${link_target}"
+  fi
+done
+
+script_dir=$(
+  cd -- "$(dirname -- "${script_path}")" >/dev/null 2>&1
+  pwd
+)
+
+repo_dir=$(
+  cd -- "${script_dir}/.." >/dev/null 2>&1
+  pwd
+)
+
+selected_template=""
+clean=0
+
+if [[ $# -eq 0 ]]; then
+  selected_template="all"
+fi
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --clean)
+      clean=1
+      shift
+      ;;
+    --*)
+      die "unknown option: $1"
+      ;;
+    note|exercises|beamer|longform)
+      if [[ -n "${selected_template}" && "${selected_template}" != "all" ]]; then
+        die "unexpected extra template: $1"
+      fi
+      selected_template="$1"
+      shift
+      ;;
+    *)
+      die "unknown template: $1. Expected one of: note, exercises, beamer, longform"
+      ;;
+  esac
+done
+
+if [[ -z "${selected_template}" ]]; then
+  selected_template="all"
+fi
+
+case "${selected_template}" in
+  all)
+    templates=(note exercises beamer longform)
+    ;;
+  note|exercises|beamer|longform)
+    templates=("${selected_template}")
+    ;;
+  *)
+    die "internal error: invalid template selection '${selected_template}'"
+    ;;
+esac
+
+for template in "${templates[@]}"; do
+  source_dir="${repo_dir}/examples/sources/${template}"
+  [[ -d "${source_dir}" ]] || die "example source directory not found: ${source_dir}"
+done
+
+cat <<REPORT
+Template repository: ${repo_dir}
+Selected examples:   ${templates[*]}
+Clean mode:          ${clean}
+
+No examples were built yet. This is only the build-examples interface test.
+REPORT
