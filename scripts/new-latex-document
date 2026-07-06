@@ -27,6 +27,7 @@ Project names:
   such names deliberately to keep generated projects portable.
 
 Options:
+  --lean        Include Lean code-listing support.
   --no-git       Do not initialize a local Git repository.
   --no-github    Do not create a GitHub repository. This is the default for now.
   --github       Create a GitHub repository after local project creation.
@@ -91,6 +92,7 @@ use_git=1
 use_github=0
 github_visibility="private"
 github_visibility_was_set=0
+use_lean=0
 target_dir=""
 created_target_dir=0
 local_creation_complete=0
@@ -105,6 +107,10 @@ while [[ $# -gt 0 ]]; do
     -h|--help)
       usage
       exit 0
+      ;;
+    --lean)
+      use_lean=1
+      shift
       ;;
     --no-git)
       use_git=0
@@ -173,6 +179,8 @@ template_refs="${template_dir}/refs.bib"
 template_preamble="${repo_dir}/common/${template}-preamble.tex"
 shared_macros="${repo_dir}/common/shared-macros.tex"
 project_gitignore="${repo_dir}/common/project-gitignore"
+lean_preamble="${repo_dir}/common/lean-preamble.tex"
+lean_listing="${repo_dir}/common/lstlean.tex"
 target_dir="${PWD}/${project_name}"
 
 [[ -d "${template_dir}" ]] || die "template directory not found: ${template_dir}"
@@ -180,6 +188,10 @@ target_dir="${PWD}/${project_name}"
 [[ -f "${template_refs}" ]] || die "template bibliography file not found: ${template_refs}"
 [[ -f "${template_preamble}" ]] || die "template preamble file not found: ${template_preamble}"
 [[ -f "${project_gitignore}" ]] || die "project gitignore file not found: ${project_gitignore}"
+if [[ "${use_lean}" -eq 1 ]]; then
+  [[ -f "${lean_preamble}" ]] || die "Lean preamble file not found: ${lean_preamble}"
+  [[ -f "${lean_listing}" ]] || die "Lean listing file not found: ${lean_listing}"
+fi
 
 case "${template}" in
   note|longform)
@@ -208,6 +220,9 @@ created_target_dir=1
 cp -- "${template_main}" "${target_dir}/main.tex"
 cp -- "${template_refs}" "${target_dir}/refs.bib"
 cp -- "${project_gitignore}" "${target_dir}/.gitignore"
+if [[ "${use_lean}" -eq 1 ]]; then
+  cp -- "${lean_listing}" "${target_dir}/lstlean.tex"
+fi
 
 case "${template}" in
   note|longform)
@@ -225,6 +240,13 @@ case "${template}" in
     } > "${target_dir}/preamble.tex"
     ;;
 esac
+
+if [[ "${use_lean}" -eq 1 ]]; then
+  {
+    printf '\n\n'
+    cat -- "${lean_preamble}"
+  } >> "${target_dir}/preamble.tex"
+fi
 
 cat > "${target_dir}/README.md" <<EOF
 # ${project_name}
@@ -263,6 +285,27 @@ needs document-specific packages, macros, theorem environments, or layout
 changes.
 EOF
 
+if [[ "${use_lean}" -eq 1 ]]; then
+  cat >> "${target_dir}/README.md" <<'EOF'
+
+## Lean code
+
+This project was generated with Lean code-listing support.
+
+Use:
+
+```latex
+\begin{leancode}
+example : True := by
+  trivial
+\end{leancode}
+```
+
+The file `lstlean.tex` contains the Lean language definition used by the
+`listings` package.
+EOF
+fi
+
 if [[ "${use_git}" -eq 1 ]]; then
   git -C "${target_dir}" init -q
   git -C "${target_dir}" add .
@@ -287,13 +330,14 @@ Copied files:
   preamble.tex
   refs.bib
   README.md
-  .gitignore
+  .gitignore$([[ "${use_lean}" -eq 1 ]] && printf '\n  lstlean.tex')
 
 Template repository: ${repo_dir}
 Template:            ${template}
 Template directory:  ${template_dir}
 Project name:        ${project_name}
 Target directory:    ${target_dir}
+Lean support:        ${use_lean}
 Initialize Git:      ${use_git}
 Git repository:      $([[ "${use_git}" -eq 1 ]] && printf 'initialized with initial commit' || printf 'not initialized')
 Create GitHub repo:  ${use_github}
