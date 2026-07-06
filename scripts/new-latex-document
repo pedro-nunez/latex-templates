@@ -1,0 +1,259 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  new-latex-document TEMPLATE PROJECT_NAME [OPTIONS]
+
+Templates:
+  note
+  exercises
+  beamer
+  longform
+
+Project names:
+  Use a portable directory name containing only letters, numbers, dots,
+  underscores, and hyphens.
+
+  Good examples:
+    algebraic-geometry-notes
+    exercises-week-3
+    seminar_talk
+    course.2026
+
+  Avoid spaces and shell-special characters. In ordinary shell commands, names
+  with spaces must be quoted, for example "my project", but this script rejects
+  such names deliberately to keep generated projects portable.
+
+Options:
+  --no-git       Do not initialize a local Git repository.
+  --no-github    Do not create a GitHub repository. This is the default for now.
+  --github       Create a GitHub repository after local project creation.
+  --private      Make the GitHub repository private. This is the default when --github is used.
+  --public       Make the GitHub repository public.
+  -h, --help     Show this help message.
+
+This command is local-first. It will create a document project from the local
+template repository. GitHub integration is optional and is never attempted unless
+--github is explicitly passed.
+USAGE
+}
+
+die() {
+  printf 'new-latex-document: error: %s\n' "$*" >&2
+  exit 1
+}
+
+warn() {
+  printf 'new-latex-document: warning: %s\n' "$*" >&2
+}
+
+cleanup_on_failure() {
+  if [[ "${created_target_dir}" -eq 1 && "${local_creation_complete}" -eq 0 ]]; then
+    printf 'new-latex-document: cleaning up incomplete project: %s\n' "${target_dir}" >&2
+    rm -rf -- "${target_dir}"
+  fi
+}
+
+trap cleanup_on_failure EXIT
+
+script_dir=$(
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+  pwd
+)
+
+repo_dir=$(
+  cd -- "${script_dir}/.." >/dev/null 2>&1
+  pwd
+)
+
+template=""
+project_name=""
+use_git=1
+use_github=0
+github_visibility="private"
+github_visibility_was_set=0
+target_dir=""
+created_target_dir=0
+local_creation_complete=0
+
+if [[ $# -eq 0 ]]; then
+  usage
+  exit 0
+fi
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --no-git)
+      use_git=0
+      shift
+      ;;
+    --no-github)
+      use_github=0
+      shift
+      ;;
+    --github)
+      use_github=1
+      shift
+      ;;
+    --private)
+      github_visibility="private"
+      github_visibility_was_set=1
+      shift
+      ;;
+    --public)
+      github_visibility="public"
+      github_visibility_was_set=1
+      shift
+      ;;
+    --*)
+      die "unknown option: $1"
+      ;;
+    *)
+      if [[ -z "${template}" ]]; then
+        template="$1"
+      elif [[ -z "${project_name}" ]]; then
+        project_name="$1"
+      else
+        die "unexpected extra argument: $1. Project names with spaces are not supported."
+      fi
+      shift
+      ;;
+  esac
+done
+
+[[ -n "${template}" ]] || die "missing TEMPLATE"
+[[ -n "${project_name}" ]] || die "missing PROJECT_NAME"
+
+case "${template}" in
+  note|exercises|beamer|longform)
+    ;;
+  *)
+    die "unknown template '${template}'. Expected one of: note, exercises, beamer, longform"
+    ;;
+esac
+
+if [[ ! "${project_name}" =~ ^[A-Za-z0-9._-]+$ ]]; then
+  die "invalid project name '${project_name}'. Use only letters, numbers, dots, underscores, and hyphens; for example: my-project."
+fi
+
+if [[ "${project_name}" == "." || "${project_name}" == ".." ]]; then
+  die "invalid project name '${project_name}'"
+fi
+
+if [[ "${github_visibility_was_set}" -eq 1 && "${use_github}" -eq 0 ]]; then
+  warn "--${github_visibility} was passed, but --github was not passed; GitHub visibility will be ignored."
+fi
+
+template_dir="${repo_dir}/templates/${template}"
+template_main="${template_dir}/main.tex"
+template_refs="${template_dir}/refs.bib"
+template_preamble="${repo_dir}/common/${template}-preamble.tex"
+shared_macros="${repo_dir}/common/shared-macros.tex"
+project_gitignore="${repo_dir}/common/project-gitignore"
+target_dir="${PWD}/${project_name}"
+
+[[ -d "${template_dir}" ]] || die "template directory not found: ${template_dir}"
+[[ -f "${template_main}" ]] || die "template main file not found: ${template_main}"
+[[ -f "${template_refs}" ]] || die "template bibliography file not found: ${template_refs}"
+[[ -f "${template_preamble}" ]] || die "template preamble file not found: ${template_preamble}"
+[[ -f "${shared_macros}" ]] || die "shared macros file not found: ${shared_macros}"
+[[ -f "${project_gitignore}" ]] || die "project gitignore file not found: ${project_gitignore}"
+
+if [[ "${use_git}" -eq 1 ]]; then
+  command -v git >/dev/null 2>&1 || die "git not found; install Git or use --no-git"
+  git var GIT_AUTHOR_IDENT >/dev/null 2>&1 || die "Git author identity is not configured; set user.name and user.email, or use --no-git"
+fi
+
+if [[ "${use_github}" -eq 1 ]]; then
+  [[ "${use_git}" -eq 1 ]] || die "--github requires local Git; remove --no-git or omit --github"
+  command -v gh >/dev/null 2>&1 || die "GitHub CLI 'gh' not found; install gh or omit --github"
+  gh auth status >/dev/null 2>&1 || die "GitHub CLI is not authenticated; run 'gh auth login' or omit --github"
+fi
+
+if [[ -e "${target_dir}" ]]; then
+  die "target already exists: ${target_dir}"
+fi
+
+mkdir -- "${target_dir}"
+created_target_dir=1
+
+cp -- "${template_main}" "${target_dir}/main.tex"
+cp -- "${template_refs}" "${target_dir}/refs.bib"
+cp -- "${project_gitignore}" "${target_dir}/.gitignore"
+
+{
+  printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
+  cat -- "${template_preamble}"
+  printf '\n\n'
+  cat -- "${shared_macros}"
+} > "${target_dir}/preamble.tex"
+
+cat > "${target_dir}/README.md" <<EOF
+# ${project_name}
+
+Document type: ${template}
+
+## Files
+
+- \`main.tex\`: main LaTeX source.
+- \`preamble.tex\`: local preamble generated from the selected template.
+- \`refs.bib\`: bibliography database.
+
+## Build
+
+Compile with:
+
+\`\`\`bash
+latexmk -pdf main.tex
+\`\`\`
+
+To remove auxiliary build files:
+
+\`\`\`bash
+latexmk -C main.tex
+\`\`\`
+EOF
+
+if [[ "${use_git}" -eq 1 ]]; then
+  git -C "${target_dir}" init -q
+  git -C "${target_dir}" add .
+  git -C "${target_dir}" commit -q -m "Initial commit"
+fi
+
+local_creation_complete=1
+
+if [[ "${use_github}" -eq 1 ]]; then
+  gh repo create "${project_name}" \
+    --source "${target_dir}" \
+    --remote origin \
+    --push \
+    "--${github_visibility}" \
+    >/dev/null
+fi
+
+cat <<REPORT
+Created project directory: ${target_dir}
+Copied files:
+  main.tex
+  preamble.tex
+  refs.bib
+  README.md
+  .gitignore
+
+Template repository: ${repo_dir}
+Template:            ${template}
+Template directory:  ${template_dir}
+Project name:        ${project_name}
+Target directory:    ${target_dir}
+Initialize Git:      ${use_git}
+Git repository:      $([[ "${use_git}" -eq 1 ]] && printf 'initialized with initial commit' || printf 'not initialized')
+Create GitHub repo:  ${use_github}
+GitHub repository:   $([[ "${use_github}" -eq 1 ]] && printf 'created and pushed' || printf 'not requested')
+GitHub visibility:   ${github_visibility}
+REPORT
