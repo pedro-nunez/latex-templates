@@ -1,2 +1,58 @@
 % Common preamble for exercise sheets.
-% This will be populated when the exercises template is designed.
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[british]{babel}
+
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath}
+\usepackage[mathscr]{euscript}
+
+\usepackage{enumitem}
+
+\usepackage{tikz-cd}
+\usetikzlibrary{decorations.markings}
+
+\usepackage{float}
+
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  total={170mm,257mm},
+  left=20mm,
+  top=20mm,
+}
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  maxnames=10,
+  maxalphanames=10]{biblatex}
+\addbibresource{refs.bib}
+
+\usepackage{hyperref}
+\urlstyle{same}
+
+\usepackage[noabbrev]{cleveref}
+
+\theoremstyle{plain}
+\newtheorem*{lm}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exmp}{Example}
+
+\theoremstyle{remark}
+\newtheorem*{rem}{Remark}
+
+\newtheorem{innercustomthm}{Exercise}
+\newenvironment{xca}[1]
+  {\renewcommand\theinnercustomthm{#1}\innercustomthm}
+  {\endinnercustomthm}
+
+\newenvironment{solution}
+  {\renewcommand\qedsymbol{$\blacksquare$}\begin{proof}[Solution]}
+  {\end{proof}}

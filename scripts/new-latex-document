@@ -181,9 +181,11 @@ target_dir="${PWD}/${project_name}"
 [[ -f "${template_preamble}" ]] || die "template preamble file not found: ${template_preamble}"
 [[ -f "${project_gitignore}" ]] || die "project gitignore file not found: ${project_gitignore}"
 
-if [[ "${template}" != "beamer" ]]; then
-  [[ -f "${shared_macros}" ]] || die "shared macros file not found: ${shared_macros}"
-fi
+case "${template}" in
+  note|longform)
+    [[ -f "${shared_macros}" ]] || die "shared macros file not found: ${shared_macros}"
+    ;;
+esac
 
 if [[ "${use_git}" -eq 1 ]]; then
   command -v git >/dev/null 2>&1 || die "git not found; install Git or use --no-git"
@@ -207,19 +209,22 @@ cp -- "${template_main}" "${target_dir}/main.tex"
 cp -- "${template_refs}" "${target_dir}/refs.bib"
 cp -- "${project_gitignore}" "${target_dir}/.gitignore"
 
-if [[ "${template}" == "beamer" ]]; then
-  {
-    printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
-    cat -- "${template_preamble}"
-  } > "${target_dir}/preamble.tex"
-else
-  {
-    printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
-    cat -- "${template_preamble}"
-    printf '\n\n'
-    cat -- "${shared_macros}"
-  } > "${target_dir}/preamble.tex"
-fi
+case "${template}" in
+  note|longform)
+    {
+      printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
+      cat -- "${template_preamble}"
+      printf '\n\n'
+      cat -- "${shared_macros}"
+    } > "${target_dir}/preamble.tex"
+    ;;
+  exercises|beamer)
+    {
+      printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
+      cat -- "${template_preamble}"
+    } > "${target_dir}/preamble.tex"
+    ;;
+esac
 
 cat > "${target_dir}/README.md" <<EOF
 # ${project_name}
