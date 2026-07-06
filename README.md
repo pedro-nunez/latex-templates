@@ -4,11 +4,10 @@ To quickly create new latex documents.
 
 ## Available templates
 
-- **Notes**: to take notes during a talk or lecture.
-- **Script**: to write scripts for talks, lectures, etc.
-- **Beamer**: for beamer presentations.
-- **Blurb**: for short expository notes about a specific topic. Both the name and the idea are inspired by [Keith Conrad's expository papers](https://kconrad.math.uconn.edu/blurbs/). Many thanks to him for these nice writings, I've used them many times!
-- **Solutions**: to write down solutions to exercises.
+- `note`: ordinary mathematical notes, short scripts, blurbs, and expository notes.
+- `exercises`: exercise sheets, currently with visible solutions.
+- `beamer`: presentations.
+- `longform`: lecture notes and book-length projects.
 
 ## Command-line workflow
 
@@ -17,13 +16,8 @@ command. The workflow is local-first: it creates a project from the local copy
 of this template repository and does not contact GitHub unless explicitly asked
 to do so.
 
-At this stage of the redesign, the new workflow is implemented for the `note`
-template. The planned template types are:
-
-- `note`: ordinary mathematical notes, short scripts, blurbs, and expository notes;
-- `exercises`: exercise sheets, with optional solutions to be designed;
-- `beamer`: presentations;
-- `longform`: lecture notes and book-length projects.
+The implemented template types are `note`, `exercises`, `beamer`, and
+`longform`.
 
 Create a local note project with:
 
@@ -98,13 +92,48 @@ rm "${HOME}/.local/bin/new-latex-document"
 The symlink installation is easy to undo and keeps the command updated when the
 repository is updated with Git.
 
-## Edit templates and produce new examples
+## Showcase examples
 
-For example, to modify the template for notes:
+The repository contains source files and compiled PDFs showing the appearance of
+each template.
 
-1. Modify notes.tex with the desired changes
-2. Modify examples/example.tex if a different example text is desirable
-3. Run ./auxiliary/generate.sh notes.tex
+- [Note example](examples/pdf/note.pdf)
+- [Exercises example](examples/pdf/exercises.pdf)
+- [Beamer example](examples/pdf/beamer.pdf)
+- [Longform example](examples/pdf/longform.pdf)
+
+The example sources are in:
+
+```text
+examples/sources/
+```
+
+The generated showcase PDFs are kept in:
+
+```text
+examples/pdf/
+```
+
+Regenerate all showcase PDFs with:
+
+```bash
+scripts/build-examples
+```
+
+Regenerate a single showcase PDF with, for example:
+
+```bash
+scripts/build-examples note
+```
+
+Remove generated showcase PDFs and temporary build products with:
+
+```bash
+scripts/build-examples --clean
+```
+
+The PDFs in `examples/pdf/` are intentionally versioned so that visitors can
+inspect the templates without compiling them locally.
 
 ## About the templates
 
