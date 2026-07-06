@@ -37,10 +37,10 @@
 
 \usepackage[noabbrev]{cleveref}
 
-\newtheorem{innercustomthm}{Exercise}
-\newenvironment{xca}[1]
-  {\renewcommand\theinnercustomthm{#1}\innercustomthm}
-  {\endinnercustomthm}
+\newtheorem{innerexercise}{Exercise}
+\newenvironment{exercise}[1]
+  {\renewcommand\theinnerexercise{#1}\innerexercise}
+  {\endinnerexercise}
 
 \newenvironment{solution}
   {\renewcommand\qedsymbol{$\blacksquare$}\begin{proof}[Solution]}
