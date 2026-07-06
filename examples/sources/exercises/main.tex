@@ -5,19 +5,16 @@
 
 \input{preamble}
 
-\title{Exercises template example}
-\author{Author}
-\date{\today}
+\course{Algebra I}
+\sheetnumber{3}
+\lecturer{Pedro Núñez}
+\duedate{15 October 2026}
 
 \begin{document}
 
-\maketitle
+\makesheetheader
 
-This example demonstrates the current exercise-sheet template: exercises,
-subparts, displayed mathematics, references between exercises, and visible
-solutions.
-
-\begin{exercise}{1}\label{exercise:basic}
+\begin{exercise}\label{exercise:basic}
 Let \(V\) be a finite-dimensional vector space.
 \begin{enumerate}[label=(\alph*)]
   \item \label{item:dual-dual-map} Define the natural map
@@ -35,7 +32,7 @@ on \(V^\vee\). After choosing a basis, this map is identified with the usual
 identification of a finite-dimensional vector space with its double dual.
 \end{solution}
 
-\begin{exercise}{2}\label{exercise:exact-sequence}
+\begin{exercise}\label{exercise:exact-sequence}
 Let
 \[
   0 \to A \to B \to C \to 0
@@ -49,8 +46,8 @@ Dualizing gives an exact sequence
 \[
   0 \to C^\vee \to B^\vee \to A^\vee \to 0.
 \]
-The reference to \Cref{exercise:basic} is meant to check cross-references in
-the exercise template.
+The reference to \Cref{exercise:basic} checks cross-references in the exercise
+template.
 \end{solution}
 
 \end{document}
