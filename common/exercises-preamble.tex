@@ -45,20 +45,24 @@
 \newcounter{sheet}
 \setcounter{sheet}{1}
 
-\newcommand{\sheetcoursetext}{Course}
-\newcommand{\sheetlecturertext}{Lecturer}
-\newcommand{\sheetduedatetext}{Due date}
+\newcommand{\sheetcourse}{Course}
+\newcommand{\sheetlecturer}{Lecturer}
+\newcommand{\sheetduedate}{Due date}
 
-\newcommand{\course}[1]{\renewcommand{\sheetcoursetext}{#1}}
+\newcommand{\course}[1]{\renewcommand{\sheetcourse}{#1}}
 \newcommand{\sheetnumber}[1]{\setcounter{sheet}{#1}}
-\newcommand{\lecturer}[1]{\renewcommand{\sheetlecturertext}{#1}}
-\newcommand{\duedate}[1]{\renewcommand{\sheetduedatetext}{#1}}
+\newcommand{\lecturer}[1]{\renewcommand{\sheetlecturer}{#1}}
+\newcommand{\duedate}[1]{\renewcommand{\sheetduedate}{#1}}
 
 \newcommand{\makesheetheader}{%
+  \hypersetup{
+    pdftitle={\sheetcourse\space --- Sheet \arabic{sheet}},
+    pdfauthor={\sheetlecturer}
+  }%
   \noindent
   \begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}c r@{}}
-    \textbf{Lecturer:} & \textbf{\sheetcoursetext} & \textbf{Due date:} \\
-    \sheetlecturertext & Sheet \arabic{sheet} & \sheetduedatetext
+    \textbf{Lecturer:} & \textbf{\sheetcourse} & \textbf{Due date:} \\
+    \sheetlecturer & Sheet \arabic{sheet} & \sheetduedate
   \end{tabular*}%
   \par\vspace{0.6em}%
   \noindent\hrule
