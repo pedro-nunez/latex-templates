@@ -1,2 +1,31 @@
 % Common preamble for long-form mathematical documents.
-% This will be populated when the longform template is designed.
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[british]{babel}
+
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath}
+\usepackage[mathscr]{euscript}
+
+\usepackage{enumitem}
+
+\usepackage{tikz-cd}
+\usetikzlibrary{decorations.markings}
+
+\usepackage{float}
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  maxnames=10,
+  maxalphanames=10]{biblatex}
+\addbibresource{refs.bib}
+
+\usepackage{hyperref}
+\urlstyle{same}
+
+\usepackage[noabbrev]{cleveref}

@@ -1,0 +1,39 @@
+\documentclass[12pt,a4paper]{amsbook}
+
+\input{preamble}
+
+\title[Long-form template]{Long-form template}
+\author{Author}
+\date{\today}
+
+\begin{document}
+
+\frontmatter
+
+\maketitle
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{First chapter}
+
+\section{First section}
+
+This is the beginning of a long-form mathematical document.
+
+\begin{thm}\label{thm:first}
+This is a theorem.
+\end{thm}
+
+\begin{proof}
+This is a proof.
+\end{proof}
+
+We can refer to \Cref{thm:first}.
+
+\backmatter
+
+\printbibliography
+
+\end{document}
