@@ -1,0 +1,53 @@
+\documentclass[12pt,a4paper]{amsart}
+
+\input{preamble}
+
+\title[Exercises template example]{Exercises template example}
+\author{Author}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+This example demonstrates the current exercise-sheet template: exercises,
+subparts, displayed mathematics, references between exercises, and visible
+solutions.
+
+\begin{xca}{1}\label{exercise:basic}
+Let \(V\) be a finite-dimensional vector space.
+\begin{enumerate}[label=(\alph*)]
+  \item \label{item:dual-dual-map} Define the natural map
+  \(V \to V^{\vee\vee}\).
+  \item Prove that this map is an isomorphism.
+\end{enumerate}
+\end{xca}
+
+\begin{solution}
+The natural map sends \(v \in V\) to the functional
+\[
+  \lambda \longmapsto \lambda(v)
+\]
+on \(V^\vee\). After choosing a basis, this map is identified with the usual
+identification of a finite-dimensional vector space with its double dual.
+\end{solution}
+
+\begin{xca}{2}\label{exercise:exact-sequence}
+Let
+\[
+  0 \to A \to B \to C \to 0
+\]
+be a short exact sequence of vector spaces. Use \Cref{exercise:basic} to
+describe the dual exact sequence.
+\end{xca}
+
+\begin{solution}
+Dualizing gives an exact sequence
+\[
+  0 \to C^\vee \to B^\vee \to A^\vee \to 0.
+\]
+The reference to \Cref{exercise:basic} is meant to check cross-references in
+the exercise template.
+\end{solution}
+
+\end{document}
