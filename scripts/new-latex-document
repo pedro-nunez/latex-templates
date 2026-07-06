@@ -214,15 +214,20 @@ cp -- "${project_gitignore}" "${target_dir}/.gitignore"
 cat > "${target_dir}/README.md" <<EOF
 # ${project_name}
 
+Short description: TODO
+
 Document type: ${template}
 
-## Files
+## Project structure
 
 - \`main.tex\`: main LaTeX source.
 - \`preamble.tex\`: local preamble generated from the selected template.
 - \`refs.bib\`: bibliography database.
+- \`.gitignore\`: ignored LaTeX build products and editor files.
 
 ## Build
+
+This project uses \`biblatex\` with the \`biber\` backend.
 
 Compile with:
 
@@ -230,11 +235,17 @@ Compile with:
 latexmk -pdf main.tex
 \`\`\`
 
-To remove auxiliary build files:
+Remove auxiliary build files with:
 
 \`\`\`bash
 latexmk -C main.tex
 \`\`\`
+
+## Notes
+
+The file \`preamble.tex\` is a local copy. Edit it directly if this project
+needs document-specific packages, macros, theorem environments, or layout
+changes.
 EOF
 
 if [[ "${use_git}" -eq 1 ]]; then
