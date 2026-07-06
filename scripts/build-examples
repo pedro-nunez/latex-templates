@@ -101,15 +101,66 @@ case "${selected_template}" in
     ;;
 esac
 
+command -v latexmk >/dev/null 2>&1 || die "latexmk not found"
+
+build_root="${repo_dir}/examples/build"
+pdf_dir="${repo_dir}/examples/pdf"
+
+if [[ "${clean}" -eq 1 ]]; then
+  rm -rf -- "${build_root}"
+  for template in "${templates[@]}"; do
+    rm -f -- "${pdf_dir}/${template}.pdf"
+  done
+  exit 0
+fi
+
+mkdir -p -- "${build_root}" "${pdf_dir}"
+
 for template in "${templates[@]}"; do
   source_dir="${repo_dir}/examples/sources/${template}"
+  template_preamble="${repo_dir}/common/${template}-preamble.tex"
+  shared_macros="${repo_dir}/common/shared-macros.tex"
+  work_dir="${build_root}/${template}"
+
   [[ -d "${source_dir}" ]] || die "example source directory not found: ${source_dir}"
+  [[ -f "${source_dir}/main.tex" ]] || die "example source not found: ${source_dir}/main.tex"
+  [[ -f "${source_dir}/refs.bib" ]] || die "example bibliography not found: ${source_dir}/refs.bib"
+  [[ -f "${template_preamble}" ]] || die "template preamble not found: ${template_preamble}"
+
+  rm -rf -- "${work_dir}"
+  mkdir -p -- "${work_dir}"
+
+  cp -- "${source_dir}/main.tex" "${work_dir}/main.tex"
+  cp -- "${source_dir}/refs.bib" "${work_dir}/refs.bib"
+
+  case "${template}" in
+    note|longform)
+      [[ -f "${shared_macros}" ]] || die "shared macros file not found: ${shared_macros}"
+      {
+        printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
+        cat -- "${template_preamble}"
+        printf '\n\n'
+        cat -- "${shared_macros}"
+      } > "${work_dir}/preamble.tex"
+      ;;
+    exercises|beamer)
+      {
+        printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
+        cat -- "${template_preamble}"
+      } > "${work_dir}/preamble.tex"
+      ;;
+  esac
+
+  printf 'Building %s example...\n' "${template}"
+
+  (
+    cd "${work_dir}"
+    latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+  )
+
+  cp -- "${work_dir}/main.pdf" "${pdf_dir}/${template}.pdf"
+  rm -rf -- "${work_dir}"
+  rmdir -- "${build_root}" 2>/dev/null || true
+
+  printf 'Wrote %s\n' "${pdf_dir}/${template}.pdf"
 done
-
-cat <<REPORT
-Template repository: ${repo_dir}
-Selected examples:   ${templates[*]}
-Clean mode:          ${clean}
-
-No examples were built yet. This is only the build-examples interface test.
-REPORT

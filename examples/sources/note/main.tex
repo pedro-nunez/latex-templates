@@ -1,0 +1,86 @@
+\documentclass[12pt,a4paper]{amsart}
+
+\input{preamble}
+
+\title[Note template example]{Note template example}
+\author{Author}
+\date{\today}
+
+\begin{document}
+
+\begin{abstract}
+This example demonstrates the basic structure of the note template: sections,
+theorem-like environments, cross-references, displayed equations, lists,
+commutative diagrams, citations, and a bibliography.
+\end{abstract}
+
+\maketitle
+
+\tableofcontents
+
+\section{A first section}
+
+This is ordinary mathematical text. We cite a standard reference
+\cite{har77} and refer to \Cref{theorem:sample} below.
+
+\begin{definition}\label{definition:sample}
+A \emph{sample object} is an object introduced only to demonstrate the
+formatting of definitions.
+\end{definition}
+
+\begin{theorem}\label{theorem:sample}
+Let \(X\) be a sample object. Then the following properties hold:
+\begin{enumerate}[label=(\roman*)]
+  \item \label{item:first-property} \(X\) has a first property.
+  \item \label{item:second-property} \(X\) has a second property.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+This is a sample proof. The displayed equation
+\[
+  (a+b)^2 = a^2 + 2ab + b^2
+\]
+illustrates ordinary mathematical display style.
+\end{proof}
+
+By \Cref{item:first-property}, the first property holds.
+
+\begin{proposition}\label{proposition:sample}
+The sample object of \Cref{definition:sample} also satisfies a proposition.
+\end{proposition}
+
+\begin{lemma}\label{lemma:sample}
+This is a sample lemma.
+\end{lemma}
+
+\begin{corollary}\label{corollary:sample}
+This is a sample corollary.
+\end{corollary}
+
+\begin{remark}\label{remark:sample}
+This is a remark. It demonstrates the remark style.
+\end{remark}
+
+\begin{example}\label{example:sample}
+This is an example environment.
+\end{example}
+
+\section{A diagram}
+
+The template currently supports commutative diagrams using \texttt{tikz-cd}:
+\[
+\begin{tikzcd}
+A \arrow[r] \arrow[d] & B \arrow[d] \\
+C \arrow[r] & D .
+\end{tikzcd}
+\]
+
+\section{References}
+
+We have used \Cref{definition:sample,theorem:sample,proposition:sample}
+and cited \cite{har77}.
+
+\printbibliography
+
+\end{document}
