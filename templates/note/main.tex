@@ -1,48 +1,43 @@
 \documentclass[12pt,a4paper]{amsart}
 
-% Usual preamble
-
 \input{preamble}
 
-% Specific preamble
-
-\title[Notes on...]{Notes on...}
-\author[Pedro N\'{u}\~{n}ez]{Pedro N\'{u}\~{n}ez}
-\address{Pedro N\'{u}\~{n}ez \newline
-\indent National Taiwan University \newline
-\indent Department of Mathematics \newline
-\indent No.~1, Sec.~4, Roosevelt Rd., \newline
-\indent Taipei 10617, Taiwan}
-\email{\normalfont\href{mailto:pnunez@ntu.edu.tw}{pnunez@ntu.edu.tw}}
-\renewcommand*{\urladdrname}{\itshape Homepage}
-\urladdr{\normalfont\href{https://homepage.ntu.edu.tw/~pnunez}{https://homepage.ntu.edu.tw/\textasciitilde pnunez}}
-%\thanks{}
+\title[Short title]{Full title}
+\author{Author}
 \date{\today}
-
-\setcounter{tocdepth}{1}
-\sloppy
-\makeatletter
-\hypersetup{
-  pdfauthor={\authors},
-  pdftitle={\@title},
-  colorlinks,
-  linkcolor=[rgb]{0.2,0.2,0.6},
-  citecolor=[rgb]{0.2,0.6,0.2},
-  urlcolor=[rgb]{0.6,0.2,0.2}}
-\makeatother
 
 \begin{document}
 
-\maketitle
-
 \begin{abstract}
-  Notes on... typesetted by Pedro N\'{u}\~{n}ez.
-  Any errors or typos were likely introduced by myself; corrections and any other suggestions are very much appreciated!
+Write a short abstract here.
 \end{abstract}
+
+\maketitle
 
 \tableofcontents
 
+\section{Introduction}
+
+Write the introduction here.
+
+\begin{definition}\label{definition:sample}
+This is a definition.
+\end{definition}
+
+\begin{theorem}\label{theorem:sample}
+This is a theorem.
+\end{theorem}
+
+\begin{proof}
+This is a proof.
+\end{proof}
+
+We can refer to \Cref{definition:sample} and \Cref{theorem:sample}.
+
+\section{Further remarks}
+
+Add more sections as needed.
+
 \printbibliography
-\vfill
 
 \end{document}
