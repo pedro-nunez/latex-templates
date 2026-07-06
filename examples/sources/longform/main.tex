@@ -1,0 +1,85 @@
+\documentclass[12pt,a4paper]{amsbook}
+
+\input{preamble}
+
+\title[Longform template example]{Longform template example}
+\author{Author}
+\date{\today}
+
+\begin{document}
+
+\frontmatter
+
+\maketitle
+
+\tableofcontents
+
+\chapter*{Preface}
+
+This example demonstrates the longform template: front matter, chapters,
+sections, theorem-like environments, cross-references, citations, and a
+bibliography.
+
+\mainmatter
+
+\chapter{First chapter}
+
+\section{Basic structure}
+
+This is ordinary mathematical text in a chaptered document. We cite
+\cite{har77} and refer to \Cref{theorem:sample}.
+
+\begin{definition}\label{definition:sample}
+A \emph{sample object} is an object introduced to demonstrate the formatting of
+long-form mathematical writing.
+\end{definition}
+
+\begin{theorem}\label{theorem:sample}
+Let \(X\) be a sample object. Then \(X\) satisfies the following properties:
+\begin{enumerate}[label=(\roman*)]
+  \item \label{item:longform-first} \(X\) has a first property.
+  \item \label{item:longform-second} \(X\) has a second property.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+This is a sample proof. The displayed equation
+\[
+  \chi(\mathscr{F}) =
+  \sum_i (-1)^i h^i(X,\mathscr{F})
+\]
+checks the display style in a long-form document.
+\end{proof}
+
+The first property is \Cref{item:longform-first}.
+
+\begin{proposition}\label{proposition:sample}
+The sample object of \Cref{definition:sample} also satisfies a proposition.
+\end{proposition}
+
+\begin{remark}\label{remark:sample}
+This is a remark in the longform template.
+\end{remark}
+
+\chapter{Second chapter}
+
+\section{A diagram}
+
+The template supports commutative diagrams:
+\[
+\begin{tikzcd}
+A \arrow[r] \arrow[d] & B \arrow[d] \\
+C \arrow[r] & D .
+\end{tikzcd}
+\]
+
+\section{References inside the document}
+
+We have used \Cref{definition:sample,theorem:sample,proposition:sample} and
+the citation \cite{har77}.
+
+\backmatter
+
+\printbibliography
+
+\end{document}
