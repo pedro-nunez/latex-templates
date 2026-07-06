@@ -26,7 +26,17 @@
   maxalphanames=10]{biblatex}
 \addbibresource{refs.bib}
 
-\usepackage{hyperref}
+\usepackage{xcolor}
+
+\definecolor{LinkBlue}{RGB}{0,70,140}
+\definecolor{CitationGreen}{RGB}{0,100,70}
+\definecolor{UrlPurple}{RGB}{90,50,130}
+
+\usepackage[
+  colorlinks=true,
+  linkcolor=LinkBlue,
+  citecolor=CitationGreen,
+  urlcolor=UrlPurple]{hyperref}
 \urlstyle{same}
 
 \usepackage[noabbrev]{cleveref}
