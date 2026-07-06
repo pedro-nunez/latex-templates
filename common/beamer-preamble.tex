@@ -1,2 +1,31 @@
 % Common preamble for Beamer presentations.
-% This will be populated when the beamer template is migrated.
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[british]{babel}
+
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath}
+\usepackage[mathscr]{euscript}
+
+\usepackage{tikz-cd}
+\usetikzlibrary{decorations.markings}
+
+\usepackage{float}
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  maxnames=10,
+  maxalphanames=10]{biblatex}
+\addbibresource{refs.bib}
+
+\usepackage{hyperref}
+\urlstyle{same}
+
+\usefonttheme{serif}
+\usetheme{Singapore}
+\usecolortheme{rose}
