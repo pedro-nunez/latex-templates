@@ -10,41 +10,93 @@ To quickly create new latex documents.
 - **Blurb**: for short expository notes about a specific topic. Both the name and the idea are inspired by [Keith Conrad's expository papers](https://kconrad.math.uconn.edu/blurbs/). Many thanks to him for these nice writings, I've used them many times!
 - **Solutions**: to write down solutions to exercises.
 
-## Bash function to create new documents from the templates
+## Command-line workflow
+
+The recommended way to create a new document is the `new-latex-document`
+command. The workflow is local-first: it creates a project from the local copy
+of this template repository and does not contact GitHub unless explicitly asked
+to do so.
+
+At this stage of the redesign, the new workflow is implemented for the `note`
+template. The planned template types are:
+
+- `note`: ordinary mathematical notes, short scripts, blurbs, and expository notes;
+- `exercises`: exercise sheets, with optional solutions to be designed;
+- `beamer`: presentations;
+- `longform`: lecture notes and book-length projects.
+
+Create a local note project with:
 
 ```bash
-new() {
-  # Create a new LaTeX document with corresponding private GitHub repository
-  # First argument is the type of template (beamer/blurb/notes/script/solutions)
-  # Second argument is the name of the new document (blank spaces will be replaced by hyphens)
-  cd "${HOME}/git"
-  if [ "${1}" = "beamer" ] || [ "${1}" = "blurb" ] || [ "${1}" = "notes" ] || [ "${1}" = "script" ] || [ "${1}" = "solutions" ]
-  then
-    mkdir "$(echo "${@}" | tr ' ' '-')"
-    cd "$(echo "${@}" | tr ' ' '-')"
-    cp "${HOME}/git/latex-templates/${1}.tex" "main.tex"
-    touch "refs.bib"
-    echo "# ${@:2}" >> "README.md"
-    echo "" >> "README.md"
-    echo "Document created from the ${1} template [here](https://github.com/pedro-nunez/latex-templates)." >> "README.md"
-    cp "${HOME}/git/latex-templates/auxiliary/gitignore" ".gitignore"
-    git init
-    git add .
-    git commit -m "First commit"
-    hub create -p
-    git push origin master
-    cd
-    read -p "Alias to edit main.tex [press enter if none]: "
-    if [ -n "${REPLY}" ]
-    then
-      echo "alias ${REPLY}=\"cd ~/git/$(echo "${@}" | tr ' ' '-'); vim main.tex\";" >> ".bash_aliases"
-    fi
-  else
-    echo "Please enter as a first argument the type of template to use (beamer/blurb/notes/script/solutions) and use the remaining arguments for the name of the document and repository (blank spaces will be replaced by hyphens)."
-  fi
-  source .bash_aliases;
-}
+new-latex-document note my-project
 ```
+
+This creates a directory `my-project` in the current working directory, copies
+the template files into it, initializes a local Git repository, and makes an
+initial commit.
+
+To create the project without initializing Git, use:
+
+```bash
+new-latex-document note my-project --no-git
+```
+
+GitHub repository creation is optional and is never attempted unless `--github`
+is explicitly passed. When GitHub creation is requested, private repositories
+are the default:
+
+```bash
+new-latex-document note my-project --github
+```
+
+To create a public GitHub repository, use:
+
+```bash
+new-latex-document note my-project --github --public
+```
+
+To explicitly suppress GitHub creation, use:
+
+```bash
+new-latex-document note my-project --no-github
+```
+
+The project name should be a portable directory name containing only letters,
+numbers, dots, underscores, and hyphens.
+
+## Installing the command
+
+The simplest installation method is to symlink the script into `~/.local/bin`.
+
+From the root of this repository, run:
+
+```bash
+mkdir -p "${HOME}/.local/bin"
+ln -s "$(pwd)/scripts/new-latex-document" "${HOME}/.local/bin/new-latex-document"
+```
+
+Check that the command is available:
+
+```bash
+command -v new-latex-document
+```
+
+The expected output is something like:
+
+```text
+/home/USER/.local/bin/new-latex-document
+```
+
+If the command is not found, check that `~/.local/bin` is in your `PATH`.
+
+To uninstall the command, remove the symlink:
+
+```bash
+rm "${HOME}/.local/bin/new-latex-document"
+```
+
+The symlink installation is easy to undo and keeps the command updated when the
+repository is updated with Git.
 
 ## Edit templates and produce new examples
 
