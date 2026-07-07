@@ -8,77 +8,87 @@
 
 \begin{document}
 
-\frontmatter
-
 \maketitle
-
 \tableofcontents
 
-\chapter*{Preface}
+\chapter{A Sample Chapter}
 
-This example demonstrates the longform template: front matter, chapters,
-sections, theorem-like environments, cross-references, citations, and a
-bibliography.
+\section{Structured statements}
 
-\mainmatter
-
-\chapter{First chapter}
-
-\section{Basic structure}
-
-This is ordinary mathematical text in a chaptered document. We cite
-\cite{har77} and refer to \Cref{theorem:sample}.
-
-\begin{definition}\label{definition:sample}
-A \emph{sample object} is an object introduced to demonstrate the formatting of
-long-form mathematical writing.
+\begin{definition}\label{definition:longform-object}
+A \emph{longform object} is an object \(X\) equipped with a map
+\[
+  \alpha_X \colon X \to G(X)
+\]
+satisfying the following properties.
+\begin{theoremitems}
+  \item \label{item:longform-existence} The object \(X\) exists in the
+  category under consideration.
+  \item \label{item:longform-uniqueness} It is unique up to unique
+  isomorphism.
+\end{theoremitems}
 \end{definition}
 
-\begin{theorem}\label{theorem:sample}
-Let \(X\) be a sample object. Then \(X\) satisfies the following properties:
-\begin{enumerate}[label=(\roman*)]
-  \item \label{item:longform-first} \(X\) has a first property.
-  \item \label{item:longform-second} \(X\) has a second property.
-\end{enumerate}
-\end{theorem}
-
-\begin{proof}
-This is a sample proof. The displayed equation
-\[
-  \chi(\mathscr{F}) =
-  \sum_i (-1)^i h^i(X,\mathscr{F})
-\]
-checks the display style in a long-form document.
-\end{proof}
-
-The first property is \Cref{item:longform-first}.
-
-\begin{proposition}\label{proposition:sample}
-The sample object of \Cref{definition:sample} also satisfies a proposition.
+\begin{proposition}\label{proposition:longform-main}
+Every longform object is determined by the data in
+\Cref{item:longform-existence,item:longform-uniqueness}.
 \end{proposition}
 
-\begin{remark}\label{remark:sample}
-This is a remark in the longform template.
+\begin{proof}
+This is a template proof. The point is that the item references are attached to
+the theorem-like environment \Cref{definition:longform-object}, so their labels
+are numbered using the surrounding theorem number.
+\end{proof}
+
+\begin{remark}\label{remark:longform-citations}
+Long-form documents often contain many references. This example cites
+Hartshorne \cite{har77} and the Stacks Project \cite{stacks}.
 \end{remark}
 
-\chapter{Second chapter}
+\section{Diagrams and ordinary lists}
 
-\section{A diagram}
-
-The template supports commutative diagrams:
+The template supports commutative diagrams. For instance, one may write
 \[
 \begin{tikzcd}
-A \arrow[r] \arrow[d] & B \arrow[d] \\
-C \arrow[r] & D .
+  A \arrow[r, "\phi"] \arrow[d, "\alpha"'] &
+  B \arrow[d, "\beta"] \\
+  C \arrow[r, "\psi"'] &
+  D .
 \end{tikzcd}
 \]
+Such diagrams are useful in lecture notes and book-length projects.
 
-\section{References inside the document}
+The template also supports ordinary enumerated lists:
+\begin{enumerate}[label=(\alph*), ref=(\alph*)]
+  \item \label{item:longform-ordinary-first} A first ordinary item.
+  \item \label{item:longform-ordinary-second} A second ordinary item.
+\end{enumerate}
+We can refer to \Cref{item:longform-ordinary-second} as an ordinary item, and
+to \Cref{item:longform-uniqueness} as a theorem-numbered item.
 
-We have used \Cref{definition:sample,theorem:sample,proposition:sample} and
-the citation \cite{har77}.
+\chapter{Another Chapter}
 
-\backmatter
+\section{Resetting theorem numbers}
+
+This chapter checks that theorem-like numbering behaves correctly after a
+chapter change.
+
+\begin{lemma}\label{lemma:second-chapter}
+The references from the first chapter, such as
+\Cref{definition:longform-object}, still work from later chapters.
+\end{lemma}
+
+\begin{proof}
+This proof is only illustrative. It also demonstrates a displayed equation:
+\[
+  (f \circ g)^* = g^* \circ f^* .
+\]
+\end{proof}
+
+\begin{example}\label{example:external-link}
+A long-form document may also contain external links, for instance to
+\href{https://www.ctan.org/pkg/biblatex}{the \texttt{biblatex} package page}.
+\end{example}
 
 \printbibliography
 

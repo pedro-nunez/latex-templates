@@ -16,20 +16,26 @@
 
 \begin{exercise}\label{exercise:basic}
 Let \(V\) be a finite-dimensional vector space.
-\begin{enumerate}[label=(\alph*)]
+\begin{enumerate}[label=(\alph*), ref=(\alph*)]
   \item \label{item:dual-dual-map} Define the natural map
   \(V \to V^{\vee\vee}\).
-  \item Prove that this map is an isomorphism.
+  \item \label{item:dual-dual-isomorphism} Prove that this map is an
+  isomorphism.
 \end{enumerate}
 \end{exercise}
 
 \begin{solution}
-The natural map sends \(v \in V\) to the functional
+For \(v \in V\), define
 \[
-  \lambda \longmapsto \lambda(v)
+  \Phi(v) \colon V^\vee \to k,
+  \qquad
+  \Phi(v)(\lambda)=\lambda(v).
 \]
-on \(V^\vee\). After choosing a basis, this map is identified with the usual
-identification of a finite-dimensional vector space with its double dual.
+This gives a linear map \(\Phi \colon V \to V^{\vee\vee}\), which is the map
+asked for in \Cref{item:dual-dual-map}. After choosing a basis of \(V\), the
+map \(\Phi\) is identified with the usual identification of a finite-dimensional
+vector space with its double dual. Hence \(\Phi\) is an isomorphism, proving
+\Cref{item:dual-dual-isomorphism}.
 \end{solution}
 
 \begin{exercise}\label{exercise:exact-sequence}
@@ -37,8 +43,9 @@ Let
 \[
   0 \to A \to B \to C \to 0
 \]
-be a short exact sequence of vector spaces. Use \Cref{exercise:basic} to
-describe the dual exact sequence.
+be a short exact sequence of finite-dimensional vector spaces. Use
+\Cref{item:dual-dual-isomorphism} of \Cref{exercise:basic} to describe the
+dual exact sequence.
 \end{exercise}
 
 \begin{solution}
@@ -46,8 +53,9 @@ Dualizing gives an exact sequence
 \[
   0 \to C^\vee \to B^\vee \to A^\vee \to 0.
 \]
-The reference to \Cref{exercise:basic} checks cross-references in the exercise
-template.
+The finite-dimensionality assumption allows us to identify each vector space
+with its double dual, using \Cref{item:dual-dual-isomorphism} of
+\Cref{exercise:basic}.
 \end{solution}
 
 \end{document}
