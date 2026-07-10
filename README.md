@@ -156,196 +156,118 @@ installation.
 
 ## About the templates
 
-### Predefined theorems
+### `note`
 
-Mostly taken from the [amsthm package documentation](www.ams.org/arc/tex/amscls/amsthdoc.pdf). They all share the same numbering sequence:
+The `note` template is intended for ordinary mathematical notes, short scripts,
+blurbs, and expository documents. It uses the `amsart` class.
 
-```latex
-\theoremstyle{plain}
-\newtheorem{thm}{Theorem}
-\newtheorem*{thm*}{Theorem}
-\newtheorem{lm}[thm]{Lemma}
-\newtheorem{prop}[thm]{Proposition}
-\newtheorem{cor}[thm]{Corollary}
-\newtheorem{fact}[thm]{Fact}
-\newtheorem{q}[thm]{Question}
+It includes:
 
-\theoremstyle{definition}
-\newtheorem{defn}[thm]{Definition}
-\newtheorem{nota}[thm]{Notation}
-\newtheorem{exmp}[thm]{Example}
-\newtheorem{xca}[thm]{Exercise}
+- theorem-like environments such as `theorem`, `lemma`, `proposition`,
+  `corollary`, `definition`, `example`, and `remark`;
+- `cleveref` names for the predefined theorem environments;
+- theorem-numbered item lists via the `theoremitems` environment;
+- ordinary enumerated-item references;
+- `biblatex` with the `biber` backend;
+- `tikz-cd` for commutative diagrams;
+- coloured hyperlinks;
+- PDF metadata derived from `\title` and `\author`;
+- hidden-by-default draft notes and named author comments.
 
-\theoremstyle{remark}
-\newtheorem{rem}[thm]{Remark}
-```
+### `longform`
 
-### General remarks about the preamble
+The `longform` template is intended for lecture notes and book-length projects.
+It uses the `amsbook` class.
 
-- Tries to minimize packages included by default, but still including a "bare-minimum" amount of packages for functionality and appearance reasons.
-Since the "bare-minimum" is a bit subjective, especially when it comes to appearance, all those packages are listed and explained below.
-- Doesn't contain personal macros by default.
-- Does contain author and title information by default.
-- Besides the packages, there are a couple appearance-related commands, which are also listed and explained below.
+It has the same mathematical-writing preamble as `note`, but is kept in a
+separate file so that the two templates can diverge later if needed.
 
-### "Bare-minimum" packages
+### `exercises`
 
-```latex
-\usepackage[T1]{fontenc}
-```
+The `exercises` template is intended for exercise sheets. It uses the standard
+`article` class.
 
-This uses 8-bit font encoding (with 256 glyphs) instead of the default 7-bit font encoding (with 128 glyphs).
-For example, with this option, ö is a single glyph in the font, whereas on the 7-bit font encoding the font ö is made by adding an accent to the existing glyph o.
-A bad consequence of not using this package is (used to be?) that you cannot properly copy-paste words containing such characters from the output pdf file.
-Also, for some reason, funny stuff happens with |, < and > outside of math-environments.
+Exercise sheets have metadata commands:
 
 ```latex
-\usepackage[utf8]{inputenc}
+\course{Algebra I}
+\sheetnumber{3}
+\lecturer{Pedro Núñez}
+\duedate{15 October 2026}
 ```
 
-This package is included just in case anyone tries to compile this code with an old version of LaTeX, cf. [this stackexchange answer](https://tex.stackexchange.com/a/560594/112609).
-When you type ä in an editer set up for utf8, the machine stores the character number 228.
-When TeX reads the file it finds the charcater number 228 and the macros of inputenc transform this into \"a.
-Finally fontenc does its thing and transforms this into a command that prints the character 228.
+The command
 
 ```latex
-\usepackage[british]{babel}
+\makesheetheader
 ```
 
-To manage culturally determined typographical and similar rules, in this case for british english.
-One thing that would look different without this package right from the beginning would be the date format.
+prints the sheet header and sets PDF metadata automatically. Exercise numbers
+are derived from the sheet number, so Sheet 3 has exercises numbered `3.1`,
+`3.2`, and so on.
+
+Solutions are hidden by default. To show them, replace
 
 ```latex
-\usepackage{mathtools}
+\showsolutionsfalse
 ```
 
-Loads the amsmath package (which provides commands such as \DeclareMathOperator and \text) and fixes some quirks it has, adding also some useful settings, symbols and environments.
-It improves the appearance as well.
+with
 
 ```latex
-\usepackage{amsthm}
+\showsolutionstrue
 ```
 
-Improves the \newtheorem command that LaTeX includes by default.
-Already included if using amsart article or amsbook class.
+before `\input{preamble}`.
+
+### `beamer`
+
+The `beamer` template is intended for presentations. It uses the `beamer` class
+and keeps a separate preamble because Beamer already loads and configures many
+packages differently from ordinary article/book documents.
+
+### Optional Lean support
+
+All templates can be generated with optional Lean code-listing support:
+
+```bash
+new-latex-document exercises my-sheet --lean
+```
+
+This adds a `leancode` environment and copies the local Lean listings definition
+into the generated project.
+
+Example usage:
 
 ```latex
-\usepackage{libertine}
-\usepackage[libertine]{newtxmath}
+\begin{leancode}
+example : True := by
+  trivial
+\end{leancode}
 ```
 
-Font packages.
+### Draft notes and author comments
+
+All templates support draft notes:
 
 ```latex
-\usepackage[mathrsfs]{euscript}
+\showdraftnotestrue
+
+\draftnote{Check this argument before circulating.}
 ```
 
-Math font for sheaves with \mathscr{F}.
+Draft notes are hidden by default.
+
+The `note` and `longform` templates also support named author comments:
 
 ```latex
-\usepackage{enumitem}
+\showcommentstrue
+
+\newauthorcomment{alice}{Alice}{blue}
+\newauthorcomment{bob}{Bob}{red}
+
+\alice{Maybe cite this result.}
+\bob{I agree.}
 ```
 
-To better control the layout of enumerate, itemize and description using \begin{enumerate}[label=...].
-It supersedes the enumerate package.
-
-```latex
-\usepackage{tikz-cd}
-\usetikzlibrary{decorations.markings}
-```
-
-To draw (hopefully) commutative diagrams.
-The tikzlibrary is added to draw open and closed immersions.
-
-```latex
-\usepackage{float}
-```
-
-Improved interface for floating objects such as figures and tables, introducing for example the H modifier to force the position of a float in the page or the boxed float.
-Should be loaded before hyperref.
-
-```latex
-\usepackage[
-  backend=biber,
-  style=alphabetic,
-  maxnames=10,
-  maxalphanames=10]{biblatex}
-\addbibresource{refs.bib}
-```
-
-Bibliography management with biblatex, see [Overleaf's documentation](https://www.overleaf.com/learn/latex/Bibliography_management_with_biblatex).
-The alphabetic style would display \[Har77\] for Hartshorne's *Algebraic Geometry* and \[KM98\] for Kollár and Mori's *Birational Geometry of Algebraic Varieties*.
-The maxnames and maxalphanames arguments ensure that enough initials of names are displayed when dealing with references with many authors.
-
-```latex
-\usepackage{hyperref}
-\urlstyle{same}
-```
-
-To handle cross-referencing and produce hypertext links in the document.
-It should be loaded last (with few exceptions), because it redefines many LaTeX commands.
-The command \urlstyle{same} makes sure that the font produced by an \url{...} command is the same as the current one, instead of the default monospace.
-
-```latex
-\usepackage[noabbrev]{cleveref}
-```
-
-Enhances cross-referencing features, e.g. to reference to a theorem and automatically include the word theorem.
-No abbreviature option to write figure instead of fig. etc.
-It requires some extra lines in the preamble:
-
-```latex
-\Crefname{thm}{Theorem}{Theorems}
-\Crefname{lm}{Lemma}{Lemmas}
-\Crefname{prop}{Proposition}{Propositions}
-\Crefname{cor}{Corollary}{Corollaries}
-\Crefname{fact}{Fact}{Facts}
-\Crefname{q}{Question}{Questions}
-\Crefname{defn}{Definition}{Definitions}
-\Crefname{nota}{Notation}{Notations}
-\Crefname{exmp}{Example}{Examples}
-\Crefname{xca}{Exercise}{Exercises}
-\Crefname{rem}{Remark}{Remarks}
-```
-
-That way, writing \Cref{label} will reference the corresponding theorem including the word Theorem in the reference.
-
-### Other appearance-related stuff
-
-```latex
-\usepackage{geometry}
- \geometry{
- a4paper,
- total={170mm,257mm},
- left=20mm,
- top=20mm,
- }
-```
-
-To widen the margins in the solutions template.
-
-```latex
-\setcounter{tocdepth}{1}
-```
-
-To limit table of contents to section titles.
-
-```latex
-\sloppy
-```
-
-Often looks better.
-
-```latex
-\makeatletter
-\hypersetup{
-  pdfauthor={\authors},
-  pdftitle={\@title},
-  colorlinks,
-  linkcolor=[rgb]{0.2,0.2,0.6},
-  citecolor=[rgb]{0.2,0.6,0.2},
-  urlcolor=[rgb]{0.6,0.2,0.2}}
-\makeatother
-```
-
-Options for links and pdf output.
+Author comments are hidden by default.
