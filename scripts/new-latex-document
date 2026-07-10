@@ -177,7 +177,6 @@ template_dir="${repo_dir}/templates/${template}"
 template_main="${template_dir}/main.tex"
 template_refs="${template_dir}/refs.bib"
 template_preamble="${repo_dir}/common/${template}-preamble.tex"
-shared_macros="${repo_dir}/common/shared-macros.tex"
 project_gitignore="${repo_dir}/common/project-gitignore"
 lean_preamble="${repo_dir}/common/lean-preamble.tex"
 lean_listing="${repo_dir}/common/lstlean.tex"
@@ -192,12 +191,6 @@ if [[ "${use_lean}" -eq 1 ]]; then
   [[ -f "${lean_preamble}" ]] || die "Lean preamble file not found: ${lean_preamble}"
   [[ -f "${lean_listing}" ]] || die "Lean listing file not found: ${lean_listing}"
 fi
-
-case "${template}" in
-  note|longform)
-    [[ -f "${shared_macros}" ]] || die "shared macros file not found: ${shared_macros}"
-    ;;
-esac
 
 if [[ "${use_git}" -eq 1 ]]; then
   command -v git >/dev/null 2>&1 || die "git not found; install Git or use --no-git"
@@ -224,22 +217,10 @@ if [[ "${use_lean}" -eq 1 ]]; then
   cp -- "${lean_listing}" "${target_dir}/lstlean.tex"
 fi
 
-case "${template}" in
-  note|longform)
-    {
-      printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
-      cat -- "${template_preamble}"
-      printf '\n\n'
-      cat -- "${shared_macros}"
-    } > "${target_dir}/preamble.tex"
-    ;;
-  exercises|beamer)
-    {
-      printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
-      cat -- "${template_preamble}"
-    } > "${target_dir}/preamble.tex"
-    ;;
-esac
+{
+  printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
+  cat -- "${template_preamble}"
+} > "${target_dir}/preamble.tex"
 
 if [[ "${use_lean}" -eq 1 ]]; then
   {

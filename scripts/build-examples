@@ -119,7 +119,6 @@ mkdir -p -- "${build_root}" "${pdf_dir}"
 for template in "${templates[@]}"; do
   source_dir="${repo_dir}/examples/sources/${template}"
   template_preamble="${repo_dir}/common/${template}-preamble.tex"
-  shared_macros="${repo_dir}/common/shared-macros.tex"
   work_dir="${build_root}/${template}"
 
   [[ -d "${source_dir}" ]] || die "example source directory not found: ${source_dir}"
@@ -133,23 +132,10 @@ for template in "${templates[@]}"; do
   cp -- "${source_dir}/main.tex" "${work_dir}/main.tex"
   cp -- "${source_dir}/refs.bib" "${work_dir}/refs.bib"
 
-  case "${template}" in
-    note|longform)
-      [[ -f "${shared_macros}" ]] || die "shared macros file not found: ${shared_macros}"
-      {
-        printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
-        cat -- "${template_preamble}"
-        printf '\n\n'
-        cat -- "${shared_macros}"
-      } > "${work_dir}/preamble.tex"
-      ;;
-    exercises|beamer)
-      {
-        printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
-        cat -- "${template_preamble}"
-      } > "${work_dir}/preamble.tex"
-      ;;
-  esac
+  {
+    printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
+    cat -- "${template_preamble}"
+  } > "${work_dir}/preamble.tex"
 
   printf 'Building %s example...\n' "${template}"
 
