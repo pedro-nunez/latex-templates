@@ -25,3 +25,15 @@
 \usefonttheme{serif}
 \usetheme{Singapore}
 \usecolortheme{rose}
+
+% Draft notes.
+\newif\ifshowdraftnotes
+\showdraftnotesfalse
+
+\newcommand{\draftnote}[1]{%
+  \ifshowdraftnotes
+    \par\smallskip
+    \noindent{\color{red}\textbf{Draft note.} #1}%
+    \par\smallskip
+  \fi
+}

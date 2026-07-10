@@ -109,3 +109,29 @@
 \Crefname{enumii}{Item}{Items}
 \crefname{enumiii}{item}{items}
 \Crefname{enumiii}{Item}{Items}
+
+% Draft notes.
+\newif\ifshowdraftnotes
+\showdraftnotesfalse
+
+\newcommand{\draftnote}[1]{%
+  \ifshowdraftnotes
+    \par\smallskip
+    \noindent{\color{red}\textbf{Draft note.} #1}%
+    \par\smallskip
+  \fi
+}
+
+% Author comments.
+\newif\ifshowcomments
+\showcommentsfalse
+
+\makeatletter
+\newcommand{\newauthorcomment}[3]{%
+  \expandafter\newcommand\csname #1\endcsname[1]{%
+    \ifshowcomments
+      {\textcolor{#3}{\textbf{#2:} ##1}}%
+    \fi
+  }%
+}
+\makeatother
