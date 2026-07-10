@@ -135,6 +135,25 @@ scripts/build-examples --clean
 The PDFs in `examples/pdf/` are intentionally versioned so that visitors can
 inspect the templates without compiling them locally.
 
+## Bibliographies and local builds
+
+The templates use `biblatex` with the `biber` backend. A full local build
+therefore requires a LaTeX installation with `latexmk`, `biber`, and the
+packages used by the selected template.
+
+A typical build command inside a generated project is:
+
+```bash
+latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+```
+
+The first build may run LaTeX, then `biber`, then LaTeX again. This is normal.
+
+On systems where `biber` is not available, documents without citations may
+still compile, but bibliographies and citation labels will not be resolved
+properly. In that case, build the document on a machine with a complete LaTeX
+installation.
+
 ## About the templates
 
 ### Predefined theorems
