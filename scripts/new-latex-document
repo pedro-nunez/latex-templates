@@ -264,7 +264,7 @@ if [[ "${use_lean}" -eq 1 ]]; then
   cp -- "${lean_listing}" "${target_dir}/lstlean.tex"
 fi
 {
-  printf '%% Preamble generated from a template; edit as needed.\n\n'
+  printf '%% Preamble generated from a template; edit as needed.'
   for preamble_file in "${preamble_files[@]}"; do
     printf '\n\n'
     cat -- "${preamble_file}"
