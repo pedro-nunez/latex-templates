@@ -37,8 +37,8 @@ Author comments are hidden by default.
 
 ## Available scripts
 
-- `new-latex-document': to create new LaTeX documents from the templates with local Git repository and optional GitHub repository.
-- `build-examples': to generate showcase example PDFs.
+- `new-latex-document`: to create new LaTeX documents from the templates with local Git repository and optional GitHub repository.
+- `build-examples`: to generate showcase example PDFs.
 
 ### System requirements
 
@@ -193,6 +193,6 @@ scripts/build-examples note
 
 ## AI disclaimer
 
-I have used AI's assistance to update the code of this repository.
+AI's assistance has been used to update the code in this repository.
 Every line of code suggested by AI used in the code of this repository
 was carefully reviewed by a human.
