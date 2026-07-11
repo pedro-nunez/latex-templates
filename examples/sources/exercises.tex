@@ -1,0 +1,70 @@
+\documentclass[12pt,a4paper]{article}
+
+\input{preamble}
+
+\course{Algebra I}
+\sheetnumber{3}
+\lecturer{Lecturer}
+\duedate{15 October 2026}
+
+\showdraftnotestrue
+
+\begin{document}
+
+\makesheetheader
+
+\begin{exercise}
+  \label{exercise:basic}
+  Let \(V\) be a finite-dimensional vector space.
+  \begin{enumerate}
+    \item Define a canonical map \(V \to V^{\vee\vee}\).
+      \label{item:dual-dual-map}
+    \item Prove that this map is an isomorphism.
+      \label{item:dual-dual-isomorphism}
+  \end{enumerate}
+\end{exercise}
+
+\showsolutionstrue
+\begin{solution}
+  For \(v \in V\), define
+  \[
+    \Phi(v) \colon V^\vee \to k,
+    \qquad
+    \Phi(v)(\lambda)=\lambda(v).
+  \]
+  This gives a linear map \(\Phi \colon V \to V^{\vee\vee}\), which is the map
+  asked for in \Cref{item:dual-dual-map}. After choosing a basis of \(V\), the
+  map \(\Phi\) is identified with the usual identification of a finite-dimensional
+  vector space with its double dual. Hence \(\Phi\) is an isomorphism, proving
+  \Cref{item:dual-dual-isomorphism}.
+\end{solution}
+\showsolutionsfalse
+
+\draftnote{Hide the previous solution in the future.}
+
+\begin{exercise}
+  \label{exercise:exact-sequence}
+  Let
+  \[
+    0 \to A^{\vee} \to B^{\vee} \to C^{\vee} \to 0
+  \]
+  be a short exact sequence of finite-dimensional vector spaces. Use
+  \Cref{item:dual-dual-isomorphism} of \Cref{exercise:basic} to describe the
+  dual exact sequence.
+\end{exercise}
+
+\begin{solution}
+  Dualizing gives an exact sequence
+  \[
+    0 \to C^{\vee\vee} \to B^{\vee\vee} \to A^{\vee\vee} \to 0.
+  \]
+  The finite-dimensionality assumption allows us to identify each vector space
+  with its double dual, using \Cref{item:dual-dual-isomorphism} of
+  \Cref{exercise:basic}.
+  So we obtain a short exact sequence
+  \[
+    0 \to C \to B \to A \to 0.
+  \]
+\end{solution}
+
+\end{document}

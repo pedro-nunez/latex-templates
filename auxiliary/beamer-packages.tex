@@ -1,9 +1,8 @@
-% Common preamble for Beamer presentations.
-
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[british]{babel}
 \usepackage{csquotes}
+\usepackage{utfsym}
 
 \usepackage{mathtools}
 
@@ -19,21 +18,3 @@
   maxnames=10,
   maxalphanames=10]{biblatex}
 \addbibresource{refs.bib}
-
-\urlstyle{same}
-
-\usefonttheme{serif}
-\usetheme{Singapore}
-\usecolortheme{rose}
-
-% Draft notes.
-\newif\ifshowdraftnotes
-\showdraftnotesfalse
-
-\newcommand{\draftnote}[1]{%
-  \ifshowdraftnotes
-    \par\smallskip
-    \noindent{\color{red}\textbf{Draft note.} #1}%
-    \par\smallskip
-  \fi
-}

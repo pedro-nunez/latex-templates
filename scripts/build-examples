@@ -4,7 +4,7 @@ set -euo pipefail
 usage() {
   cat <<'USAGE'
 Usage:
-  build-examples [TEMPLATE] [--clean]
+  build-examples [TEMPLATE] [OPTIONS]
 
 Templates:
   note
@@ -13,7 +13,6 @@ Templates:
   longform
 
 Options:
-  --clean       Remove generated example build products.
   -h, --help    Show this help message.
 
 With no TEMPLATE, all examples are selected.
@@ -52,12 +51,8 @@ repo_dir=$(
   pwd
 )
 
-selected_template=""
-clean=0
-
-if [[ $# -eq 0 ]]; then
-  selected_template="all"
-fi
+# Build all examples by default
+selected_template="all"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -65,15 +60,11 @@ while [[ $# -gt 0 ]]; do
       usage
       exit 0
       ;;
-    --clean)
-      clean=1
-      shift
-      ;;
-    --*)
+    -*)
       die "unknown option: $1"
       ;;
     note|exercises|beamer|longform)
-      if [[ -n "${selected_template}" && "${selected_template}" != "all" ]]; then
+      if [[ "${selected_template}" != "all" ]]; then
         die "unexpected extra template: $1"
       fi
       selected_template="$1"
@@ -85,10 +76,6 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z "${selected_template}" ]]; then
-  selected_template="all"
-fi
-
 case "${selected_template}" in
   all)
     templates=(note exercises beamer longform)
@@ -97,56 +84,92 @@ case "${selected_template}" in
     templates=("${selected_template}")
     ;;
   *)
+    # Defensive check; this error cannot currently occur
     die "internal error: invalid template selection '${selected_template}'"
     ;;
 esac
 
 command -v latexmk >/dev/null 2>&1 || die "latexmk not found"
 
-build_root="${repo_dir}/examples/build"
+source_dir="${repo_dir}/examples/sources"
+auxiliary_dir="${repo_dir}/auxiliary"
 pdf_dir="${repo_dir}/examples/pdf"
+mkdir -p -- "${pdf_dir}"
 
-if [[ "${clean}" -eq 1 ]]; then
-  rm -rf -- "${build_root}"
-  for template in "${templates[@]}"; do
-    rm -f -- "${pdf_dir}/${template}.pdf"
-  done
-  exit 0
-fi
-
-mkdir -p -- "${build_root}" "${pdf_dir}"
+# Prevent old PDF from surviving a failed build
+for template in "${templates[@]}"; do
+  rm -f -- "${pdf_dir}/${template}.pdf"
+done
 
 for template in "${templates[@]}"; do
-  source_dir="${repo_dir}/examples/sources/${template}"
-  template_preamble="${repo_dir}/common/${template}-preamble.tex"
-  work_dir="${build_root}/${template}"
+  case "${template}" in
+    beamer)
+      preamble_files=(
+	"${auxiliary_dir}/beamer-packages.tex"
+	"${auxiliary_dir}/beamer-theme.tex"
+	"${auxiliary_dir}/draft-notes.tex"
+      )
+      ;;
+    exercises)
+      preamble_files=(
+	"${auxiliary_dir}/exercises-packages.tex"
+	"${auxiliary_dir}/exercises-preamble.tex"
+	"${auxiliary_dir}/draft-notes.tex"
+      )
+      ;;
+    longform)
+      preamble_files=(
+	"${auxiliary_dir}/standard-packages.tex"
+	"${auxiliary_dir}/standard-theorems.tex"
+	"${auxiliary_dir}/draft-notes.tex"
+	"${auxiliary_dir}/author-comments.tex"
+      )
+      ;;
+    note)
+      preamble_files=(
+	"${auxiliary_dir}/standard-packages.tex"
+	"${auxiliary_dir}/standard-theorems.tex"
+	"${auxiliary_dir}/draft-notes.tex"
+	"${auxiliary_dir}/author-comments.tex"
+      )
+      ;;
+  esac
+  
+  build_root="${repo_dir}/examples/build"
+  build_dir="${build_root}/${template}"
+
+  # Remove build folder which may remain from a failed build
+  rm -rf -- "${build_dir}"
+  mkdir -p -- "${build_dir}"
 
   [[ -d "${source_dir}" ]] || die "example source directory not found: ${source_dir}"
-  [[ -f "${source_dir}/main.tex" ]] || die "example source not found: ${source_dir}/main.tex"
+  [[ -f "${source_dir}/${template}.tex" ]] || die "example source not found: ${source_dir}/${template}.tex"
   [[ -f "${source_dir}/refs.bib" ]] || die "example bibliography not found: ${source_dir}/refs.bib"
-  [[ -f "${template_preamble}" ]] || die "template preamble not found: ${template_preamble}"
+  for preamble_file in "${preamble_files[@]}"; do
+    [[ -f "${preamble_file}" ]] || die "preamble file not found: ${preamble_file}"
+  done
 
-  rm -rf -- "${work_dir}"
-  mkdir -p -- "${work_dir}"
-
-  cp -- "${source_dir}/main.tex" "${work_dir}/main.tex"
-  cp -- "${source_dir}/refs.bib" "${work_dir}/refs.bib"
-
+  cp -- "${source_dir}/${template}.tex" "${build_dir}/main.tex"
+  cp -- "${source_dir}/refs.bib" "${build_dir}/refs.bib"
   {
-    printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
-    cat -- "${template_preamble}"
-  } > "${work_dir}/preamble.tex"
+    printf '%% Preamble generated from a template; edit as needed.\n\n'
+    for preamble_file in "${preamble_files[@]}"; do
+      printf '\n\n'
+      cat -- "${preamble_file}"
+    done
+  } > "${build_dir}/preamble.tex"
 
   printf 'Building %s example...\n' "${template}"
 
   (
-    cd "${work_dir}"
+    cd "${build_dir}"
     latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
   )
 
-  cp -- "${work_dir}/main.pdf" "${pdf_dir}/${template}.pdf"
-  rm -rf -- "${work_dir}"
-  rmdir -- "${build_root}" 2>/dev/null || true
+  cp -- "${build_dir}/main.pdf" "${pdf_dir}/${template}.pdf"
+  rm -rf -- "${build_dir}"
 
   printf 'Wrote %s\n' "${pdf_dir}/${template}.pdf"
 done
+
+rm -rf -- "${build_root}"

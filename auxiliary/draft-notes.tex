@@ -1,0 +1,9 @@
+% Draft notes.
+\newif\ifshowdraftnotes
+\showdraftnotesfalse
+
+\newcommand{\draftnote}[1]{%
+  \ifshowdraftnotes
+    \noindent{\color{red}\usym{26A0} #1}%
+  \fi
+}

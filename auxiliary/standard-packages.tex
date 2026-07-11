@@ -1,0 +1,48 @@
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[british]{babel}
+\usepackage{csquotes}
+\usepackage{utfsym}
+
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  left=25mm,
+  right=25mm,
+  top=25mm,
+  bottom=30mm
+}
+
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath}
+\usepackage[mathscr]{euscript}
+
+\usepackage{enumitem}
+\usepackage{tikz-cd}
+\usepackage{comment}
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  maxnames=10,
+  maxalphanames=10]{biblatex}
+\addbibresource{refs.bib}
+
+\usepackage{xcolor}
+\definecolor{LinkBlue}{RGB}{0,70,140}
+\definecolor{CitationGreen}{RGB}{0,100,70}
+\definecolor{UrlPurple}{RGB}{90,50,130}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=LinkBlue,
+  citecolor=CitationGreen,
+  urlcolor=UrlPurple
+}
+\urlstyle{same}
+
+\usepackage[noabbrev]{cleveref}

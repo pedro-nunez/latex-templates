@@ -1,0 +1,61 @@
+% Exercise sheet metadata
+\newcounter{sheet}
+\setcounter{sheet}{1}
+
+\newcommand{\sheetcourse}{Course}
+\newcommand{\sheetlecturer}{Lecturer}
+\newcommand{\sheetduedate}{Due date}
+
+\newcommand{\course}[1]{\renewcommand{\sheetcourse}{#1}}
+\newcommand{\sheetnumber}[1]{\setcounter{sheet}{#1}}
+\newcommand{\lecturer}[1]{\renewcommand{\sheetlecturer}{#1}}
+\newcommand{\duedate}[1]{\renewcommand{\sheetduedate}{#1}}
+
+\newcommand{\makesheetheader}{%
+  \hypersetup{
+    pdftitle={\sheetcourse\space --- Sheet \arabic{sheet}},
+    pdfauthor={\sheetlecturer}
+  }%
+  \noindent
+  \begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}c r@{}}
+    \textbf{Lecturer:} & \textbf{\sheetcourse} & \textbf{Due date:} \\
+    \sheetlecturer & Sheet \arabic{sheet} & \sheetduedate
+  \end{tabular*}%
+  \par\vspace{0.6em}%
+  \noindent\hrule
+  \vspace{1.2em}%
+}
+
+% Exercise environments
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\renewcommand{\theexercise}{\arabic{sheet}.\arabic{exercise}}
+
+\crefname{exercise}{exercise}{exercises}
+\Crefname{exercise}{Exercise}{Exercises}
+
+% Exercise parts
+\setlist[enumerate,1]{
+  label=(\alph*),
+  ref=(\alph*)
+}
+
+\crefname{enumi}{part}{parts}
+\Crefname{enumi}{Part}{Parts}
+
+% Solutions
+\newif\ifshowsolutions
+\showsolutionsfalse
+
+\NewDocumentEnvironment{solution}{+b}
+  {%
+    \ifshowsolutions
+      \begingroup
+      \renewcommand{\qedsymbol}{$\blacksquare$}%
+      \begin{proof}[Solution]
+        #1
+      \end{proof}
+      \endgroup
+    \fi
+  }
+  {}

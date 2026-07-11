@@ -1,0 +1,119 @@
+\documentclass[12pt,a4paper]{amsart}
+
+\input{preamble}
+
+\title[Example note]{Example note document}
+\author[Author]{Author}
+\date{\today}
+
+\showdraftnotestrue
+\showcommentstrue
+
+\newauthorcomment{alice}{Alice}{blue}
+\newauthorcomment{bob}{Bob}{red}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This short note showcases the note template: theorem-like environments,
+theorem-numbered lists, ordinary enumerated lists, displayed equations,
+commutative diagrams, citations, URLs, and cross-references.
+\end{abstract}
+
+
+\section{Objects and diagrams}
+
+\begin{definition}
+  \label{definition:good-object}
+  A \emph{good object} is an object \(X\) together with a morphism
+  \[
+    \eta_X \colon X \to F(X)
+  \]
+  satisfying the following conditions.
+  \draftnote{A draft note here.}
+  \begin{theoremitems}
+    \item The assignment \(X \mapsto \eta_X\) is functorial in \(X\).
+      \label{item:good-functoriality} 
+    \item The morphism \(\eta_X\) is compatible with base change.
+      \label{item:good-compatibility} 
+  \end{theoremitems}
+\end{definition}
+
+The numbering in \Cref{item:good-functoriality,item:good-compatibility} is
+derived from the surrounding theorem-like environment
+\Cref{definition:good-object}. This is useful for statements with several
+numbered conditions.
+
+\alice{We should add an example here.}
+
+\begin{example}
+  \label{example:diagram}
+  A basic diagrammatic situation is a commutative square
+  \[
+  \begin{tikzcd}
+    X' \arrow[r, "g'"] \arrow[d, "f'"'] & X \arrow[d, "f"] \\
+    Y' \arrow[r, "g"']                  & Y .
+  \end{tikzcd}
+  \]
+  The command \texttt{tikz-cd} is available in this template for diagrams of this
+  kind.
+\end{example}
+
+\bob{I've added the example above.}
+
+\begin{lemma}
+  \label{lemma:base-change}
+  In the situation of \Cref{example:diagram}, suppose that the square is
+  cartesian. Then the compatibility condition in
+  \Cref{item:good-compatibility} can be expressed by the identity
+  \[
+    g^* f_* \simeq f'_* {g'}^* .
+  \]
+\end{lemma}
+
+\begin{proof}
+  This is only a template proof. The displayed formula illustrates a typical
+  mathematical display, while the reference to
+  \Cref{item:good-compatibility} illustrates a theorem-numbered item reference.
+\end{proof}
+
+\section{References and ordinary lists}
+
+The template uses biblatex. For example, one may cite
+Hartshorne's textbook \cite{har77} or the Stacks Project \cite{stacks}.
+
+Ordinary lists remain ordinary. For instance:
+\begin{enumerate}[label=(\alph*), ref=(\alph*)]
+  \item This is a first ordinary item.
+    \label{item:ordinary-first} 
+  \item This is a second ordinary item.
+    \label{item:ordinary-second} 
+\end{enumerate}
+Thus \Cref{item:ordinary-second} is an ordinary item reference, whereas
+\Cref{item:good-compatibility} is a theorem-numbered item reference.
+
+\begin{proposition}
+  \label{proposition:main}
+  Let \(X\) be a good object. If the square in \Cref{example:diagram} is
+  cartesian, then \(X'\) inherits the corresponding compatibility property.
+\end{proposition}
+
+\begin{proof}
+  The assertion follows formally from \Cref{lemma:base-change} and
+  \Cref{item:good-compatibility}.
+  \bob{Maybe we should add more details here.}
+\end{proof}
+
+\begin{remark}
+  \label{remark:links}
+  Hyperlinks can be written using \verb|\href|. For example, the template
+  repository could link to
+  \href{https://www.ctan.org/pkg/tikz-cd}{the tikz-cd package page}.
+  URLs inherit the hyperlink colour configured in the common preamble.
+\end{remark}
+
+\printbibliography
+
+\end{document}

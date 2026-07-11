@@ -27,7 +27,7 @@ Project names:
   such names deliberately to keep generated projects portable.
 
 Options:
-  --lean        Include Lean code-listing support.
+  --lean         Include Lean code-listing support.
   --no-git       Do not initialize a local Git repository.
   --no-github    Do not create a GitHub repository. This is the default for now.
   --github       Create a GitHub repository after local project creation.
@@ -134,7 +134,7 @@ while [[ $# -gt 0 ]]; do
       github_visibility_was_set=1
       shift
       ;;
-    --*)
+    -*)
       die "unknown option: $1"
       ;;
     *)
@@ -173,22 +173,61 @@ if [[ "${github_visibility_was_set}" -eq 1 && "${use_github}" -eq 0 ]]; then
   warn "--${github_visibility} was passed, but --github was not passed; GitHub visibility will be ignored."
 fi
 
-template_dir="${repo_dir}/templates/${template}"
-template_main="${template_dir}/main.tex"
-template_refs="${template_dir}/refs.bib"
-template_preamble="${repo_dir}/common/${template}-preamble.tex"
-project_gitignore="${repo_dir}/common/project-gitignore"
-lean_preamble="${repo_dir}/common/lean-preamble.tex"
-lean_listing="${repo_dir}/common/lstlean.tex"
+template_dir="${repo_dir}/templates"
+auxiliary_dir="${repo_dir}/auxiliary"
+
+template_main="${template_dir}/${template}.tex"
+template_refs="${auxiliary_dir}/refs.bib"
+project_gitignore="${auxiliary_dir}/gitignore"
+lean_listing="${auxiliary_dir}/lstlean.tex"
 target_dir="${PWD}/${project_name}"
+
+case "${template}" in
+  beamer)
+    preamble_files=(
+      "${auxiliary_dir}/beamer-packages.tex"
+      "${auxiliary_dir}/beamer-theme.tex"
+      "${auxiliary_dir}/draft-notes.tex"
+    )
+    ;;
+  exercises)
+    preamble_files=(
+      "${auxiliary_dir}/exercises-packages.tex"
+      "${auxiliary_dir}/exercises-preamble.tex"
+      "${auxiliary_dir}/draft-notes.tex"
+    )
+    ;;
+  longform)
+    preamble_files=(
+      "${auxiliary_dir}/standard-packages.tex"
+      "${auxiliary_dir}/standard-theorems.tex"
+      "${auxiliary_dir}/draft-notes.tex"
+      "${auxiliary_dir}/author-comments.tex"
+    )
+    ;;
+  note)
+    preamble_files=(
+      "${auxiliary_dir}/standard-packages.tex"
+      "${auxiliary_dir}/standard-theorems.tex"
+      "${auxiliary_dir}/draft-notes.tex"
+      "${auxiliary_dir}/author-comments.tex"
+    )
+    ;;
+esac
+
+if [[ "${use_lean}" -eq 1 ]]; then
+  preamble_files+=( "${auxiliary_dir}/lean-preamble.tex" )
+fi
 
 [[ -d "${template_dir}" ]] || die "template directory not found: ${template_dir}"
 [[ -f "${template_main}" ]] || die "template main file not found: ${template_main}"
 [[ -f "${template_refs}" ]] || die "template bibliography file not found: ${template_refs}"
-[[ -f "${template_preamble}" ]] || die "template preamble file not found: ${template_preamble}"
 [[ -f "${project_gitignore}" ]] || die "project gitignore file not found: ${project_gitignore}"
+for preamble_file in "${preamble_files[@]}"; do
+  [[ -f "${preamble_file}" ]] || die "preamble file not found: ${preamble_file}"
+done
+
 if [[ "${use_lean}" -eq 1 ]]; then
-  [[ -f "${lean_preamble}" ]] || die "Lean preamble file not found: ${lean_preamble}"
   [[ -f "${lean_listing}" ]] || die "Lean listing file not found: ${lean_listing}"
 fi
 
@@ -199,8 +238,16 @@ fi
 
 if [[ "${use_github}" -eq 1 ]]; then
   [[ "${use_git}" -eq 1 ]] || die "--github requires local Git; remove --no-git or omit --github"
+  
   command -v gh >/dev/null 2>&1 || die "GitHub CLI 'gh' not found; install gh or omit --github"
+  
   gh auth status >/dev/null 2>&1 || die "GitHub CLI is not authenticated; run 'gh auth login' or omit --github"
+  
+  github_owner=$(gh api user --jq '.login')
+
+  if gh repo view "${github_owner}/${project_name}" >/dev/null 2>&1; then
+    die "GitHub repository already exists: ${github_owner}/${project_name}"
+  fi
 fi
 
 if [[ -e "${target_dir}" ]]; then
@@ -216,23 +263,24 @@ cp -- "${project_gitignore}" "${target_dir}/.gitignore"
 if [[ "${use_lean}" -eq 1 ]]; then
   cp -- "${lean_listing}" "${target_dir}/lstlean.tex"
 fi
-
 {
-  printf '%% Generated from a LaTeX document template; edit as needed.\n\n'
-  cat -- "${template_preamble}"
-} > "${target_dir}/preamble.tex"
-
-if [[ "${use_lean}" -eq 1 ]]; then
-  {
+  printf '%% Preamble generated from a template; edit as needed.\n\n'
+  for preamble_file in "${preamble_files[@]}"; do
     printf '\n\n'
-    cat -- "${lean_preamble}"
-  } >> "${target_dir}/preamble.tex"
-fi
+    cat -- "${preamble_file}"
+  done
+} > "${target_dir}/preamble.tex"
 
 cat > "${target_dir}/README.md" <<EOF
 # ${project_name}
 
 Short description: TODO
+
+Document created from the LaTeX templates in
+
+<p align="center">
+  <a href="https://github.com/pedro-nunez/latex-templates">https://github.com/pedro-nunez/latex-templates.</a>
+</p>
 
 Document type: ${template}
 
@@ -243,27 +291,10 @@ Document type: ${template}
 - \`refs.bib\`: bibliography database.
 - \`.gitignore\`: ignored LaTeX build products and editor files.
 
-## Build
-
-This project uses \`biblatex\` with the \`biber\` backend.
-
-Compile with:
-
-\`\`\`bash
-latexmk -pdf main.tex
-\`\`\`
-
-Remove auxiliary build files with:
-
-\`\`\`bash
-latexmk -C main.tex
-\`\`\`
-
 ## Notes
 
-The file \`preamble.tex\` is a local copy. Edit it directly if this project
-needs document-specific packages, macros, theorem environments, or layout
-changes.
+The file \`preamble.tex\` is a local copy. Edit it directly if this document
+needs specific packages, macros, theorem environments, or layout changes.
 EOF
 
 if [[ "${use_lean}" -eq 1 ]]; then
@@ -271,7 +302,7 @@ if [[ "${use_lean}" -eq 1 ]]; then
 
 ## Lean code
 
-This project was generated with Lean code-listing support.
+This document was generated with Lean code-listing support.
 
 Use:
 
