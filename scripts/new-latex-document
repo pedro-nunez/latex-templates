@@ -266,7 +266,7 @@ fi
 {
   printf '%% Preamble generated from a template; edit as needed.'
   for preamble_file in "${preamble_files[@]}"; do
-    printf '\n\n'
+    printf '\n'
     cat -- "${preamble_file}"
   done
 } > "${target_dir}/preamble.tex"
