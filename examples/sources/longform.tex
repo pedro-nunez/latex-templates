@@ -1,15 +1,15 @@
-\documentclass[12pt,a4paper]{amsbook}
+\documentclass[12pt,reqno,a4paper]{report}
 
 \input{preamble}
 
-\title[Example longform]{Example longform document}
-\author[Author]{Aurhor}
+\title{Example longform document}
+\author{Author}
 \date{\today}
 
 \showdraftnotestrue
 \showcommentstrue
 
-\newauthorcomment{alice}{Alice}{blue}
+\newauthorcomment{alice}{Alice}{red}
 \newauthorcomment{bob}{Bob}{red}
 
 \begin{document}
@@ -95,9 +95,10 @@ chapter change.
 
 \begin{proof}
   This proof is only illustrative. It also demonstrates a displayed equation:
-  \[
+  \begin{equation}
+    \label{equation:pull-back}
     (f \circ g)^* = g^* \circ f^* .
-  \]
+  \end{equation}
 \end{proof}
 
 \begin{example}

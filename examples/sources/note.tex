@@ -9,7 +9,7 @@
 \showdraftnotestrue
 \showcommentstrue
 
-\newauthorcomment{alice}{Alice}{blue}
+\newauthorcomment{alice}{Alice}{red}
 \newauthorcomment{bob}{Bob}{red}
 
 \begin{document}
@@ -22,6 +22,7 @@ theorem-numbered lists, ordinary enumerated lists, displayed equations,
 commutative diagrams, citations, URLs, and cross-references.
 \end{abstract}
 
+\tableofcontents
 
 \section{Objects and diagrams}
 
@@ -68,9 +69,10 @@ numbered conditions.
   In the situation of \Cref{example:diagram}, suppose that the square is
   cartesian. Then the compatibility condition in
   \Cref{item:good-compatibility} can be expressed by the identity
-  \[
+  \begin{equation}
+    \label{equation:pull-back}
     g^* f_* \simeq f'_* {g'}^* .
-  \]
+  \end{equation}
 \end{lemma}
 
 \begin{proof}

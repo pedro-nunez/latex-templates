@@ -1,5 +1,3 @@
-\numberwithin{equation}{section}
-
 % Theorem-like environments
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
@@ -8,17 +6,18 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{fact}[theorem]{Fact}
-\newtheorem{question}[theorem]{Question}
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{notation}[theorem]{Notation}
-\newtheorem{example}[theorem]{Example}
 \newtheorem{construction}[theorem]{Construction}
+\newtheorem{conjecture}[theorem]{Conjecture}
 \newtheorem{exercise}[theorem]{Exercise}
 
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
 
 % Theorem-numbered enumerated items.
 \newlist{theoremitems}{enumerate}{1}
@@ -30,47 +29,42 @@
 % Cross-reference names
 \crefname{theorem}{theorem}{theorems}
 \Crefname{theorem}{Theorem}{Theorems}
-
 \crefname{lemma}{lemma}{lemmas}
 \Crefname{lemma}{Lemma}{Lemmas}
-
 \crefname{proposition}{proposition}{propositions}
 \Crefname{proposition}{Proposition}{Propositions}
-
 \crefname{corollary}{corollary}{corollaries}
 \Crefname{corollary}{Corollary}{Corollaries}
-
 \crefname{fact}{fact}{facts}
 \Crefname{fact}{Fact}{Facts}
-
-\crefname{question}{question}{questions}
-\Crefname{question}{Question}{Questions}
-
 \crefname{definition}{definition}{definitions}
 \Crefname{definition}{Definition}{Definitions}
-
-\crefname{notation}{notation}{notations}
-\Crefname{notation}{Notation}{Notations}
-
-\crefname{example}{example}{examples}
-\Crefname{example}{Example}{Examples}
-
 \crefname{construction}{construction}{constructions}
 \Crefname{construction}{Construction}{Constructions}
-
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{Conjecture}{Conjecture}{Conjectures}
 \crefname{exercise}{exercise}{exercises}
 \Crefname{exercise}{Exercise}{Exercises}
-
 \crefname{remark}{remark}{remarks}
 \Crefname{remark}{Remark}{Remarks}
-
+\crefname{notation}{notation}{notations}
+\Crefname{notation}{Notation}{Notations}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\crefname{question}{question}{questions}
+\Crefname{question}{Question}{Questions}
 \crefname{theoremitemsi}{item}{items}
 \Crefname{theoremitemsi}{Item}{Items}
 
-% Ordinary enumerated-item references.
-\crefname{enumi}{item}{items}
-\Crefname{enumi}{Item}{Items}
-\crefname{enumii}{item}{items}
-\Crefname{enumii}{Item}{Items}
-\crefname{enumiii}{item}{items}
-\Crefname{enumiii}{Item}{Items}
+% Equation numbering
+\numberwithin{equation}{section}
+
+% Enumeration labels
+\newlist{enumthm}{enumerate}{1}
+\setlist[enumthm]{
+    label=(\thetheorem.\arabic*),
+    ref=\thetheorem.\arabic*,
+    widest=(0.0.0.0),
+    leftmargin=*,
+    align=left
+}
