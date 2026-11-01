@@ -10,7 +10,7 @@ Templates:
     note
     exercises
     beamer
-    longform
+    report
 
 Project names:
     Use a portable directory name containing only letters, numbers, dots,
@@ -154,10 +154,10 @@ done
 [[ -n "${project_name}" ]] || die "missing PROJECT_NAME"
 
 case "${template}" in
-    note|exercises|beamer|longform)
+    note|exercises|beamer|report)
         ;;
     *)
-        die "unknown template '${template}'. Expected one of: note, exercises, beamer, longform"
+        die "unknown template '${template}'. Expected one of: note, exercises, beamer, report"
         ;;
 esac
 
@@ -197,7 +197,7 @@ case "${template}" in
             "${auxiliary_dir}/draft_notes.tex"
         )
         ;;
-    longform)
+    report)
         preamble_files=(
             "${auxiliary_dir}/standard_packages.tex"
             "${auxiliary_dir}/standard_theorems.tex"

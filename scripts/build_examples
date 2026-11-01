@@ -10,7 +10,7 @@ Templates:
     note
     exercises
     beamer
-    longform
+    report
 
 Options:
     -h, --help    Show this help message.
@@ -63,7 +63,7 @@ while [[ $# -gt 0 ]]; do
         -*)
             die "unknown option: $1"
             ;;
-        note|exercises|beamer|longform)
+        note|exercises|beamer|report)
             if [[ "${selected_template}" != "all" ]]; then
                 die "unexpected extra template: $1"
             fi
@@ -71,16 +71,16 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         *)
-            die "unknown template: $1. Expected one of: note, exercises, beamer, longform"
+            die "unknown template: $1. Expected one of: note, exercises, beamer, report"
             ;;
     esac
 done
 
 case "${selected_template}" in
     all)
-        templates=(note exercises beamer longform)
+        templates=(note exercises beamer report)
         ;;
-    note|exercises|beamer|longform)
+    note|exercises|beamer|report)
         templates=("${selected_template}")
         ;;
     *)
@@ -117,7 +117,7 @@ for template in "${templates[@]}"; do
                 "${auxiliary_dir}/draft_notes.tex"
             )
             ;;
-        longform)
+        report)
             preamble_files=(
                 "${auxiliary_dir}/standard_packages.tex"
                 "${auxiliary_dir}/standard_theorems.tex"

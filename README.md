@@ -7,7 +7,7 @@ CLI tool to quickly create new LaTeX documents from templates.
 - `note`: ordinary mathematical notes, short scripts, blurbs, and expository notes.
 - `exercises`: exercise sheets, currently with solutions hidden by default.
 - `beamer`: presentations.
-- `longform`: lecture notes and book-length projects.
+- `report`: lecture notes and book-length projects.
 
 ### Draft notes and author comments
 
@@ -21,7 +21,7 @@ All templates support draft notes:
 
 Draft notes are hidden by default.
 
-The `note` and `longform` templates also support named author comments:
+The `note` and `report` templates also support named author comments:
 
 ```latex
 \showcommentstrue
@@ -165,7 +165,7 @@ each template.
 - [Note example](examples/pdf/note.pdf)
 - [Exercises example](examples/pdf/exercises.pdf)
 - [Beamer example](examples/pdf/beamer.pdf)
-- [Longform example](examples/pdf/longform.pdf)
+- [Report example](examples/pdf/report.pdf)
 
 The example sources are in:
 
