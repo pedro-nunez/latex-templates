@@ -37,8 +37,8 @@ Author comments are hidden by default.
 
 ## Available scripts
 
-- `new-latex-document`: to create new LaTeX documents from the templates with local Git repository and optional GitHub repository.
-- `build-examples`: to generate showcase example PDFs.
+- `new_latex_document`: to create new LaTeX documents from the templates with local Git repository and optional GitHub repository.
+- `build_examples`: to generate showcase example PDFs.
 
 ### System requirements
 
@@ -56,7 +56,7 @@ Requirements for the GitHub integration:
 
 ### Create new documents from templates
 
-The recommended way to create a new document is the `new-latex-document`
+The recommended way to create a new document is the `new_latex_document`
 command. The workflow is local-first: it creates a project from the local copy
 of this template repository and does not contact GitHub unless explicitly asked
 to do so.
@@ -64,7 +64,7 @@ to do so.
 For example, create a local note project with:
 
 ```bash
-new-latex-document note my-project
+new_latex_document note my-project
 ```
 
 This creates a directory `my-project` in the current working directory, copies
@@ -74,7 +74,7 @@ initial commit.
 To create the project without initializing Git, use:
 
 ```bash
-new-latex-document note my-project --no-git
+new_latex_document note my-project --no-git
 ```
 
 GitHub repository creation is optional and is never attempted unless `--github`
@@ -82,13 +82,13 @@ is explicitly passed. When GitHub creation is requested, private repositories
 are the default:
 
 ```bash
-new-latex-document note my-project --github
+new_latex_document note my-project --github
 ```
 
 To create a public GitHub repository, use:
 
 ```bash
-new-latex-document note my-project --github --public
+new_latex_document note my-project --github --public
 ```
 
 The project name should contain only letters,
@@ -99,7 +99,7 @@ numbers, dots, underscores, and hyphens.
 All templates can be generated with optional Lean code-listing support:
 
 ```bash
-new-latex-document exercises my-sheet --lean
+new_latex_document exercises my-sheet --lean
 ```
 
 This adds a `leancode` environment and copies the local Lean listings definition
@@ -123,7 +123,7 @@ From the root of this repository, run:
 
 ```bash
 mkdir -p "${HOME}/.local/bin"
-ln -s "$(pwd)/scripts/new-latex-document" "${HOME}/.local/bin/new-latex-document"
+ln -s "$(pwd)/scripts/new_latex_document" "${HOME}/.local/bin/new_latex_document"
 ```
 
 If you prefer a shorter name for the command, you can also run the following
@@ -131,19 +131,19 @@ instead:
 
 ```bash
 mkdir -p "${HOME}/.local/bin"
-ln -s "$(pwd)/scripts/new-latex-document" "${HOME}/.local/bin/new"
+ln -s "$(pwd)/scripts/new_latex_document" "${HOME}/.local/bin/new"
 ```
 
 Check that the command is available:
 
 ```bash
-command -v new-latex-document
+command -v new_latex_document
 ```
 
 The expected output is something like:
 
 ```text
-/home/USER/.local/bin/new-latex-document
+/home/USER/.local/bin/new_latex_document
 ```
 
 If the command is not found, check that `~/.local/bin` is in your `PATH`.
@@ -151,7 +151,7 @@ If the command is not found, check that `~/.local/bin` is in your `PATH`.
 To uninstall the command, remove the symlink:
 
 ```bash
-rm "${HOME}/.local/bin/new-latex-document"
+rm "${HOME}/.local/bin/new_latex_document"
 ```
 
 The symlink installation is easy to undo and keeps the command updated when the
@@ -182,13 +182,13 @@ examples/pdf/
 Regenerate all showcase PDFs with:
 
 ```bash
-scripts/build-examples
+scripts/build_examples
 ```
 
 To regenerate a single showcase PDF, say note, use:
 
 ```bash
-scripts/build-examples note
+scripts/build_examples note
 ```
 
 ## AI disclaimer
