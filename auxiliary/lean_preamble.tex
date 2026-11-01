@@ -1,10 +1,10 @@
-% Optional Lean code-listing support.
+% Optional Lean code-listing support
 
 \usepackage{listings}
 \usepackage{tcolorbox}
 \tcbuselibrary{listings}
 
-% Colours loosely matching a light Lean/editor theme.
+% Colours loosely matching a light Lean/editor theme
 \definecolor{keywordcolor}{rgb}{0.0, 0.0, 1.0}
 \definecolor{tacticcolor}{rgb}{0.0, 0.0, 1.0}
 \definecolor{commentcolor}{rgb}{0.0, 0.5, 0.0}
@@ -16,21 +16,21 @@
 \def\lstlanguagefiles{lstlean.tex}
 
 \newtcblisting{leancode}{
-  listing only,
-  listing options={
-    language=lean,
-    emph={sorry},
-    emphstyle=\color{red},
-    basicstyle=\ttfamily\footnotesize
-  },
-  colback=codebg,
-  colframe=codebg,
-  boxrule=0pt,
-  arc=3mm,
-  auto outer arc,
-  top=10pt,
-  bottom=10pt,
-  left=5pt,
-  right=5pt,
-  width=\textwidth,
+    listing only,
+    listing options={
+        language=lean,
+        emph={sorry},
+        emphstyle=\color{red},
+        basicstyle=\ttfamily\footnotesize
+    },
+    colback=codebg,
+    colframe=codebg,
+    boxrule=0pt,
+    arc=3mm,
+    auto outer arc,
+    top=10pt,
+    bottom=10pt,
+    left=5pt,
+    right=5pt,
+    width=\textwidth,
 }

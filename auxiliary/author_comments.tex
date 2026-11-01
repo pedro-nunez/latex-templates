@@ -1,11 +1,11 @@
-% Author comments.
+% Author comments
 \newif\ifshowcomments
 \showcommentsfalse
 
 \newcommand{\newauthorcomment}[3]{%
-  \expandafter\newcommand\csname #1\endcsname[1]{%
-    \ifshowcomments
-      \noindent{\textcolor{#3}{\textbf{#2:} ##1}}%
-    \fi
-  }%
+    \expandafter\newcommand\csname #1\endcsname[1]{%
+        \ifshowcomments
+            \noindent{\textcolor{#3}{\textbf{#2:} ##1}}%
+        \fi
+    }%
 }

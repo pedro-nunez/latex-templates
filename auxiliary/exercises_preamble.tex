@@ -12,18 +12,18 @@
 \newcommand{\duedate}[1]{\renewcommand{\sheetduedate}{#1}}
 
 \newcommand{\makesheetheader}{%
-  \hypersetup{
-    pdftitle={\sheetcourse\space --- Sheet \arabic{sheet}},
-    pdfauthor={\sheetlecturer}
-  }%
-  \noindent
-  \begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}c r@{}}
-    \textbf{Lecturer:} & \textbf{\sheetcourse} & \textbf{Due date:} \\
-    \sheetlecturer & Sheet \arabic{sheet} & \sheetduedate
-  \end{tabular*}%
-  \par\vspace{0.6em}%
-  \noindent\hrule
-  \vspace{1.2em}%
+    \hypersetup{
+        pdftitle={\sheetcourse\space --- Sheet \arabic{sheet}},
+        pdfauthor={\sheetlecturer}
+    }%
+    \noindent
+    \begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}c r@{}}
+        \textbf{Lecturer:} & \textbf{\sheetcourse} & \textbf{Due date:} \\
+        \sheetlecturer & Sheet \arabic{sheet} & \sheetduedate
+    \end{tabular*}%
+    \par\vspace{0.6em}%
+    \noindent\hrule
+    \vspace{1.2em}%
 }
 
 % Exercise environments
@@ -36,8 +36,8 @@
 
 % Exercise parts
 \setlist[enumerate,1]{
-  label=(\alph*),
-  ref=(\alph*)
+    label=(\alph*),
+    ref=(\alph*)
 }
 
 \crefname{enumi}{part}{parts}
@@ -48,14 +48,14 @@
 \showsolutionsfalse
 
 \NewDocumentEnvironment{solution}{+b}
-  {%
+{%
     \ifshowsolutions
-      \begingroup
-      \renewcommand{\qedsymbol}{$\blacksquare$}%
-      \begin{proof}[Solution]
-        #1
-      \end{proof}
-      \endgroup
+        \begingroup
+            \renewcommand{\qedsymbol}{$\blacksquare$}%
+            \begin{proof}[Solution]
+                #1
+            \end{proof}
+        \endgroup
     \fi
-  }
-  {}
+}
+{}
