@@ -110,7 +110,7 @@ Example usage:
 ```latex
 \begin{leancode}
 example : True := by
-  trivial
+    trivial
 \end{leancode}
 ```
 
