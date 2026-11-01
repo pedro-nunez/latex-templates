@@ -91,9 +91,9 @@ esac
 
 command -v latexmk >/dev/null 2>&1 || die "latexmk not found"
 
-source_dir="${repo_dir}/examples/sources"
-auxiliary_dir="${repo_dir}/auxiliary"
-pdf_dir="${repo_dir}/examples/pdf"
+source_dir="${repo_dir}/sources/examples"
+preamble_dir="${repo_dir}/sources/preambles"
+pdf_dir="${repo_dir}/examples"
 mkdir -p -- "${pdf_dir}"
 
 # Prevent old PDF from surviving a failed build
@@ -105,37 +105,37 @@ for template in "${templates[@]}"; do
     case "${template}" in
         beamer)
             preamble_files=(
-                "${auxiliary_dir}/beamer_packages.tex"
-                "${auxiliary_dir}/beamer_theme.tex"
-                "${auxiliary_dir}/todo.tex"
+                "${preamble_dir}/beamer_packages.tex"
+                "${preamble_dir}/beamer_theme.tex"
+                "${preamble_dir}/todo.tex"
             )
             ;;
         exercises)
             preamble_files=(
-                "${auxiliary_dir}/exercises_packages.tex"
-                "${auxiliary_dir}/exercises_preamble.tex"
-                "${auxiliary_dir}/todo.tex"
+                "${preamble_dir}/exercises_packages.tex"
+                "${preamble_dir}/exercises_preamble.tex"
+                "${preamble_dir}/todo.tex"
             )
             ;;
         report)
             preamble_files=(
-                "${auxiliary_dir}/standard_packages.tex"
-                "${auxiliary_dir}/standard_theorems.tex"
-                "${auxiliary_dir}/todo.tex"
-                "${auxiliary_dir}/author_comments.tex"
+                "${preamble_dir}/standard_packages.tex"
+                "${preamble_dir}/standard_theorems.tex"
+                "${preamble_dir}/todo.tex"
+                "${preamble_dir}/author_comments.tex"
             )
             ;;
         note)
             preamble_files=(
-                "${auxiliary_dir}/standard_packages.tex"
-                "${auxiliary_dir}/standard_theorems.tex"
-                "${auxiliary_dir}/todo.tex"
-                "${auxiliary_dir}/author_comments.tex"
+                "${preamble_dir}/standard_packages.tex"
+                "${preamble_dir}/standard_theorems.tex"
+                "${preamble_dir}/todo.tex"
+                "${preamble_dir}/author_comments.tex"
             )
             ;;
     esac
 
-    build_root="${repo_dir}/examples/build"
+    build_root="${repo_dir}/build/examples"
     build_dir="${build_root}/${template}"
 
   # Remove build folder which may remain from a failed build

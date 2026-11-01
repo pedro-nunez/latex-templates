@@ -173,8 +173,9 @@ if [[ "${github_visibility_was_set}" -eq 1 && "${use_github}" -eq 0 ]]; then
     warn "--${github_visibility} was passed, but --github was not passed; GitHub visibility will be ignored."
 fi
 
-template_dir="${repo_dir}/templates"
-auxiliary_dir="${repo_dir}/auxiliary"
+template_dir="${repo_dir}/sources/skeletons"
+preamble_dir="${repo_dir}/sources/preambles"
+auxiliary_dir="${repo_dir}/sources/auxiliary"
 
 template_main="${template_dir}/${template}.tex"
 template_refs="${auxiliary_dir}/refs.bib"
@@ -185,38 +186,38 @@ target_dir="${PWD}/${project_name}"
 case "${template}" in
     beamer)
         preamble_files=(
-            "${auxiliary_dir}/beamer_packages.tex"
-            "${auxiliary_dir}/beamer_theme.tex"
-            "${auxiliary_dir}/todo.tex"
+            "${preamble_dir}/beamer_packages.tex"
+            "${preamble_dir}/beamer_theme.tex"
+            "${preamble_dir}/todo.tex"
         )
         ;;
     exercises)
         preamble_files=(
-            "${auxiliary_dir}/exercises_packages.tex"
-            "${auxiliary_dir}/exercises_preamble.tex"
-            "${auxiliary_dir}/todo.tex"
+            "${preamble_dir}/exercises_packages.tex"
+            "${preamble_dir}/exercises_preamble.tex"
+            "${preamble_dir}/todo.tex"
         )
         ;;
     report)
         preamble_files=(
-            "${auxiliary_dir}/standard_packages.tex"
-            "${auxiliary_dir}/standard_theorems.tex"
-            "${auxiliary_dir}/todo.tex"
-            "${auxiliary_dir}/author_comments.tex"
+            "${preamble_dir}/standard_packages.tex"
+            "${preamble_dir}/standard_theorems.tex"
+            "${preamble_dir}/todo.tex"
+            "${preamble_dir}/author_comments.tex"
         )
         ;;
     note)
         preamble_files=(
-            "${auxiliary_dir}/standard_packages.tex"
-            "${auxiliary_dir}/standard_theorems.tex"
-            "${auxiliary_dir}/todo.tex"
-            "${auxiliary_dir}/author_comments.tex"
+            "${preamble_dir}/standard_packages.tex"
+            "${preamble_dir}/standard_theorems.tex"
+            "${preamble_dir}/todo.tex"
+            "${preamble_dir}/author_comments.tex"
         )
         ;;
 esac
 
 if [[ "${use_lean}" -eq 1 ]]; then
-    preamble_files+=( "${auxiliary_dir}/lean_preamble.tex" )
+    preamble_files+=( "${preamble_dir}/lean_preamble.tex" )
 fi
 
 [[ -d "${template_dir}" ]] || die "template directory not found: ${template_dir}"
