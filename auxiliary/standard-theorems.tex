@@ -19,12 +19,16 @@
 \newtheorem{example}[theorem]{Example}
 \newtheorem{question}[theorem]{Question}
 
-% Theorem-numbered enumerated items.
+% Alphabetic theorem items with ordinary enumerate indentation
+% Printed labels: (a), (b), ...; references: 1.2.3(a), 1.2.3(b), ...
 \newlist{theoremitems}{enumerate}{1}
 \setlist[theoremitems,1]{
-  label=(\thetheorem.\arabic*),
-  ref=(\thetheorem.\arabic*)
+  label=(\alph*),
+  ref=\thetheorem(\alph*)
 }
+
+% Equation numbering
+\numberwithin{equation}{section}
 
 % Cross-reference names
 \crefname{theorem}{theorem}{theorems}
@@ -56,15 +60,3 @@
 \crefname{theoremitemsi}{item}{items}
 \Crefname{theoremitemsi}{Item}{Items}
 
-% Equation numbering
-\numberwithin{equation}{section}
-
-% Enumeration labels
-\newlist{enumthm}{enumerate}{1}
-\setlist[enumthm]{
-    label=(\thetheorem.\arabic*),
-    ref=\thetheorem.\arabic*,
-    widest=(0.0.0.0),
-    leftmargin=*,
-    align=left
-}

@@ -1,9 +1,7 @@
 # TODO list:
 
-- [ ] Fix indentation of enumerations within theorems.
 - [ ] Autocompletion for TEMPLATE?
 - [ ] Configuration file for author name etc?
-- [ ] Color palette for hyperref. Maybe set up in config and display on README?
 - [ ] Make a more streamlined new exercise sheet workflow.
 
 Old new exercise sheet workflow:
