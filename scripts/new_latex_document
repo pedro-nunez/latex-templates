@@ -4,7 +4,7 @@ set -euo pipefail
 usage() {
   cat <<'USAGE'
 Usage:
-  new-latex-document TEMPLATE PROJECT_NAME [OPTIONS]
+  new_latex_document TEMPLATE PROJECT_NAME [OPTIONS]
 
 Templates:
   note
@@ -42,17 +42,17 @@ USAGE
 }
 
 die() {
-  printf 'new-latex-document: error: %s\n' "$*" >&2
+  printf 'new_latex_document: error: %s\n' "$*" >&2
   exit 1
 }
 
 warn() {
-  printf 'new-latex-document: warning: %s\n' "$*" >&2
+  printf 'new_latex_document: warning: %s\n' "$*" >&2
 }
 
 cleanup_on_failure() {
   if [[ "${created_target_dir}" -eq 1 && "${local_creation_complete}" -eq 0 ]]; then
-    printf 'new-latex-document: cleaning up incomplete project: %s\n' "${target_dir}" >&2
+    printf 'new_latex_document: cleaning up incomplete project: %s\n' "${target_dir}" >&2
     rm -rf -- "${target_dir}"
   fi
 }
@@ -185,38 +185,38 @@ target_dir="${PWD}/${project_name}"
 case "${template}" in
   beamer)
     preamble_files=(
-      "${auxiliary_dir}/beamer-packages.tex"
-      "${auxiliary_dir}/beamer-theme.tex"
-      "${auxiliary_dir}/draft-notes.tex"
+      "${auxiliary_dir}/beamer_packages.tex"
+      "${auxiliary_dir}/beamer_theme.tex"
+      "${auxiliary_dir}/draft_notes.tex"
     )
     ;;
   exercises)
     preamble_files=(
-      "${auxiliary_dir}/exercises-packages.tex"
-      "${auxiliary_dir}/exercises-preamble.tex"
-      "${auxiliary_dir}/draft-notes.tex"
+      "${auxiliary_dir}/exercises_packages.tex"
+      "${auxiliary_dir}/exercises_preamble.tex"
+      "${auxiliary_dir}/draft_notes.tex"
     )
     ;;
   longform)
     preamble_files=(
-      "${auxiliary_dir}/standard-packages.tex"
-      "${auxiliary_dir}/standard-theorems.tex"
-      "${auxiliary_dir}/draft-notes.tex"
-      "${auxiliary_dir}/author-comments.tex"
+      "${auxiliary_dir}/standard_packages.tex"
+      "${auxiliary_dir}/standard_theorems.tex"
+      "${auxiliary_dir}/draft_notes.tex"
+      "${auxiliary_dir}/author_comments.tex"
     )
     ;;
   note)
     preamble_files=(
-      "${auxiliary_dir}/standard-packages.tex"
-      "${auxiliary_dir}/standard-theorems.tex"
-      "${auxiliary_dir}/draft-notes.tex"
-      "${auxiliary_dir}/author-comments.tex"
+      "${auxiliary_dir}/standard_packages.tex"
+      "${auxiliary_dir}/standard_theorems.tex"
+      "${auxiliary_dir}/draft_notes.tex"
+      "${auxiliary_dir}/author_comments.tex"
     )
     ;;
 esac
 
 if [[ "${use_lean}" -eq 1 ]]; then
-  preamble_files+=( "${auxiliary_dir}/lean-preamble.tex" )
+  preamble_files+=( "${auxiliary_dir}/lean_preamble.tex" )
 fi
 
 [[ -d "${template_dir}" ]] || die "template directory not found: ${template_dir}"

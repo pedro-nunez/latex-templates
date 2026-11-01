@@ -4,7 +4,7 @@ set -euo pipefail
 usage() {
   cat <<'USAGE'
 Usage:
-  build-examples [TEMPLATE] [OPTIONS]
+  build_examples [TEMPLATE] [OPTIONS]
 
 Templates:
   note
@@ -20,7 +20,7 @@ USAGE
 }
 
 die() {
-  printf 'build-examples: error: %s\n' "$*" >&2
+  printf 'build_examples: error: %s\n' "$*" >&2
   exit 1
 }
 
@@ -105,32 +105,32 @@ for template in "${templates[@]}"; do
   case "${template}" in
     beamer)
       preamble_files=(
-	"${auxiliary_dir}/beamer-packages.tex"
-	"${auxiliary_dir}/beamer-theme.tex"
-	"${auxiliary_dir}/draft-notes.tex"
+	"${auxiliary_dir}/beamer_packages.tex"
+	"${auxiliary_dir}/beamer_theme.tex"
+	"${auxiliary_dir}/draft_notes.tex"
       )
       ;;
     exercises)
       preamble_files=(
-	"${auxiliary_dir}/exercises-packages.tex"
-	"${auxiliary_dir}/exercises-preamble.tex"
-	"${auxiliary_dir}/draft-notes.tex"
+	"${auxiliary_dir}/exercises_packages.tex"
+	"${auxiliary_dir}/exercises_preamble.tex"
+	"${auxiliary_dir}/draft_notes.tex"
       )
       ;;
     longform)
       preamble_files=(
-	"${auxiliary_dir}/standard-packages.tex"
-	"${auxiliary_dir}/standard-theorems.tex"
-	"${auxiliary_dir}/draft-notes.tex"
-	"${auxiliary_dir}/author-comments.tex"
+	"${auxiliary_dir}/standard_packages.tex"
+	"${auxiliary_dir}/standard_theorems.tex"
+	"${auxiliary_dir}/draft_notes.tex"
+	"${auxiliary_dir}/author_comments.tex"
       )
       ;;
     note)
       preamble_files=(
-	"${auxiliary_dir}/standard-packages.tex"
-	"${auxiliary_dir}/standard-theorems.tex"
-	"${auxiliary_dir}/draft-notes.tex"
-	"${auxiliary_dir}/author-comments.tex"
+	"${auxiliary_dir}/standard_packages.tex"
+	"${auxiliary_dir}/standard_theorems.tex"
+	"${auxiliary_dir}/draft_notes.tex"
+	"${auxiliary_dir}/author_comments.tex"
       )
       ;;
   esac
