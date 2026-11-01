@@ -7,10 +7,7 @@ Usage:
     build_examples [TEMPLATE] [OPTIONS]
 
 Templates:
-    note
-    exercises
-    beamer
-    report
+    note, exercises, beamer, report
 
 Options:
     -h, --help    Show this help message.

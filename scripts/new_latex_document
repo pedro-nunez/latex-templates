@@ -7,10 +7,7 @@ Usage:
     new_latex_document TEMPLATE PROJECT_NAME [OPTIONS]
 
 Templates:
-    note
-    exercises
-    beamer
-    report
+    note, exercises, beamer, report
 
 Project names:
     Use a portable directory name containing only letters, numbers, dots,
