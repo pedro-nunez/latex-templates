@@ -1,0 +1,9 @@
+% Todo notes
+\newif\ifshowtodos
+\showtodosfalse
+
+\newcommand{\todo}[1]{%
+    \ifshowtodos
+        \noindent{\color{red}\usym{26A0} #1}%
+    \fi
+}

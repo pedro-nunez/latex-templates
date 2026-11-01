@@ -9,17 +9,17 @@ CLI tool to quickly create new LaTeX documents from templates.
 - `beamer`: presentations.
 - `report`: lecture notes and book-length projects.
 
-### Draft notes and author comments
+### To-do and author comments
 
-All templates support draft notes:
+All templates support to-do notes:
 
 ```latex
-\showdraftnotestrue
+\showtodostrue
 
-\draftnote{Double-check this argument.}
+\todo{Double-check this argument.}
 ```
 
-Draft notes are hidden by default.
+To-do notes are hidden by default.
 
 The `note` and `report` templates also support named author comments:
 

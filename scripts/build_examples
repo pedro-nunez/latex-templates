@@ -107,21 +107,21 @@ for template in "${templates[@]}"; do
             preamble_files=(
                 "${auxiliary_dir}/beamer_packages.tex"
                 "${auxiliary_dir}/beamer_theme.tex"
-                "${auxiliary_dir}/draft_notes.tex"
+                "${auxiliary_dir}/todo.tex"
             )
             ;;
         exercises)
             preamble_files=(
                 "${auxiliary_dir}/exercises_packages.tex"
                 "${auxiliary_dir}/exercises_preamble.tex"
-                "${auxiliary_dir}/draft_notes.tex"
+                "${auxiliary_dir}/todo.tex"
             )
             ;;
         report)
             preamble_files=(
                 "${auxiliary_dir}/standard_packages.tex"
                 "${auxiliary_dir}/standard_theorems.tex"
-                "${auxiliary_dir}/draft_notes.tex"
+                "${auxiliary_dir}/todo.tex"
                 "${auxiliary_dir}/author_comments.tex"
             )
             ;;
@@ -129,7 +129,7 @@ for template in "${templates[@]}"; do
             preamble_files=(
                 "${auxiliary_dir}/standard_packages.tex"
                 "${auxiliary_dir}/standard_theorems.tex"
-                "${auxiliary_dir}/draft_notes.tex"
+                "${auxiliary_dir}/todo.tex"
                 "${auxiliary_dir}/author_comments.tex"
             )
             ;;
