@@ -2,91 +2,91 @@
 set -euo pipefail
 
 usage() {
-  cat <<'USAGE'
+    cat <<'USAGE'
 Usage:
-  build_examples [TEMPLATE] [OPTIONS]
+    build_examples [TEMPLATE] [OPTIONS]
 
 Templates:
-  note
-  exercises
-  beamer
-  longform
+    note
+    exercises
+    beamer
+    longform
 
 Options:
-  -h, --help    Show this help message.
+    -h, --help    Show this help message.
 
 With no TEMPLATE, all examples are selected.
 USAGE
 }
 
 die() {
-  printf 'build_examples: error: %s\n' "$*" >&2
-  exit 1
+    printf 'build_examples: error: %s\n' "$*" >&2
+    exit 1
 }
 
 script_path="${BASH_SOURCE[0]}"
 
 while [[ -L "${script_path}" ]]; do
-  script_dir=$(
-    cd -- "$(dirname -- "${script_path}")" >/dev/null 2>&1
-    pwd
-  )
+    script_dir=$(
+        cd -- "$(dirname -- "${script_path}")" >/dev/null 2>&1
+        pwd
+    )
 
-  link_target=$(readlink -- "${script_path}")
+    link_target=$(readlink -- "${script_path}")
 
-  if [[ "${link_target}" == /* ]]; then
-    script_path="${link_target}"
-  else
-    script_path="${script_dir}/${link_target}"
-  fi
+    if [[ "${link_target}" == /* ]]; then
+        script_path="${link_target}"
+    else
+        script_path="${script_dir}/${link_target}"
+    fi
 done
 
 script_dir=$(
-  cd -- "$(dirname -- "${script_path}")" >/dev/null 2>&1
-  pwd
+    cd -- "$(dirname -- "${script_path}")" >/dev/null 2>&1
+    pwd
 )
 
 repo_dir=$(
-  cd -- "${script_dir}/.." >/dev/null 2>&1
-  pwd
+    cd -- "${script_dir}/.." >/dev/null 2>&1
+    pwd
 )
 
 # Build all examples by default
 selected_template="all"
 
 while [[ $# -gt 0 ]]; do
-  case "$1" in
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    -*)
-      die "unknown option: $1"
-      ;;
-    note|exercises|beamer|longform)
-      if [[ "${selected_template}" != "all" ]]; then
-        die "unexpected extra template: $1"
-      fi
-      selected_template="$1"
-      shift
-      ;;
-    *)
-      die "unknown template: $1. Expected one of: note, exercises, beamer, longform"
-      ;;
-  esac
+    case "$1" in
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -*)
+            die "unknown option: $1"
+            ;;
+        note|exercises|beamer|longform)
+            if [[ "${selected_template}" != "all" ]]; then
+                die "unexpected extra template: $1"
+            fi
+            selected_template="$1"
+            shift
+            ;;
+        *)
+            die "unknown template: $1. Expected one of: note, exercises, beamer, longform"
+            ;;
+    esac
 done
 
 case "${selected_template}" in
-  all)
-    templates=(note exercises beamer longform)
-    ;;
-  note|exercises|beamer|longform)
-    templates=("${selected_template}")
-    ;;
-  *)
-    # Defensive check; this error cannot currently occur
-    die "internal error: invalid template selection '${selected_template}'"
-    ;;
+    all)
+        templates=(note exercises beamer longform)
+        ;;
+    note|exercises|beamer|longform)
+        templates=("${selected_template}")
+        ;;
+    *)
+        # Defensive check; this error cannot currently occur
+        die "internal error: invalid template selection '${selected_template}'"
+        ;;
 esac
 
 command -v latexmk >/dev/null 2>&1 || die "latexmk not found"
@@ -98,45 +98,45 @@ mkdir -p -- "${pdf_dir}"
 
 # Prevent old PDF from surviving a failed build
 for template in "${templates[@]}"; do
-  rm -f -- "${pdf_dir}/${template}.pdf"
+    rm -f -- "${pdf_dir}/${template}.pdf"
 done
 
 for template in "${templates[@]}"; do
-  case "${template}" in
-    beamer)
-      preamble_files=(
-	"${auxiliary_dir}/beamer_packages.tex"
-	"${auxiliary_dir}/beamer_theme.tex"
-	"${auxiliary_dir}/draft_notes.tex"
-      )
-      ;;
-    exercises)
-      preamble_files=(
-	"${auxiliary_dir}/exercises_packages.tex"
-	"${auxiliary_dir}/exercises_preamble.tex"
-	"${auxiliary_dir}/draft_notes.tex"
-      )
-      ;;
-    longform)
-      preamble_files=(
-	"${auxiliary_dir}/standard_packages.tex"
-	"${auxiliary_dir}/standard_theorems.tex"
-	"${auxiliary_dir}/draft_notes.tex"
-	"${auxiliary_dir}/author_comments.tex"
-      )
-      ;;
-    note)
-      preamble_files=(
-	"${auxiliary_dir}/standard_packages.tex"
-	"${auxiliary_dir}/standard_theorems.tex"
-	"${auxiliary_dir}/draft_notes.tex"
-	"${auxiliary_dir}/author_comments.tex"
-      )
-      ;;
-  esac
-  
-  build_root="${repo_dir}/examples/build"
-  build_dir="${build_root}/${template}"
+    case "${template}" in
+        beamer)
+            preamble_files=(
+                "${auxiliary_dir}/beamer_packages.tex"
+                "${auxiliary_dir}/beamer_theme.tex"
+                "${auxiliary_dir}/draft_notes.tex"
+            )
+            ;;
+        exercises)
+            preamble_files=(
+                "${auxiliary_dir}/exercises_packages.tex"
+                "${auxiliary_dir}/exercises_preamble.tex"
+                "${auxiliary_dir}/draft_notes.tex"
+            )
+            ;;
+        longform)
+            preamble_files=(
+                "${auxiliary_dir}/standard_packages.tex"
+                "${auxiliary_dir}/standard_theorems.tex"
+                "${auxiliary_dir}/draft_notes.tex"
+                "${auxiliary_dir}/author_comments.tex"
+            )
+            ;;
+        note)
+            preamble_files=(
+                "${auxiliary_dir}/standard_packages.tex"
+                "${auxiliary_dir}/standard_theorems.tex"
+                "${auxiliary_dir}/draft_notes.tex"
+                "${auxiliary_dir}/author_comments.tex"
+            )
+            ;;
+    esac
+
+    build_root="${repo_dir}/examples/build"
+    build_dir="${build_root}/${template}"
 
   # Remove build folder which may remain from a failed build
   rm -rf -- "${build_dir}"
@@ -146,30 +146,30 @@ for template in "${templates[@]}"; do
   [[ -f "${source_dir}/${template}.tex" ]] || die "example source not found: ${source_dir}/${template}.tex"
   [[ -f "${source_dir}/refs.bib" ]] || die "example bibliography not found: ${source_dir}/refs.bib"
   for preamble_file in "${preamble_files[@]}"; do
-    [[ -f "${preamble_file}" ]] || die "preamble file not found: ${preamble_file}"
+      [[ -f "${preamble_file}" ]] || die "preamble file not found: ${preamble_file}"
   done
 
   cp -- "${source_dir}/${template}.tex" "${build_dir}/main.tex"
   cp -- "${source_dir}/refs.bib" "${build_dir}/refs.bib"
   {
-    printf '%% Preamble generated from a template; edit as needed.'
-    for preamble_file in "${preamble_files[@]}"; do
-      printf '\n'
-      cat -- "${preamble_file}"
-    done
+      printf '%% Preamble generated from a template; edit as needed.'
+      for preamble_file in "${preamble_files[@]}"; do
+          printf '\n'
+          cat -- "${preamble_file}"
+      done
   } > "${build_dir}/preamble.tex"
 
-  printf 'Building %s example...\n' "${template}"
+printf 'Building %s example...\n' "${template}"
 
-  (
+(
     cd "${build_dir}"
     latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
-  )
+)
 
-  cp -- "${build_dir}/main.pdf" "${pdf_dir}/${template}.pdf"
-  rm -rf -- "${build_dir}"
+cp -- "${build_dir}/main.pdf" "${pdf_dir}/${template}.pdf"
+rm -rf -- "${build_dir}"
 
-  printf 'Wrote %s\n' "${pdf_dir}/${template}.pdf"
+printf 'Wrote %s\n' "${pdf_dir}/${template}.pdf"
 done
 
 rm -rf -- "${build_root}"

@@ -2,38 +2,38 @@
 set -euo pipefail
 
 usage() {
-  cat <<'USAGE'
+    cat <<'USAGE'
 Usage:
-  new_latex_document TEMPLATE PROJECT_NAME [OPTIONS]
+    new_latex_document TEMPLATE PROJECT_NAME [OPTIONS]
 
 Templates:
-  note
-  exercises
-  beamer
-  longform
+    note
+    exercises
+    beamer
+    longform
 
 Project names:
-  Use a portable directory name containing only letters, numbers, dots,
-  underscores, and hyphens.
+    Use a portable directory name containing only letters, numbers, dots,
+    underscores, and hyphens.
 
-  Good examples:
-    algebraic-geometry-notes
-    exercises-week-3
-    seminar_talk
-    course.2026
+    Good examples:
+        algebraic-geometry-notes
+        exercises-week-3
+        seminar_talk
+        course.2026
 
-  Avoid spaces and shell-special characters. In ordinary shell commands, names
-  with spaces must be quoted, for example "my project", but this script rejects
-  such names deliberately to keep generated projects portable.
+    Avoid spaces and shell-special characters. In ordinary shell commands, names
+    with spaces must be quoted, for example "my project", but this script rejects
+    such names deliberately to keep generated projects portable.
 
 Options:
-  --lean         Include Lean code-listing support.
-  --no-git       Do not initialize a local Git repository.
-  --no-github    Do not create a GitHub repository. This is the default for now.
-  --github       Create a GitHub repository after local project creation.
-  --private      Make the GitHub repository private. This is the default when --github is used.
-  --public       Make the GitHub repository public.
-  -h, --help     Show this help message.
+    --lean         Include Lean code-listing support.
+    --no-git       Do not initialize a local Git repository.
+    --no-github    Do not create a GitHub repository. This is the default for now.
+    --github       Create a GitHub repository after local project creation.
+    --private      Make the GitHub repository private. This is the default when --github is used.
+    --public       Make the GitHub repository public.
+    -h, --help     Show this help message.
 
 This command is local-first. It will create a document project from the local
 template repository. GitHub integration is optional and is never attempted unless
@@ -42,19 +42,19 @@ USAGE
 }
 
 die() {
-  printf 'new_latex_document: error: %s\n' "$*" >&2
-  exit 1
+    printf 'new_latex_document: error: %s\n' "$*" >&2
+    exit 1
 }
 
 warn() {
-  printf 'new_latex_document: warning: %s\n' "$*" >&2
+    printf 'new_latex_document: warning: %s\n' "$*" >&2
 }
 
 cleanup_on_failure() {
-  if [[ "${created_target_dir}" -eq 1 && "${local_creation_complete}" -eq 0 ]]; then
-    printf 'new_latex_document: cleaning up incomplete project: %s\n' "${target_dir}" >&2
-    rm -rf -- "${target_dir}"
-  fi
+    if [[ "${created_target_dir}" -eq 1 && "${local_creation_complete}" -eq 0 ]]; then
+        printf 'new_latex_document: cleaning up incomplete project: %s\n' "${target_dir}" >&2
+        rm -rf -- "${target_dir}"
+    fi
 }
 
 trap cleanup_on_failure EXIT
@@ -62,28 +62,28 @@ trap cleanup_on_failure EXIT
 script_path="${BASH_SOURCE[0]}"
 
 while [[ -L "${script_path}" ]]; do
-  script_dir=$(
-    cd -- "$(dirname -- "${script_path}")" >/dev/null 2>&1
-    pwd
-  )
+    script_dir=$(
+        cd -- "$(dirname -- "${script_path}")" >/dev/null 2>&1
+        pwd
+    )
 
-  link_target=$(readlink -- "${script_path}")
+    link_target=$(readlink -- "${script_path}")
 
-  if [[ "${link_target}" == /* ]]; then
-    script_path="${link_target}"
-  else
-    script_path="${script_dir}/${link_target}"
-  fi
+    if [[ "${link_target}" == /* ]]; then
+        script_path="${link_target}"
+    else
+        script_path="${script_dir}/${link_target}"
+    fi
 done
 
 script_dir=$(
-  cd -- "$(dirname -- "${script_path}")" >/dev/null 2>&1
-  pwd
+    cd -- "$(dirname -- "${script_path}")" >/dev/null 2>&1
+    pwd
 )
 
 repo_dir=$(
-  cd -- "${script_dir}/.." >/dev/null 2>&1
-  pwd
+    cd -- "${script_dir}/.." >/dev/null 2>&1
+    pwd
 )
 
 template=""
@@ -98,79 +98,79 @@ created_target_dir=0
 local_creation_complete=0
 
 if [[ $# -eq 0 ]]; then
-  usage
-  exit 0
+    usage
+    exit 0
 fi
 
 while [[ $# -gt 0 ]]; do
-  case "$1" in
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    --lean)
-      use_lean=1
-      shift
-      ;;
-    --no-git)
-      use_git=0
-      shift
-      ;;
-    --no-github)
-      use_github=0
-      shift
-      ;;
-    --github)
-      use_github=1
-      shift
-      ;;
-    --private)
-      github_visibility="private"
-      github_visibility_was_set=1
-      shift
-      ;;
-    --public)
-      github_visibility="public"
-      github_visibility_was_set=1
-      shift
-      ;;
-    -*)
-      die "unknown option: $1"
-      ;;
-    *)
-      if [[ -z "${template}" ]]; then
-        template="$1"
-      elif [[ -z "${project_name}" ]]; then
-        project_name="$1"
-      else
-        die "unexpected extra argument: $1. Project names with spaces are not supported."
-      fi
-      shift
-      ;;
-  esac
+    case "$1" in
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        --lean)
+            use_lean=1
+            shift
+            ;;
+        --no-git)
+            use_git=0
+            shift
+            ;;
+        --no-github)
+            use_github=0
+            shift
+            ;;
+        --github)
+            use_github=1
+            shift
+            ;;
+        --private)
+            github_visibility="private"
+            github_visibility_was_set=1
+            shift
+            ;;
+        --public)
+            github_visibility="public"
+            github_visibility_was_set=1
+            shift
+            ;;
+        -*)
+            die "unknown option: $1"
+            ;;
+        *)
+            if [[ -z "${template}" ]]; then
+                template="$1"
+            elif [[ -z "${project_name}" ]]; then
+                project_name="$1"
+            else
+                die "unexpected extra argument: $1. Project names with spaces are not supported."
+            fi
+            shift
+            ;;
+    esac
 done
 
 [[ -n "${template}" ]] || die "missing TEMPLATE"
 [[ -n "${project_name}" ]] || die "missing PROJECT_NAME"
 
 case "${template}" in
-  note|exercises|beamer|longform)
-    ;;
-  *)
-    die "unknown template '${template}'. Expected one of: note, exercises, beamer, longform"
-    ;;
+    note|exercises|beamer|longform)
+        ;;
+    *)
+        die "unknown template '${template}'. Expected one of: note, exercises, beamer, longform"
+        ;;
 esac
 
 if [[ ! "${project_name}" =~ ^[A-Za-z0-9._-]+$ ]]; then
-  die "invalid project name '${project_name}'. Use only letters, numbers, dots, underscores, and hyphens; for example: my-project."
+    die "invalid project name '${project_name}'. Use only letters, numbers, dots, underscores, and hyphens; for example: my-project."
 fi
 
 if [[ "${project_name}" == "." || "${project_name}" == ".." ]]; then
-  die "invalid project name '${project_name}'"
+    die "invalid project name '${project_name}'"
 fi
 
 if [[ "${github_visibility_was_set}" -eq 1 && "${use_github}" -eq 0 ]]; then
-  warn "--${github_visibility} was passed, but --github was not passed; GitHub visibility will be ignored."
+    warn "--${github_visibility} was passed, but --github was not passed; GitHub visibility will be ignored."
 fi
 
 template_dir="${repo_dir}/templates"
@@ -183,40 +183,40 @@ lean_listing="${auxiliary_dir}/lstlean.tex"
 target_dir="${PWD}/${project_name}"
 
 case "${template}" in
-  beamer)
-    preamble_files=(
-      "${auxiliary_dir}/beamer_packages.tex"
-      "${auxiliary_dir}/beamer_theme.tex"
-      "${auxiliary_dir}/draft_notes.tex"
-    )
-    ;;
-  exercises)
-    preamble_files=(
-      "${auxiliary_dir}/exercises_packages.tex"
-      "${auxiliary_dir}/exercises_preamble.tex"
-      "${auxiliary_dir}/draft_notes.tex"
-    )
-    ;;
-  longform)
-    preamble_files=(
-      "${auxiliary_dir}/standard_packages.tex"
-      "${auxiliary_dir}/standard_theorems.tex"
-      "${auxiliary_dir}/draft_notes.tex"
-      "${auxiliary_dir}/author_comments.tex"
-    )
-    ;;
-  note)
-    preamble_files=(
-      "${auxiliary_dir}/standard_packages.tex"
-      "${auxiliary_dir}/standard_theorems.tex"
-      "${auxiliary_dir}/draft_notes.tex"
-      "${auxiliary_dir}/author_comments.tex"
-    )
-    ;;
+    beamer)
+        preamble_files=(
+            "${auxiliary_dir}/beamer_packages.tex"
+            "${auxiliary_dir}/beamer_theme.tex"
+            "${auxiliary_dir}/draft_notes.tex"
+        )
+        ;;
+    exercises)
+        preamble_files=(
+            "${auxiliary_dir}/exercises_packages.tex"
+            "${auxiliary_dir}/exercises_preamble.tex"
+            "${auxiliary_dir}/draft_notes.tex"
+        )
+        ;;
+    longform)
+        preamble_files=(
+            "${auxiliary_dir}/standard_packages.tex"
+            "${auxiliary_dir}/standard_theorems.tex"
+            "${auxiliary_dir}/draft_notes.tex"
+            "${auxiliary_dir}/author_comments.tex"
+        )
+        ;;
+    note)
+        preamble_files=(
+            "${auxiliary_dir}/standard_packages.tex"
+            "${auxiliary_dir}/standard_theorems.tex"
+            "${auxiliary_dir}/draft_notes.tex"
+            "${auxiliary_dir}/author_comments.tex"
+        )
+        ;;
 esac
 
 if [[ "${use_lean}" -eq 1 ]]; then
-  preamble_files+=( "${auxiliary_dir}/lean_preamble.tex" )
+    preamble_files+=( "${auxiliary_dir}/lean_preamble.tex" )
 fi
 
 [[ -d "${template_dir}" ]] || die "template directory not found: ${template_dir}"
@@ -224,34 +224,34 @@ fi
 [[ -f "${template_refs}" ]] || die "template bibliography file not found: ${template_refs}"
 [[ -f "${project_gitignore}" ]] || die "project gitignore file not found: ${project_gitignore}"
 for preamble_file in "${preamble_files[@]}"; do
-  [[ -f "${preamble_file}" ]] || die "preamble file not found: ${preamble_file}"
+    [[ -f "${preamble_file}" ]] || die "preamble file not found: ${preamble_file}"
 done
 
 if [[ "${use_lean}" -eq 1 ]]; then
-  [[ -f "${lean_listing}" ]] || die "Lean listing file not found: ${lean_listing}"
+    [[ -f "${lean_listing}" ]] || die "Lean listing file not found: ${lean_listing}"
 fi
 
 if [[ "${use_git}" -eq 1 ]]; then
-  command -v git >/dev/null 2>&1 || die "git not found; install Git or use --no-git"
-  git var GIT_AUTHOR_IDENT >/dev/null 2>&1 || die "Git author identity is not configured; set user.name and user.email, or use --no-git"
+    command -v git >/dev/null 2>&1 || die "git not found; install Git or use --no-git"
+    git var GIT_AUTHOR_IDENT >/dev/null 2>&1 || die "Git author identity is not configured; set user.name and user.email, or use --no-git"
 fi
 
 if [[ "${use_github}" -eq 1 ]]; then
-  [[ "${use_git}" -eq 1 ]] || die "--github requires local Git; remove --no-git or omit --github"
-  
-  command -v gh >/dev/null 2>&1 || die "GitHub CLI 'gh' not found; install gh or omit --github"
-  
-  gh auth status >/dev/null 2>&1 || die "GitHub CLI is not authenticated; run 'gh auth login' or omit --github"
-  
-  github_owner=$(gh api user --jq '.login')
+    [[ "${use_git}" -eq 1 ]] || die "--github requires local Git; remove --no-git or omit --github"
 
-  if gh repo view "${github_owner}/${project_name}" >/dev/null 2>&1; then
-    die "GitHub repository already exists: ${github_owner}/${project_name}"
-  fi
+    command -v gh >/dev/null 2>&1 || die "GitHub CLI 'gh' not found; install gh or omit --github"
+
+    gh auth status >/dev/null 2>&1 || die "GitHub CLI is not authenticated; run 'gh auth login' or omit --github"
+
+    github_owner=$(gh api user --jq '.login')
+
+    if gh repo view "${github_owner}/${project_name}" >/dev/null 2>&1; then
+        die "GitHub repository already exists: ${github_owner}/${project_name}"
+    fi
 fi
 
 if [[ -e "${target_dir}" ]]; then
-  die "target already exists: ${target_dir}"
+    die "target already exists: ${target_dir}"
 fi
 
 mkdir -- "${target_dir}"
@@ -261,14 +261,14 @@ cp -- "${template_main}" "${target_dir}/main.tex"
 cp -- "${template_refs}" "${target_dir}/refs.bib"
 cp -- "${project_gitignore}" "${target_dir}/.gitignore"
 if [[ "${use_lean}" -eq 1 ]]; then
-  cp -- "${lean_listing}" "${target_dir}/lstlean.tex"
+    cp -- "${lean_listing}" "${target_dir}/lstlean.tex"
 fi
 {
-  printf '%% Preamble generated from a template; edit as needed.'
-  for preamble_file in "${preamble_files[@]}"; do
-    printf '\n'
-    cat -- "${preamble_file}"
-  done
+    printf '%% Preamble generated from a template; edit as needed.'
+    for preamble_file in "${preamble_files[@]}"; do
+        printf '\n'
+        cat -- "${preamble_file}"
+    done
 } > "${target_dir}/preamble.tex"
 
 cat > "${target_dir}/README.md" <<EOF
@@ -279,7 +279,7 @@ Short description: TODO
 Document created from the LaTeX templates in
 
 <p align="center">
-  <a href="https://github.com/pedro-nunez/latex-templates">https://github.com/pedro-nunez/latex-templates.</a>
+    <a href="https://github.com/pedro-nunez/latex-templates">https://github.com/pedro-nunez/latex-templates.</a>
 </p>
 
 Document type: ${template}
@@ -298,7 +298,7 @@ needs specific packages, macros, theorem environments, or layout changes.
 EOF
 
 if [[ "${use_lean}" -eq 1 ]]; then
-  cat >> "${target_dir}/README.md" <<'EOF'
+    cat >> "${target_dir}/README.md" <<'EOF'
 
 ## Lean code
 
@@ -309,7 +309,7 @@ Use:
 ```latex
 \begin{leancode}
 example : True := by
-  trivial
+    trivial
 \end{leancode}
 ```
 
@@ -319,30 +319,30 @@ EOF
 fi
 
 if [[ "${use_git}" -eq 1 ]]; then
-  git -C "${target_dir}" init -q
-  git -C "${target_dir}" add .
-  git -C "${target_dir}" commit -q -m "Initial commit"
+    git -C "${target_dir}" init -q
+    git -C "${target_dir}" add .
+    git -C "${target_dir}" commit -q -m "Initial commit"
 fi
 
 local_creation_complete=1
 
 if [[ "${use_github}" -eq 1 ]]; then
-  gh repo create "${project_name}" \
-    --source "${target_dir}" \
-    --remote origin \
-    --push \
-    "--${github_visibility}" \
-    >/dev/null
+    gh repo create "${project_name}" \
+        --source "${target_dir}" \
+        --remote origin \
+        --push \
+        "--${github_visibility}" \
+        >/dev/null
 fi
 
 cat <<REPORT
 Created project directory: ${target_dir}
 Copied files:
-  main.tex
-  preamble.tex
-  refs.bib
-  README.md
-  .gitignore$([[ "${use_lean}" -eq 1 ]] && printf '\n  lstlean.tex')
+    main.tex
+    preamble.tex
+    refs.bib
+    README.md
+    .gitignore$([[ "${use_lean}" -eq 1 ]] && printf '\n  lstlean.tex')
 
 Template repository: ${repo_dir}
 Template:            ${template}
