@@ -9,7 +9,7 @@ Usage:
 Templates:
     note, exercises, beamer, report
 
-With no TEMPLATE, or with "all", generate all four root .tex files.
+With no TEMPLATE, or with "all", generate all four .tex files in templates/.
 Uses the generic defaults provided by build_preamble.
 USAGE
 }
@@ -56,6 +56,7 @@ repo_dir=$(
 )
 skeleton_dir="${repo_dir}/sources/skeletons"
 preamble_builder="${repo_dir}/scripts/build_preamble"
+output_dir="${repo_dir}/templates"
 
 [[ -f "${preamble_builder}" && -r "${preamble_builder}" ]] ||
     die "preamble builder missing or unreadable: ${preamble_builder}"
@@ -64,9 +65,11 @@ for template in "${templates[@]}"; do
     skeleton_file="${skeleton_dir}/${template}.tex"
     [[ -f "${skeleton_file}" && -r "${skeleton_file}" ]] ||
         die "skeleton missing or unreadable: ${skeleton_file}"
-    [[ ! -d "${repo_dir}/${template}.tex" ]] ||
-        die "output path is a directory: ${repo_dir}/${template}.tex"
+    [[ ! -d "${output_dir}/${template}.tex" ]] ||
+        die "output path is a directory: ${output_dir}/${template}.tex"
 done
+
+mkdir -p -- "${output_dir}"
 
 build_dir=$(mktemp -d "${repo_dir}/.build_templates.XXXXXX")
 trap 'rm -rf -- "${build_dir}"' EXIT
@@ -81,6 +84,6 @@ for template in "${templates[@]}"; do
 done
 
 for template in "${templates[@]}"; do
-    mv -f -- "${build_dir}/${template}.tex" "${repo_dir}/${template}.tex"
-    printf 'Wrote %s\n' "${repo_dir}/${template}.tex"
+    mv -f -- "${build_dir}/${template}.tex" "${output_dir}/${template}.tex"
+    printf 'Wrote %s\n' "${output_dir}/${template}.tex"
 done

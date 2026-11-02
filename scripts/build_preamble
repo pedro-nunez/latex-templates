@@ -11,7 +11,7 @@ Templates:
 
 Options:
     --title TEXT  Set the title (default: Title; not for exercises).
-    --user FILE   Override user_example.sh with a Bash settings file.
+    --user FILE   Override config/user_example.sh with a Bash settings file.
     --todo        Include to-do support, initially hidden.
     --comments    Include author comments, initially hidden.
     --lean        Include Lean code-listing support.
@@ -148,7 +148,7 @@ repo_dir=$(
 )
 preamble_dir="${repo_dir}/sources/preamble"
 auxiliary_dir="${repo_dir}/sources/auxiliary"
-default_user_file="${repo_dir}/user_example.sh"
+default_user_file="${repo_dir}/config/user_example.sh"
 
 case "${template}" in
     note)

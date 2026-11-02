@@ -1,7 +1,0 @@
-# User's personal information.
-
-AUTHOR_NAME='Your name'
-AUTHOR_EMAIL=''
-AUTHOR_HOMEPAGE=''
-AUTHOR_AFFILIATION=''
-AUTHOR_ADDRESS=''

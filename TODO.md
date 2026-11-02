@@ -1,7 +1,5 @@
 # TODO list:
 
-- [ ] Autocompletion for TEMPLATE?
-- [ ] Configuration file for author name etc?
 - [ ] Make a more streamlined new exercise sheet workflow.
 
 Old new exercise sheet workflow:
