@@ -10,14 +10,23 @@ Templates:
     note, exercises, beamer, report
 
 Options:
-    --todo        Include todo support, initially hidden.
+    --title TEXT  Set the title (default: Title; not for exercises).
+    --user FILE   Override user_example.sh with a Bash settings file.
+    --todo        Include to-do support, initially hidden.
     --comments    Include author comments, initially hidden.
     --lean        Include Lean code-listing support.
     -h, --help    Show this help message.
 
-Writes the preamble to standard output.
-Templates requiring bib file expect a separate refs.bib file.
-Lean support expects a separate lstlean.tex file.
+Writes the complete preamble, including the document class, to stdout.
+Does not include \begin{document} or the document body.
+
+Generic settings are used unless --user is supplied. Relative user-file
+paths are resolved from the directory where you run this command.
+
+Title, name, affiliation, and postal address are LaTeX source.
+Email and homepage are ordinary text and are escaped automatically.
+Templates using bibliography expect a refs.bib file.
+Lean support expects a lstlean.tex file.
 USAGE
 }
 
@@ -26,7 +35,52 @@ die() {
     exit 1
 }
 
+require_file() {
+    [[ -f "$1" && -r "$1" ]] || die "file missing or unreadable: $1"
+}
+
+# Join populated fields without leaving stray punctuation.
+join_nonempty() {
+    local separator="$1" result="" item
+    shift
+    for item in "$@"; do
+        [[ -n "${item}" ]] || continue
+        if [[ -n "${result}" ]]; then
+            result+="${separator}"
+        fi
+        result+="${item}"
+    done
+    printf '%s' "${result}"
+}
+
+# Escape ordinary text; do not use this for LaTeX-ready fields.
+escape_tex_text() {
+    local value="$1" result="" character index
+    for ((index = 0; index < ${#value}; index++)); do
+        character="${value:index:1}"
+        case "${character}" in
+            '\') result+='\textbackslash{}' ;;
+            '~') result+='\textasciitilde{}' ;;
+            '^') result+='\textasciicircum{}' ;;
+            '{'|'}'|'%'|'$'|'&'|'_'|'#') result+="\\${character}" ;;
+            *) result+="${character}" ;;
+        esac
+    done
+    printf '%s' "${result}"
+}
+
+# Escape URL characters when nested inside LaTeX commands.
+escape_tex_url() {
+    local value="$1"
+    value="${value//\%/\\%}"
+    value="${value//\#/\\#}"
+    printf '%s' "${value}"
+}
+
 template=""
+title="Title"
+title_was_set=0
+user_file=""
 use_todo=0
 use_comments=0
 use_lean=0
@@ -36,6 +90,18 @@ while [[ $# -gt 0 ]]; do
         -h|--help)
             usage
             exit 0
+            ;;
+        --title)
+            [[ $# -ge 2 ]] || die "--title requires a value"
+            title="$2"
+            title_was_set=1
+            shift
+            ;;
+        --user)
+            [[ $# -ge 2 ]] || die "--user requires a file"
+            [[ -n "$2" ]] || die "--user requires a nonempty filename"
+            user_file="$2"
+            shift
             ;;
         --todo)
             use_todo=1
@@ -59,16 +125,17 @@ done
 
 [[ -n "${template}" ]] || die "missing TEMPLATE (use --help for usage)"
 
+if [[ "${template}" == exercises && "${title_was_set}" -eq 1 ]]; then
+    die "--title is not supported for exercises; edit the course metadata instead"
+fi
+
 # Locate the repository, including when this command is symlinked.
 script_path="${BASH_SOURCE[0]}"
-
-# Loop to resolve symbolic link.
 while [[ -L "${script_path}" ]]; do
     script_dir=$(
         cd -- "$(dirname -- "${script_path}")" >/dev/null && pwd -P
     )
     link_target=$(readlink -- "${script_path}")
-
     if [[ "${link_target}" == /* ]]; then
         script_path="${link_target}"
     else
@@ -81,15 +148,23 @@ repo_dir=$(
 )
 preamble_dir="${repo_dir}/sources/preambles"
 auxiliary_dir="${repo_dir}/sources/auxiliary"
+default_user_file="${repo_dir}/user_example.sh"
 
 case "${template}" in
-    note|report)
-        preamble_files=(standard_packages.tex standard_theorems.tex)
+    note)
+        document_class='\documentclass[12pt,a4paper]{amsart}'
+        preamble_files=(standard_packages.tex standard_macros.tex)
+        ;;
+    report)
+        document_class='\documentclass[12pt,a4paper]{report}'
+        preamble_files=(standard_packages.tex standard_macros.tex)
         ;;
     exercises)
-        preamble_files=(exercises_packages.tex exercises_preamble.tex)
+        document_class='\documentclass[12pt,a4paper]{article}'
+        preamble_files=(exercises_packages.tex exercises_macros.tex)
         ;;
     beamer)
+        document_class='\documentclass{beamer}'
         preamble_files=(beamer_packages.tex beamer_theme.tex)
         ;;
 esac
@@ -104,23 +179,98 @@ if [[ "${use_lean}" -eq 1 ]]; then
     preamble_files+=(lean_preamble.tex)
 fi
 
-# Validate all selected files before writing any LaTeX.
+# Validate inputs before writing any LaTeX.
 for preamble_file in "${preamble_files[@]}"; do
-    file_path="${preamble_dir}/${preamble_file}"
-    [[ -f "${file_path}" && -r "${file_path}" ]] ||
-        die "preamble file missing or unreadable: ${file_path}"
+    require_file "${preamble_dir}/${preamble_file}"
 done
-
 if [[ "${use_lean}" -eq 1 ]]; then
-    lean_file="${auxiliary_dir}/lstlean.tex"
-    [[ -f "${lean_file}" && -r "${lean_file}" ]] ||
-        die "Lean language file missing or unreadable: ${lean_file}"
+    require_file "${auxiliary_dir}/lstlean.tex"
+fi
+require_file "${default_user_file}"
+if [[ -n "${user_file}" ]]; then
+    if [[ "${user_file}" != /* ]]; then
+        user_file="${PWD}/${user_file}"
+    fi
+    require_file "${user_file}"
 fi
 
-printf '%% Preamble generated by build_preamble for %s.\n' "${template}"
+# These files contain AUTHOR_* assignments. Keep stdout for LaTeX only.
+AUTHOR_NAME=""
+AUTHOR_EMAIL=""
+AUTHOR_HOMEPAGE=""
+AUTHOR_AFFILIATION=""
+AUTHOR_ADDRESS=""
+source "${default_user_file}" >&2
+if [[ -n "${user_file}" ]]; then
+    source "${user_file}" >&2
+fi
+
+address=$(join_nonempty ', ' "${AUTHOR_AFFILIATION}" "${AUTHOR_ADDRESS}")
+email_text=$(escape_tex_text "${AUTHOR_EMAIL}")
+homepage_text=$(escape_tex_text "${AUTHOR_HOMEPAGE}")
+email_target=$(escape_tex_url "${AUTHOR_EMAIL}")
+homepage_target=$(escape_tex_url "${AUTHOR_HOMEPAGE}")
+
+printf '%s\n\n' "${document_class}"
+printf '%% Preamble generated by build_preamble for %s\n' "${template}"
 
 for preamble_file in "${preamble_files[@]}"; do
-    printf '\n%% Source: sources/preambles/%s\n\n' "${preamble_file}"
-    cat -- "${preamble_dir}/${preamble_file}"
-    printf '\n'
+    preamble_content=$(cat -- "${preamble_dir}/${preamble_file}")
+    printf '\n%% Source: sources/preamble/%s\n\n' "${preamble_file}"
+    printf '%s\n' "${preamble_content}"
 done
+
+metadata_source="${user_file:-${default_user_file}}"
+metadata_source="${metadata_source#"${repo_dir}/"}"
+
+printf '\n%% Source: %s\n\n' "${metadata_source}"
+if [[ "${template}" != exercises ]]; then
+    printf '\\title{%s}\n' "${title}"
+fi
+
+case "${template}" in
+    note)
+        printf '\\author{%s}\n' "${AUTHOR_NAME}"
+        if [[ -n "${address}" ]]; then
+            printf '\\address{%s}\n' "${address}"
+        fi
+        if [[ -n "${email_text}" ]]; then
+            printf '\\email{%s}\n' "${email_text}"
+        fi
+        if [[ -n "${homepage_text}" ]]; then
+            printf '\\urladdr{%s}\n' "${homepage_text}"
+        fi
+        ;;
+    report)
+        email_detail=""
+        homepage_detail=""
+        if [[ -n "${email_text}" ]]; then
+            email_detail="\\href{mailto:${email_target}}{${email_text}}"
+        fi
+        if [[ -n "${homepage_text}" ]]; then
+            homepage_detail="\\href{${homepage_target}}{${homepage_text}}"
+        fi
+        author_details=$(join_nonempty '; ' "${address}" "${email_detail}" "${homepage_detail}")
+        printf '\\author{%s' "${AUTHOR_NAME}"
+        if [[ -n "${author_details}" ]]; then
+            printf '\\thanks{%s}' "${author_details}"
+        fi
+        printf '}\n'
+        ;;
+    beamer)
+        printf '\\author{%s}\n' "${AUTHOR_NAME}"
+        if [[ -n "${AUTHOR_AFFILIATION}" ]]; then
+            printf '\\institute{%s}\n' "${AUTHOR_AFFILIATION}"
+        fi
+        ;;
+    exercises)
+        printf '\\course{Course}\n'
+        printf '\\sheetnumber{1}\n'
+        printf '\\lecturer{%s}\n' "${AUTHOR_NAME}"
+        printf '\\duedate{Due date}\n'
+        ;;
+esac
+
+if [[ "${template}" != exercises ]]; then
+    printf '\\date{\\today}\n'
+fi
