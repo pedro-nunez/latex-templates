@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    cat <<'USAGE'
+Usage:
+    build_templates [TEMPLATE]
+
+Templates:
+    note, exercises, beamer, report
+
+With no TEMPLATE, or with "all", generate all four root .tex files.
+Uses the generic defaults provided by build_preamble.
+USAGE
+}
+
+die() {
+    printf 'build_templates: error: %s\n' "$*" >&2
+    exit 1
+}
+
+[[ $# -le 1 ]] || die "expected at most one template"
+
+case "${1-all}" in
+    -h|--help)
+        usage
+        exit 0
+        ;;
+    all)
+        templates=(note exercises beamer report)
+        ;;
+    note|exercises|beamer|report)
+        templates=("$1")
+        ;;
+    *)
+        die "unknown template: $1 (use --help for usage)"
+        ;;
+esac
+
+# Locate the repository, including when this command is symlinked.
+script_path="${BASH_SOURCE[0]}"
+while [[ -L "${script_path}" ]]; do
+    script_dir=$(
+        cd -- "$(dirname -- "${script_path}")" >/dev/null && pwd -P
+    )
+    link_target=$(readlink -- "${script_path}")
+    if [[ "${link_target}" == /* ]]; then
+        script_path="${link_target}"
+    else
+        script_path="${script_dir}/${link_target}"
+    fi
+done
+
+repo_dir=$(
+    cd -- "$(dirname -- "${script_path}")/.." >/dev/null && pwd -P
+)
+skeleton_dir="${repo_dir}/sources/skeletons"
+preamble_builder="${repo_dir}/scripts/build_preamble"
+
+[[ -f "${preamble_builder}" && -r "${preamble_builder}" ]] ||
+    die "preamble builder missing or unreadable: ${preamble_builder}"
+
+for template in "${templates[@]}"; do
+    skeleton_file="${skeleton_dir}/${template}.tex"
+    [[ -f "${skeleton_file}" && -r "${skeleton_file}" ]] ||
+        die "skeleton missing or unreadable: ${skeleton_file}"
+    [[ ! -d "${repo_dir}/${template}.tex" ]] ||
+        die "output path is a directory: ${repo_dir}/${template}.tex"
+done
+
+build_dir=$(mktemp -d "${repo_dir}/.build_templates.XXXXXX")
+trap 'rm -rf -- "${build_dir}"' EXIT
+
+# Generate all selected files before replacing existing templates.
+for template in "${templates[@]}"; do
+    {
+        bash "${preamble_builder}" "${template}"
+        printf '\n%% Source: sources/skeletons/%s.tex\n\n' "${template}"
+        cat -- "${skeleton_dir}/${template}.tex"
+    } > "${build_dir}/${template}.tex"
+done
+
+for template in "${templates[@]}"; do
+    mv -f -- "${build_dir}/${template}.tex" "${repo_dir}/${template}.tex"
+    printf 'Wrote %s\n' "${repo_dir}/${template}.tex"
+done
