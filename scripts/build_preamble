@@ -157,7 +157,11 @@ case "${template}" in
         ;;
     report)
         document_class='\documentclass[12pt,a4paper]{report}'
-        preamble_files=(standard_packages.tex standard_macros.tex)
+        preamble_files=(
+            standard_packages.tex
+            standard_macros.tex
+            report_cover.tex
+        )
         ;;
     exercises)
         document_class='\documentclass[12pt,a4paper]{article}'
@@ -205,7 +209,6 @@ if [[ -n "${user_file}" ]]; then
     source "${user_file}" >&2
 fi
 
-address=$(join_nonempty ', ' "${AUTHOR_AFFILIATION}" "${AUTHOR_ADDRESS}")
 email_text=$(escape_tex_text "${AUTHOR_EMAIL}")
 homepage_text=$(escape_tex_text "${AUTHOR_HOMEPAGE}")
 email_target=$(escape_tex_url "${AUTHOR_EMAIL}")
@@ -247,6 +250,28 @@ case "${template}" in
             printf '\\renewcommand{\\urladdrname}{\\textit{Homepage}}\n'
             printf '\\urladdr{\\normalfont\\leftskip=1em\\relax\\href{%s}{%s}}\n' "${homepage_target}" "${homepage_text}"
         fi
+        ;;
+    report)
+        printf '\\author{%s}\n' "${AUTHOR_NAME}"
+
+        report_name=""
+        if [[ -n "${AUTHOR_NAME}" ]]; then
+            report_name="\\textsc{${AUTHOR_NAME}}"
+        fi
+        report_address=$(join_nonempty ' \\ ' "${report_name}" "${AUTHOR_AFFILIATION}" "${AUTHOR_ADDRESS}")
+        printf '\\authorinfo{%%\n'
+        if [[ -n "${report_address}" ]]; then
+            printf '    \\hangindent=1em\\hangafter=1\n'
+            printf '    %s\\par\n' "${report_address}"
+        fi
+        if [[ -n "${email_text}" ]]; then
+            printf '    {\\leftskip=1em\\relax\\textit{Email address:} \\href{mailto:%s}{%s}\\par}\n' "${email_target}" "${email_text}"
+        fi
+        if [[ -n "${homepage_text}" ]]; then
+            printf '    {\\leftskip=1em\\relax\\textit{Homepage:} \\href{%s}{%s}\\par}\n' "${homepage_target}" "${homepage_text}"
+        fi
+
+        printf '}\n'
         ;;
     report)
         email_detail=""

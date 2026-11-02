@@ -115,6 +115,59 @@
 \crefname{theoremitemsi}{item}{items}
 \Crefname{theoremitemsi}{Item}{Items}
 
+% Source: sources/preamble/report_cover.tex
+
+% Report cover and author details
+\makeatletter
+
+\newcommand{\subtitle}[1]{\gdef\@subtitle{#1}}
+\newcommand{\titlefigure}[1]{\gdef\@titlefigure{#1}}
+\newcommand{\authorinfo}[1]{\gdef\@authorinfo{#1}}
+
+\subtitle{}
+\titlefigure{}
+\authorinfo{}
+
+\renewcommand{\maketitle}{%
+    \begin{titlepage}
+        \normalfont
+        \centering
+        \vspace*{0.08\textheight}
+
+        {\Huge\bfseries \@title\par}
+
+        \ifx\@subtitle\@empty
+        \else
+            \vspace{0.8cm}
+            {\Large \@subtitle\par}
+        \fi
+
+        \vspace{1.5cm}
+        {\Large \@author\par}
+
+        \vfill
+        \ifx\@titlefigure\@empty
+        \else
+            \@titlefigure\par
+            \vfill
+        \fi
+
+        {\large \@date\par}
+        \vspace*{0.05\textheight}
+    \end{titlepage}%
+}
+
+\newcommand{\printauthorinfo}{%
+    \par\noindent
+    \begin{minipage}[b]{\linewidth}
+        \normalfont\footnotesize
+        \setlength{\parindent}{0pt}%
+        \@authorinfo\par
+    \end{minipage}\par
+}
+
+\makeatother
+
 % Source: sources/preamble/todo.tex
 
 % Warning symbol
@@ -147,7 +200,13 @@
 % Source: config/user_example.sh
 
 \title{Example report document}
-\author{Example Author\thanks{Example University\\Department of Mathematics, 1 Example Road\\Example City, Country; \href{mailto:author@example.com}{author@example.com}; \href{https://example.com}{https://example.com}}}
+\author{Example Author}
+\authorinfo{%
+    \hangindent=1em\hangafter=1
+    \textsc{Example Author} \\ Example University\\Department of Mathematics \\ 1 Example Road\\Example City, Country\par
+    {\leftskip=1em\relax\textit{Email address:} \href{mailto:author@example.com}{author@example.com}\par}
+    {\leftskip=1em\relax\textit{Homepage:} \href{https://example.com}{https://example.com}\par}
+}
 \date{\today}
 
 % Source: sources/examples/report.tex
@@ -160,8 +219,63 @@
 \newauthorcomment{alice}{Alice}{red}
 \newauthorcomment{bob}{Bob}{red}
 
+\subtitle{Lecture notes}
+
+% Optional cover figure: remove this command for a plain cover.
+\titlefigure{%
+    \begin{tikzpicture}[
+        x={(1cm,0cm)},
+        y={(0.45cm,0.85cm)}
+    ]
+        \filldraw[
+            fill=CustomBlue!8,
+            draw=CustomBlue,
+            line width=0.7pt
+        ]
+            (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+
+        \foreach \i in {-2,...,3} {
+            \foreach \j in {-1,...,2} {
+                \fill[black!65] (\i,\j) circle[radius=1.2pt];
+            }
+        }
+    \end{tikzpicture}%
+}
+
+\hypersetup{pageanchor=false}
 \maketitle
+
+% Document information page
+\thispagestyle{empty}
+\noindent
+These are lecture notes for an undergraduate course on lattice theory.
+
+\vspace{2\baselineskip}
+
+\noindent\textbf{Course information}\par
+\smallskip
+\noindent
+Undergraduate course on lattice theory, Example University.\\
+Academic year 2026--2027.
+
+\vspace{\baselineskip}
+
+\noindent\textbf{Status of these notes}\par
+\smallskip
+\noindent
+This is a working document. Corrections and suggestions are welcome.
+
+\par
+\vfill
+\printauthorinfo
+\clearpage
+
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
 \tableofcontents
+\clearpage
+
+\pagenumbering{arabic}
 
 \chapter{A Sample Chapter}
 

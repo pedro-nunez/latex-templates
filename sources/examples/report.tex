@@ -6,8 +6,63 @@
 \newauthorcomment{alice}{Alice}{red}
 \newauthorcomment{bob}{Bob}{red}
 
+\subtitle{Lecture notes}
+
+% Optional cover figure: remove this command for a plain cover.
+\titlefigure{%
+    \begin{tikzpicture}[
+        x={(1cm,0cm)},
+        y={(0.45cm,0.85cm)}
+    ]
+        \filldraw[
+            fill=CustomBlue!8,
+            draw=CustomBlue,
+            line width=0.7pt
+        ]
+            (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+
+        \foreach \i in {-2,...,3} {
+            \foreach \j in {-1,...,2} {
+                \fill[black!65] (\i,\j) circle[radius=1.2pt];
+            }
+        }
+    \end{tikzpicture}%
+}
+
+\hypersetup{pageanchor=false}
 \maketitle
+
+% Document information page
+\thispagestyle{empty}
+\noindent
+These are lecture notes for an undergraduate course on lattice theory.
+
+\vspace{2\baselineskip}
+
+\noindent\textbf{Course information}\par
+\smallskip
+\noindent
+Undergraduate course on lattice theory, Example University.\\
+Academic year 2026--2027.
+
+\vspace{\baselineskip}
+
+\noindent\textbf{Status of these notes}\par
+\smallskip
+\noindent
+This is a working document. Corrections and suggestions are welcome.
+
+\par
+\vfill
+\printauthorinfo
+\clearpage
+
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
 \tableofcontents
+\clearpage
+
+\pagenumbering{arabic}
 
 \chapter{A Sample Chapter}
 

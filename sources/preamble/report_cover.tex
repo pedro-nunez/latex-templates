@@ -1,0 +1,50 @@
+% Report cover and author details
+\makeatletter
+
+\newcommand{\subtitle}[1]{\gdef\@subtitle{#1}}
+\newcommand{\titlefigure}[1]{\gdef\@titlefigure{#1}}
+\newcommand{\authorinfo}[1]{\gdef\@authorinfo{#1}}
+
+\subtitle{}
+\titlefigure{}
+\authorinfo{}
+
+\renewcommand{\maketitle}{%
+    \begin{titlepage}
+        \normalfont
+        \centering
+        \vspace*{0.08\textheight}
+
+        {\Huge\bfseries \@title\par}
+
+        \ifx\@subtitle\@empty
+        \else
+            \vspace{0.8cm}
+            {\Large \@subtitle\par}
+        \fi
+
+        \vspace{1.5cm}
+        {\Large \@author\par}
+
+        \vfill
+        \ifx\@titlefigure\@empty
+        \else
+            \@titlefigure\par
+            \vfill
+        \fi
+
+        {\large \@date\par}
+        \vspace*{0.05\textheight}
+    \end{titlepage}%
+}
+
+\newcommand{\printauthorinfo}{%
+    \par\noindent
+    \begin{minipage}[b]{\linewidth}
+        \normalfont\footnotesize
+        \setlength{\parindent}{0pt}%
+        \@authorinfo\par
+    \end{minipage}\par
+}
+
+\makeatother

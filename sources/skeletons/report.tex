@@ -1,8 +1,24 @@
 \begin{document}
 
+% \subtitle{Optional subtitle}
+% \titlefigure{\includegraphics[width=0.6\textwidth]{optional_cover_figure.pdf}
+
+\hypersetup{pageanchor=false}
 \maketitle
 
+% Document information page
+\thispagestyle{empty}
+\null
+\vfill
+\printauthorinfo
+\clearpage
+
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
 \tableofcontents
+\clearpage
+
+\pagenumbering{arabic}
 
 \printbibliography
 
