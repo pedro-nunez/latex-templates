@@ -11,7 +11,7 @@ CLI tool to quickly create new LaTeX documents from templates.
 
 ### To-do and author comments
 
-All templates support to-do notes:
+All templates support to-do notes when created with `--todo`:
 
 ```latex
 \showtodostrue
@@ -21,7 +21,7 @@ All templates support to-do notes:
 
 To-do notes are hidden by default.
 
-The `note` and `report` templates also support named author comments:
+All templates also support named author comments when created with `--comments`:
 
 ```latex
 \showcommentstrue
@@ -37,8 +37,11 @@ Author comments are hidden by default.
 
 ## Available scripts
 
-- `new_latex_document`: to create new LaTeX documents from the templates with local Git repository and optional GitHub repository.
-- `build_examples`: to generate showcase example PDFs.
+- `new_latex_document`: create personalized documents with a local Git repository and optional GitHub repository.
+- `build_preamble`: write a complete preamble, including metadata, to standard output.
+- `build_templates`: generate complete template `.tex` files.
+- `build_examples`: generate showcase `.tex` files and PDFs.
+- `rebuild`: run both `build_templates` and `build_examples`.
 
 ### System requirements
 
@@ -46,6 +49,10 @@ The scripts are written in Bash and tested on Ubuntu Linux.
 Other Linux distributions should also work.
 Windows is supported only through WSL,
 and macOS has not been tested.
+
+Creating a project requires Git with an author identity unless `--no-git` is used.
+Compiling PDFs requires a TeX installation with the template packages and
+`latexmk`; templates with bibliographies also require Biber.
 
 Requirements for the GitHub integration:
 
@@ -61,15 +68,34 @@ command. The workflow is local-first: it creates a project from the local copy
 of this template repository and does not contact GitHub unless explicitly asked
 to do so.
 
+First, from the repository root, create your personal settings file:
+
+```bash
+cp config/user_example.sh config/user.sh
+```
+
+Edit its name, email, homepage, affiliation and address fields. Name, affiliation
+and address may contain LaTeX formatting; email and homepage are plain text.
+This personal file is ignored by Git;
+`config/user_example.sh` remains the generic example.
+
+Install the command as described below, or use `scripts/new_latex_document`
+from the repository root.
+
 For example, create a local note project with:
 
 ```bash
 new_latex_document note my-project
 ```
 
-This creates a directory `my-project` in the current working directory, copies
-the note template files into it, initializes a local Git repository, and makes an
-initial commit.
+This creates `my-project` with a complete `main.tex`, `refs.bib`, `.gitignore`
+and `README.md`, then initializes Git and makes an initial commit. The project
+is independent of this repository. Edit `main.tex` and compile from the project
+directory with `latexmk -pdf main.tex`.
+
+Use `--title 'My title'` to set the title (except for exercise sheets), or
+`--user FILE` to select another settings file. Relative paths are resolved from
+the directory where you run the command.
 
 To create the project without initializing Git, use:
 
@@ -102,8 +128,8 @@ All templates can be generated with optional Lean code-listing support:
 new_latex_document exercises my-sheet --lean
 ```
 
-This adds a `leancode` environment and copies the local Lean listings definition
-into the generated project.
+This adds a `leancode` environment and copies `lstlean.tex` into the project.
+It typesets code without running Lean. In Beamer, use a `[fragile]` frame.
 
 Example usage:
 
@@ -154,42 +180,35 @@ To uninstall the command, remove the symlink:
 rm "${HOME}/.local/bin/new_latex_document"
 ```
 
-The symlink installation is easy to undo and keeps the command updated when the
-repository is updated with Git.
+If you chose `new`, use that name in the check and uninstall commands too.
+Keep the repository at the symlink target; updating it also updates the command.
 
 ### Generate showcase examples
 
 The repository contains source files and compiled PDFs showing the appearance of
 each template.
 
-- [Note example](examples/pdf/note.pdf)
-- [Exercises example](examples/pdf/exercises.pdf)
-- [Beamer example](examples/pdf/beamer.pdf)
-- [Report example](examples/pdf/report.pdf)
+- [Note example](examples/note.pdf)
+- [Exercises example](examples/exercises.pdf)
+- [Beamer example](examples/beamer.pdf)
+- [Report example](examples/report.pdf)
 
-The example sources are in:
+Editable example bodies are in `sources/examples/`. Generated complete `.tex`
+files and PDFs are in `examples/`.
 
-```text
-examples/sources/
-```
-
-The generated showcase PDFs are kept in:
-
-```text
-examples/pdf/
-```
-
-Regenerate all showcase PDFs with:
+Regenerate all showcase sources and PDFs with:
 
 ```bash
 scripts/build_examples
 ```
 
-To regenerate a single showcase PDF, say note, use:
+To regenerate a single example, say note, use:
 
 ```bash
 scripts/build_examples note
 ```
+
+After modifying the sources under sources/, run scripts/rebuild to regenerate both the templates and the examples.
 
 ## AI disclaimer
 
