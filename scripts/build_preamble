@@ -146,7 +146,7 @@ done
 repo_dir=$(
     cd -- "$(dirname -- "${script_path}")/.." >/dev/null && pwd -P
 )
-preamble_dir="${repo_dir}/sources/preambles"
+preamble_dir="${repo_dir}/sources/preamble"
 auxiliary_dir="${repo_dir}/sources/auxiliary"
 default_user_file="${repo_dir}/user_example.sh"
 
@@ -176,7 +176,7 @@ if [[ "${use_comments}" -eq 1 ]]; then
     preamble_files+=(author_comments.tex)
 fi
 if [[ "${use_lean}" -eq 1 ]]; then
-    preamble_files+=(lean_preamble.tex)
+    preamble_files+=(lean.tex)
 fi
 
 # Validate inputs before writing any LaTeX.
