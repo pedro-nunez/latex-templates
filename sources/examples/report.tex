@@ -1,18 +1,10 @@
-\documentclass[12pt,a4paper]{report}
-
-\input{preamble}
-
-\title{Example longform document}
-\author{Author}
-\date{\today}
+\begin{document}
 
 \showtodostrue
 \showcommentstrue
 
 \newauthorcomment{alice}{Alice}{red}
 \newauthorcomment{bob}{Bob}{red}
-
-\begin{document}
 
 \maketitle
 \tableofcontents
@@ -28,7 +20,6 @@
         \alpha_X \colon X \to G(X)
     \]
     satisfying the following properties.
-    \todo{Here is a to-do note.}
     \begin{theoremitems}
     \item The object \(X\) exists in the category under consideration.
         \label{item:longform-existence}
@@ -52,8 +43,6 @@
 \begin{remark}
     \label{remark:longform-citations}
     Long-form documents often contain many references.
-    \alice{Alice's comment here.}
-    \bob{Bob's reply here.}
     This example cites Hartshorne \cite{har77} and the Stacks Project \cite{stacks}.
 \end{remark}
 
@@ -86,11 +75,14 @@ to \Cref{item:longform-uniqueness} as a theorem-numbered item.
 
 This chapter checks that theorem-like numbering behaves correctly after a
 chapter change.
+\todo{Here is a to-do note.}
 
 \begin{lemma}
     \label{lemma:second-chapter}
     The references from the first chapter, such as
     \Cref{definition:longform-object}, still work from later chapters.
+    \alice{Alice's comment here.}
+    \bob{Bob's reply here.}
 \end{lemma}
 
 \begin{proof}

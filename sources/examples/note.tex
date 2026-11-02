@@ -1,10 +1,4 @@
-\documentclass[12pt,a4paper]{amsart}
-
-\input{preamble}
-
-\title[Example note]{Example note document}
-\author[Author]{Author}
-\date{\today}
+\begin{document}
 
 \showtodostrue
 \showcommentstrue
@@ -12,15 +6,13 @@
 \newauthorcomment{alice}{Alice}{red}
 \newauthorcomment{bob}{Bob}{red}
 
-\begin{document}
-
-\maketitle
-
 \begin{abstract}
     This short note showcases the note template: theorem-like environments,
     theorem-numbered lists, ordinary enumerated lists, displayed equations,
     commutative diagrams, citations, URLs, and cross-references.
 \end{abstract}
+
+\maketitle
 
 \tableofcontents
 
@@ -33,7 +25,6 @@
         \eta_X \colon X \to F(X)
     \]
     satisfying the following conditions.
-    \todo{A to-do note here.}
     \begin{theoremitems}
     \item The assignment \(X \mapsto \eta_X\) is functorial in \(X\).
         \label{item:good-functoriality} 
@@ -47,8 +38,6 @@ derived from the surrounding theorem-like environment
 \Cref{definition:good-object}. This is useful for statements with several
 numbered conditions.
 
-\alice{We should add an example here.}
-
 \begin{example}
     \label{example:diagram}
     A basic diagrammatic situation is a commutative square
@@ -61,8 +50,6 @@ numbered conditions.
     The command \texttt{tikz-cd} is available in this template for diagrams of this
     kind.
 \end{example}
-
-\bob{I've added the example above.}
 
 \begin{lemma}
     \label{lemma:base-change}
@@ -95,6 +82,7 @@ Ordinary lists remain ordinary. For instance:
 \end{enumerate}
 Thus \Cref{item:ordinary-second} is an ordinary item reference, whereas
 \Cref{item:good-compatibility} is a theorem-numbered item reference.
+\todo{A to-do note here.}
 
 \begin{proposition}
     \label{proposition:main}
@@ -108,6 +96,8 @@ Thus \Cref{item:ordinary-second} is an ordinary item reference, whereas
     \bob{Maybe we should add more details here.}
 \end{proof}
 
+\alice{We should add a remark here.}
+
 \begin{remark}
     \label{remark:links}
     Hyperlinks can be written using \verb|\href|. For example, the template
@@ -115,6 +105,8 @@ Thus \Cref{item:ordinary-second} is an ordinary item reference, whereas
     \href{https://www.ctan.org/pkg/tikz-cd}{the tikz-cd package page}.
     URLs inherit the hyperlink colour configured in the common preamble.
 \end{remark}
+
+\bob{I've added the remark above.}
 
 \printbibliography
 
