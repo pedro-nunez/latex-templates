@@ -147,7 +147,7 @@
 % Source: config/user_example.sh
 
 \title{Example report document}
-\author{Example Author\thanks{Example University, Example City, Country; \href{mailto:author@example.com}{author@example.com}; \href{https://example.com}{https://example.com}}}
+\author{Example Author\thanks{Example University\\Department of Mathematics, 1 Example Road\\Example City, Country; \href{mailto:author@example.com}{author@example.com}; \href{https://example.com}{https://example.com}}}
 \date{\today}
 
 % Source: sources/examples/report.tex
@@ -235,8 +235,6 @@ chapter change.
     \label{lemma:second-chapter}
     The references from the first chapter, such as
     \Cref{definition:longform-object}, still work from later chapters.
-    \alice{Alice's comment here.}
-    \bob{Bob's reply here.}
 \end{lemma}
 
 \begin{proof}
@@ -247,11 +245,15 @@ chapter change.
     \end{equation}
 \end{proof}
 
+\alice{We should add an example here.}
+
 \begin{example}
     \label{example:external-link}
     A long-form document may also contain external links, for instance to
     \href{https://www.ctan.org/pkg/biblatex}{the biblatex package page}.
 \end{example}
+
+\bob{I've added the example above.}
 
 \printbibliography
 

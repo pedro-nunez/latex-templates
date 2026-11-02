@@ -119,9 +119,10 @@
 
 \title{Title}
 \author{Example Author}
-\address{Example University, Example City, Country}
-\email{author@example.com}
-\urladdr{https://example.com}
+\address{\parbox[b]{\linewidth}{\normalfont\hangindent=1em\hangafter=1 \textsc{Example Author} \\ Example University\\Department of Mathematics \\ 1 Example Road\\Example City, Country}}
+\email{\normalfont\leftskip=1em\relax\href{mailto:author@example.com}{author@example.com}}
+\renewcommand{\urladdrname}{\textit{Homepage}}
+\urladdr{\normalfont\leftskip=1em\relax\href{https://example.com}{https://example.com}}
 \date{\today}
 
 % Source: sources/skeletons/note.tex
@@ -134,4 +135,7 @@
 
 \printbibliography
 
+\par
+\vfill
+\setlength{\parindent}{0pt}
 \end{document}
