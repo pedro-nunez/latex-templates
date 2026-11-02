@@ -2,6 +2,34 @@
 
 CLI tool to quickly create new LaTeX documents from templates.
 
+## Quick start
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/pedro-nunez/latex-templates.git
+   cd latex-templates
+   ```
+
+2. Copy the example settings, then edit `config/user.sh` with your details:
+
+   ```bash
+   cp config/user_example.sh config/user.sh
+   ```
+
+3. Optionally [install the command](#installing-the-command) to use it from any directory.
+
+4. Create a document from the repository root:
+
+   ```bash
+   scripts/new_latex_document note my_notes
+   ```
+
+   If installed, use `new_latex_document` instead of `scripts/new_latex_document`.
+
+See [Create new documents from templates](#create-new-documents-from-templates)
+for the available options when creating a new document.
+
 ## Available templates
 
 - `note`: ordinary mathematical notes, short scripts, blurbs, and expository notes.
